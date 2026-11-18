@@ -148,18 +148,19 @@
     display: none;
   }
 
-  /* --- MOBILE GAME BOY CONSOLE CONTROLS (ALWAYS VISIBLE BELOW FRAME) --- */
+  /* --- MOBILE PORTRAIT: GAME BOY CONSOLE CONTROLS (RIGHT BELOW FRAME) --- */
   .touch-controls {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
     width: 96vw;
     max-width: 860px;
+    margin-top: 12px;
     background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
     border: 3px solid #334155;
     border-radius: 22px;
-    padding: 18px 20px;
+    padding: 18px 12px;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.85);
     display: flex;
     justify-content: space-between;
@@ -170,17 +171,17 @@
   .dpad {
     pointer-events: auto;
     display: flex;
-    gap: 14px;
+    gap: 8px;
   }
   .tbtn {
-    width: 64px;
-    height: 64px;
+    width: 54px;
+    height: 54px;
     background: linear-gradient(180deg, rgba(30, 41, 59, 0.92), rgba(15, 23, 42, 0.98));
     border: 2px solid #facc15;
     color: #fef08a;
     font-weight: 900;
-    font-size: 24px;
-    border-radius: 16px;
+    font-size: 20px;
+    border-radius: 14px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -196,18 +197,18 @@
   .action-group {
     pointer-events: auto;
     display: flex;
-    gap: 14px;
+    gap: 10px;
     align-items: center;
   }
   #btn-fire {
-    width: 66px;
-    height: 66px;
+    width: 58px;
+    height: 58px;
     border-radius: 50%;
     background: radial-gradient(circle at 30% 30%, #fb923c, #ea580c 60%, #9a3412);
     border: 2.5px solid #ffedd5;
     color: #fff;
     font-weight: 900;
-    font-size: 14px;
+    font-size: 13px;
     font-family: inherit;
     display: flex;
     justify-content: center;
@@ -218,14 +219,14 @@
   }
   #btn-fire:active { transform: translateY(3px); box-shadow: 0 2px 0 #7c2d12; }
   #btn-jump {
-    width: 72px;
-    height: 72px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
     background: radial-gradient(circle at 30% 30%, #f87171, #dc2626 60%, #991b1b);
     border: 2.5px solid #fee2e2;
     color: #fff;
     font-weight: 900;
-    font-size: 15px;
+    font-size: 14px;
     font-family: inherit;
     display: flex;
     justify-content: center;
@@ -236,43 +237,54 @@
   }
   #btn-jump:active { transform: translateY(3px); box-shadow: 0 2px 0 #7f1d1d; }
 
-  /* --- MOBILE LANDSCAPE: COMPACT SEMI-TRANSPARENT CORNER BUTTONS --- */
-  @media (orientation: landscape) and (max-height: 550px) {
+  /* --- MOBILE / TABLET LANDSCAPE: FULL FIT SCREEN + COMPACT OVERLAY CONTROLS --- */
+  @media (orientation: landscape) and (pointer: coarse) {
     body {
       justify-content: center;
       padding: 4px;
+      height: 100vh;
     }
     #card-frame {
-      height: 94vh;
+      height: 92vh;
       width: auto;
-      max-width: 98vw;
+      max-width: 96vw;
+      aspect-ratio: 16 / 10;
     }
     .touch-controls {
-      bottom: 8px;
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 0;
       width: 96vw;
+      max-width: none;
       background: transparent;
       border: none;
       box-shadow: none;
-      padding: 0 12px;
+      padding: 0 14px;
       pointer-events: none;
+      z-index: 999;
+    }
+    .dpad {
+      gap: 8px;
     }
     .tbtn {
       width: 44px;
       height: 44px;
       font-size: 16px;
-      opacity: 0.6;
+      opacity: 0.65;
     }
     #btn-fire {
       width: 48px;
       height: 48px;
       font-size: 11px;
-      opacity: 0.65;
+      opacity: 0.7;
     }
     #btn-jump {
       width: 52px;
       height: 52px;
       font-size: 11px;
-      opacity: 0.65;
+      opacity: 0.7;
     }
   }
 
@@ -284,12 +296,14 @@
     }
     #card-frame {
       width: 100vw;
+      height: auto;
     }
     .touch-controls {
       position: absolute;
       bottom: 14px;
       left: 50%;
       transform: translateX(-50%);
+      margin-top: 0;
       width: 100%;
       max-width: 860px;
       background: transparent;
@@ -299,20 +313,26 @@
       pointer-events: none;
       z-index: 8;
     }
+    .dpad {
+      gap: 12px;
+    }
     .tbtn {
       width: 56px;
       height: 56px;
       font-size: 20px;
+      opacity: 1;
     }
     #btn-fire {
       width: 62px;
       height: 62px;
       font-size: 13px;
+      opacity: 1;
     }
     #btn-jump {
       width: 68px;
       height: 68px;
       font-size: 14px;
+      opacity: 1;
     }
   }
 </style>
@@ -339,6 +359,7 @@
 <div class="touch-controls">
   <div class="dpad">
     <div class="tbtn" data-key="ArrowLeft">◀</div>
+    <div class="tbtn" data-key="ArrowUp">▲</div>
     <div class="tbtn" data-key="ArrowRight">▶</div>
   </div>
   <div class="action-group">
