@@ -285,3 +285,96 @@
 
   function update() {
     var rotSpeed = 0.038, moveSpeed = 0.055;
+    if (keys['ArrowLeft'] || keys['KeyA']) player.dir -= rotSpeed;
+    if (keys['ArrowRight'] || keys['KeyD']) player.dir += rotSpeed;
+
+    var dx = Math.cos(player.dir) * moveSpeed;
+    var dy = Math.sin(player.dir) * moveSpeed;
+
+    if (keys['ArrowUp'] || keys['KeyW']) {
+      if (!map[Math.floor(player.y)][Math.floor(player.x + dx * 2)]) player.x += dx;
+      if (!map[Math.floor(player.y + dy * 2)][Math.floor(player.x)]) player.y += dy;
+    }
+    if (keys['ArrowDown'] || keys['KeyS']) {
+      if (!map[Math.floor(player.y)][Math.floor(player.x - dx * 2)]) player.x -= dx;
+      if (!map[Math.floor(player.y + dy * 2)][Math.floor(player.x)]) player.y -= dy;
+    }
+    if (shootAnim > 0) shootAnim--;
+  }
+
+  function render() {
+    ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, W, H / 2);
+    ctx.fillStyle = '#1e293b'; ctx.fillRect(0, H / 2, W, H / 2);
+
+    var numRays = W, halfFov = player.fov / 2;
+    for (var i = 0; i < numRays; i++) {
+      var rayAngle = player.dir - halfFov + (i / numRays) * player.fov;
+      var dist = 0, hit = false;
+      var cos = Math.cos(rayAngle), sin = Math.sin(rayAngle);
+
+      while (!hit && dist < 16) {
+        dist += 0.04;
+        var checkX = Math.floor(player.x + cos * dist);
+        var checkY = Math.floor(player.y + sin * dist);
+        if (checkX < 0 || checkX >= mapW || checkY < 0 || checkY >= mapH) {
+          hit = true; dist = 16;
+        } else if (map[checkY][checkX] > 0) {
+          hit = true;
+        }
+      }
+
+      dist *= Math.cos(rayAngle - player.dir);
+      var wallH = Math.min(H, Math.floor(H / (dist + 0.0001)));
+      var y1 = Math.floor((H - wallH) / 2);
+
+      var shade = Math.max(40, 255 - Math.floor(dist * 14));
+      ctx.fillStyle = (i % 2 === 0) ? 'rgb(' + shade + ', 30, 30)' : 'rgb(' + Math.floor(shade * 0.8) + ', 20, 20)';
+      ctx.fillRect(i, y1, 1, wallH);
+    }
+
+    for (var e = 0; e < enemies.length; e++) {
+      var en = enemies[e];
+      if (!en.alive) continue;
+      var ex = en.x - player.x, ey = en.y - player.y;
+      var spriteAngle = Math.atan2(ey, ex) - player.dir;
+      while (spriteAngle < -Math.PI) spriteAngle += Math.PI * 2;
+      while (spriteAngle > Math.PI) spriteAngle -= Math.PI * 2;
+
+      if (Math.abs(spriteAngle) < player.fov) {
+        var screenX = (W / 2) + Math.tan(spriteAngle) * (W / 2);
+        var dist = Math.hypot(ex, ey);
+        var size = Math.min(320, Math.floor(H / (dist + 0.0001)));
+
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath(); ctx.arc(screenX, H / 2, size / 4, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#facc15'; ctx.fillRect(screenX - 8, H / 2 - 10, 5, 5); ctx.fillRect(screenX + 3, H / 2 - 10, 5, 5);
+        ctx.fillStyle = '#09090b'; ctx.fillRect(screenX - 4, H / 2 + 2, 8, 4);
+      }
+    }
+
+    // Gun Barrel
+    ctx.fillStyle = '#334155';
+    ctx.fillRect(W / 2 - 16 + (shootAnim ? (Math.random() * 10 - 5) : 0), H - 120 + (shootAnim * 4), 32, 120);
+    ctx.fillStyle = '#ef4444';
+    ctx.fillRect(W / 2 - 8, H - 90 + (shootAnim * 4), 16, 50);
+
+    // Top HUD
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+    ctx.fillRect(0, 0, W, 36);
+    ctx.fillStyle = '#38bdf8'; ctx.fillRect(0, 35, W, 1);
+
+    ctx.font = '800 14px sans-serif';
+    ctx.fillStyle = '#facc15'; ctx.fillText('SCORE: ' + score, 16, 23);
+    ctx.fillStyle = '#ef4444'; ctx.fillText('HEALTH: ' + health + '%', 490, 23);
+  }
+
+  function loop() {
+    if (mode !== 'play') return;
+    update();
+    render();
+    requestAnimationFrame(loop);
+  }
+})();
+</script>
+</body>
+</html>
