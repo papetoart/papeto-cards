@@ -58,7 +58,7 @@
     text-align: center;
     color: #fff;
     padding: 16px;
-    z-index: 10;
+    z-index: 20;
   }
   #overlay h1 {
     font-size: clamp(26px, 5.2vw, 46px);
@@ -82,17 +82,18 @@
     line-height: 1.45;
   }
   #start-btn {
-    background: linear-gradient(180deg, #facc15, #ca8a04);
+    background: #eab308;
     color: #09090b;
     border: 2px solid #fef08a;
-    padding: 11px 28px;
-    font-size: clamp(14px, 2.4vw, 18px);
+    padding: 12px 30px;
+    font-size: clamp(15px, 2.5vw, 19px);
     font-weight: bold;
     font-family: inherit;
     cursor: pointer;
     box-shadow: 0 4px 0 #713f12;
     text-transform: uppercase;
   }
+  #start-btn:hover { background: #facc15; }
   #start-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #713f12; }
   .touch-controls {
     position: absolute;
@@ -158,12 +159,12 @@
     <h1 id="ov-title">DOGE DOOM</h1>
     <div class="byline">ORIGINAL ART &amp; CODE BY PAPETO</div>
     <p id="ov-sub">ENTER THE PAPETO CITADEL &amp; BLAST THE FUD!<br>[W/S or ▲/▼] Move &bull; [A/D or ◀/▶] Turn &bull; [SPACE/CLICK] Ð-Blaster</p>
-    <button id="start-btn">PLAY CARD</button>
+    <button id="start-btn" type="button">PLAY CARD</button>
   </div>
 </div>
 
 <script>
-(() => {
+window.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById('screen');
   const ctx = canvas.getContext('2d');
   const overlay = document.getElementById('overlay');
@@ -178,8 +179,9 @@
   let audioCtx = null;
   function initAudio() {
     try {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (AC && !audioCtx) audioCtx = new AC();
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
     } catch (e) {}
   }
   function beep(f1, f2, dur, type = 'square', vol = 0.14) {
@@ -198,7 +200,7 @@
     } catch (e) {}
   }
 
-  // --- PROCEDURAL 64x64 PIXEL-ART WALL TEXTURES ---
+  // --- 64x64 PIXEL-ART WALL TEXTURES ---
   function makeTex(drawFn) {
     const c = document.createElement('canvas');
     c.width = TEX; c.height = TEX;
@@ -208,7 +210,6 @@
   }
 
   const textures = {
-    // 1: Dark Red Hell Bricks with Mortar & Grime
     1: makeTex(g => {
       g.fillStyle = '#450a0a'; g.fillRect(0, 0, TEX, TEX);
       for (let row = 0; row < 8; row++) {
@@ -222,52 +223,40 @@
           g.fillRect(x + 1, y + 1, 14, 1);
         }
       }
-      // Subtle pixel noise
-      for (let i = 0; i < 90; i++) {
-        g.fillStyle = i % 2 ? 'rgba(0,0,0,0.22)' : 'rgba(255,200,150,0.08)';
+      for (let i = 0; i < 80; i++) {
+        g.fillStyle = i % 2 ? 'rgba(0,0,0,0.2)' : 'rgba(255,200,150,0.08)';
         g.fillRect((i * 17) % 64, (i * 29) % 64, 2, 2);
       }
     }),
-
-    // 2: Gold Doge Shrine Wall (Big Shiba Face + Ð Emblem!)
     2: makeTex(g => {
-      // Dark obsidian metal frame
       g.fillStyle = '#18181b'; g.fillRect(0, 0, TEX, TEX);
       g.strokeStyle = '#eab308'; g.lineWidth = 3; g.strokeRect(2, 2, 60, 60);
-      // Gold aura circle
       g.fillStyle = '#854d0e';
-      g.beginPath(); g.arc(32, 32, 24, 0, Math.PI * 2); g.fill();
+      g.beginPath(); g.arc(32, 30, 22, 0, Math.PI * 2); g.fill();
       g.fillStyle = '#eab308';
-      g.beginPath(); g.arc(32, 32, 20, 0, Math.PI * 2); g.fill();
+      g.beginPath(); g.arc(32, 30, 18, 0, Math.PI * 2); g.fill();
       // Shiba Ears
       g.fillStyle = '#ca8a04';
-      g.beginPath(); g.moveTo(16, 22); g.lineTo(20, 10); g.lineTo(26, 20); g.fill();
-      g.beginPath(); g.moveTo(48, 22); g.lineTo(44, 10); g.lineTo(38, 20); g.fill();
-      // Shiba Face
+      g.beginPath(); g.moveTo(17, 21); g.lineTo(20, 9); g.lineTo(26, 19); g.fill();
+      g.beginPath(); g.moveTo(47, 21); g.lineTo(44, 9); g.lineTo(38, 19); g.fill();
+      // Shiba Head & Snout
       g.fillStyle = '#facc15';
-      g.beginPath(); g.arc(32, 33, 14, 0, Math.PI * 2); g.fill();
-      // White snout & cheeks
+      g.beginPath(); g.arc(32, 31, 13, 0, Math.PI * 2); g.fill();
       g.fillStyle = '#fef9c3';
-      g.beginPath(); g.ellipse(32, 37, 10, 7, 0, 0, Math.PI * 2); g.fill();
-      // Eyes & Nose
+      g.beginPath(); g.ellipse(32, 35, 9, 6, 0, 0, Math.PI * 2); g.fill();
       g.fillStyle = '#09090b';
-      g.fillRect(25, 28, 3, 3); g.fillRect(36, 28, 3, 3);
-      g.fillRect(30, 34, 4, 3);
-      // Bottom Ð Banner
-      g.fillStyle = '#09090b'; g.fillRect(10, 50, 44, 10);
+      g.fillRect(26, 26, 3, 3); g.fillRect(35, 26, 3, 3);
+      g.fillRect(30, 32, 4, 3);
+      g.fillStyle = '#09090b'; g.fillRect(8, 50, 48, 10);
       g.fillStyle = '#facc15'; g.font = 'bold 8px Courier New';
-      g.fillText('MUCH ÐOGE', 11, 58);
+      g.fillText('MUCH ÐOGE', 10, 58);
     }),
-
-    // 3: Official PAPETO Neon Tech Wall!
     3: makeTex(g => {
       g.fillStyle = '#0f172a'; g.fillRect(0, 0, TEX, TEX);
-      // Riveted steel borders
       g.fillStyle = '#334155';
       g.fillRect(0, 0, 64, 8); g.fillRect(0, 56, 64, 8);
       g.fillStyle = '#eab308';
       g.fillRect(0, 8, 64, 2); g.fillRect(0, 54, 64, 2);
-      // Glowing PAPETO Plate
       g.fillStyle = '#1e1b4b'; g.fillRect(4, 14, 56, 36);
       g.strokeStyle = '#38bdf8'; g.lineWidth = 2; g.strokeRect(5, 15, 54, 34);
       g.fillStyle = '#facc15'; g.font = 'bold 13px Courier New';
@@ -275,8 +264,6 @@
       g.fillStyle = '#38bdf8'; g.font = 'bold 8px Courier New';
       g.fillText('DOGE NFT', 12, 44);
     }),
-
-    // 9: Emerald Exit Elevator Door
     9: makeTex(g => {
       g.fillStyle = '#052e16'; g.fillRect(0, 0, TEX, TEX);
       g.strokeStyle = '#22c55e'; g.lineWidth = 4; g.strokeRect(3, 3, 58, 58);
@@ -288,36 +275,35 @@
     })
   };
 
-  // --- HIGH-DETAIL PIXEL-ART SPRITES (64x64) ---
+  // --- PIXEL-ART SPRITES ---
   const spritesTex = {
-    // FUD Imp (Red Demon with Horns & Glowing Eyes)
     fud: makeTex(g => {
-      // Horns
       g.fillStyle = '#fef08a';
       g.beginPath(); g.moveTo(18, 18); g.lineTo(12, 6); g.lineTo(24, 14); g.fill();
       g.beginPath(); g.moveTo(46, 18); g.lineTo(52, 6); g.lineTo(40, 14); g.fill();
-      // Muscular Red Body
       g.fillStyle = '#dc2626'; g.fillRect(16, 16, 32, 34);
       g.fillStyle = '#991b1b'; g.fillRect(12, 22, 6, 20); g.fillRect(46, 22, 6, 20);
-      // Legs
       g.fillStyle = '#7f1d1d'; g.fillRect(18, 50, 10, 12); g.fillRect(36, 50, 10, 12);
-      // Glowing Yellow Eyes & Fang Mouth
       g.fillStyle = '#facc15'; g.fillRect(22, 22, 6, 4); g.fillRect(36, 22, 6, 4);
       g.fillStyle = '#09090b'; g.fillRect(22, 31, 20, 6);
       g.fillStyle = '#fff'; g.fillRect(24, 31, 3, 3); g.fillRect(37, 31, 3, 3);
-      // Chest Tag
       g.fillStyle = '#facc15'; g.font = 'bold 8px Courier New'; g.fillText('FUD', 24, 46);
     }),
-
-    // Bear Whale Tank
     bear: makeTex(g => {
       g.fillStyle = '#451a03'; g.fillRect(10, 14, 44, 40);
       g.fillStyle = '#78350f'; g.fillRect(14, 10, 36, 38);
-      // Bear Ears
       g.fillRect(12, 6, 10, 8); g.fillRect(42, 6, 10, 8);
-      // Red Laser Eyes
       g.fillStyle = '#ef4444'; g.fillRect(20, 20, 8, 4); g.fillRect(36, 20, 8, 4);
-      // Snout & Teeth
       g.fillStyle = '#d97706'; g.fillRect(22, 26, 20, 12);
       g.fillStyle = '#09090b'; g.fillRect(29, 27, 6, 4);
-      g.fillStyle = '#fff'; g.fillRect(2
+      g.fillStyle = '#fff'; g.fillRect(24, 35, 3, 4); g.fillRect(37, 35, 3, 4);
+      g.fillStyle = '#451a03'; g.fillRect(14, 52, 12, 10); g.fillRect(38, 52, 12, 10);
+    }),
+    boss: makeTex(g => {
+      g.fillStyle = '#facc15';
+      g.fillRect(14, 4, 36, 8);
+      g.fillRect(14, 0, 6, 5); g.fillRect(29, 0, 6, 5); g.fillRect(44, 0, 6, 5);
+      g.fillStyle = '#7f1d1d'; g.fillRect(8, 12, 48, 42);
+      g.strokeStyle = '#eab308'; g.lineWidth = 2; g.strokeRect(9, 13, 46, 40);
+      g.fillStyle = '#09090b'; g.fillRect(14, 18, 36, 8);
+      g.fillStyle = '#ef4444'; g.fillRect(16, 20, 32,
