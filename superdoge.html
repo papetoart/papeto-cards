@@ -5,6 +5,56 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>SUPER DOGE BROS HD - 10 Worlds NFT Card by PAPETO</title>
 <style>
+ /* --- MOBILE HANDHELD FIX --- */
+@media (max-width: 900px) and (orientation: portrait) {
+  body {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    padding-top: 12px !important;
+  }
+
+  /* Move touch controls below the game screen like a Game Boy */
+  #mobile-controls, .mobile-controls, .controls, .touch-controls {
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    max-width: 500px !important;
+    margin-top: 24px !important;
+    padding: 0 16px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    pointer-events: auto !important;
+  }
+
+  /* Scale buttons nicely for thumbs */
+  #mobile-controls button, .mobile-controls button, .controls button, .touch-controls button,
+  .ctrl-btn, .touch-btn {
+    width: 68px !important;
+    height: 68px !important;
+    font-size: 14px !important;
+    opacity: 0.95 !important;
+  }
+}
+
+/* Landscape mode: smaller, semi-transparent corner buttons */
+@media (max-width: 950px) and (orientation: landscape) {
+  #mobile-controls button, .mobile-controls button, .controls button, .touch-controls button,
+  .ctrl-btn, .touch-btn {
+    width: 52px !important;
+    height: 52px !important;
+    font-size: 12px !important;
+    opacity: 0.55 !important;
+opacity: 0.55 !important;
+  }
+}
+</style>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
   * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
   body {
     background: radial-gradient(circle at top, #1e1b4b, #050507);
