@@ -12,8 +12,8 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    min-height: 100vh;
-    padding: 14px 8px 20px;
+    min-height: 100dvh;
+    padding: 12px 8px 16px;
     overflow: hidden;
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     touch-action: none;
@@ -51,6 +51,33 @@
     pointer-events: none;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   }
+  #level-banner {
+    position: absolute;
+    inset: 0;
+    background: rgba(9, 9, 11, 0.72);
+    backdrop-filter: blur(4px);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    z-index: 15;
+    pointer-events: none;
+  }
+  #level-banner h2 {
+    font-size: clamp(24px, 5vw, 44px);
+    font-weight: 900;
+    color: #facc15;
+    text-shadow: 0 4px 0 #7f1d1d, 0 0 20px rgba(250, 204, 21, 0.6);
+    margin-bottom: 6px;
+  }
+  #level-banner p {
+    font-size: clamp(12px, 2.2vw, 18px);
+    color: #4ade80;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+  }
   #overlay {
     position: absolute;
     inset: 0;
@@ -62,11 +89,11 @@
     align-items: center;
     text-align: center;
     color: #fff;
-    padding: 18px;
+    padding: 14px;
     z-index: 20;
   }
   #overlay h1 {
-    font-size: clamp(24px, 5vw, 48px);
+    font-size: clamp(22px, 5vw, 48px);
     font-weight: 900;
     background: linear-gradient(180deg, #fef08a 0%, #facc15 50%, #ca8a04 100%);
     -webkit-background-clip: text;
@@ -79,27 +106,27 @@
     font-size: clamp(10px, 1.8vw, 14px);
     color: #38bdf8;
     letter-spacing: 2.5px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     font-weight: 800;
     text-transform: uppercase;
   }
   #overlay p {
     font-size: clamp(10px, 1.8vw, 14px);
     color: #e2e8f0;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     max-width: 540px;
-    line-height: 1.45;
+    line-height: 1.4;
   }
   .mode-row {
     display: flex;
     gap: 10px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
   .mode-btn {
     background: rgba(30, 41, 59, 0.85);
     color: #94a3b8;
     border: 2px solid #475569;
-    padding: 7px 14px;
+    padding: 6px 12px;
     font-size: clamp(10px, 1.8vw, 14px);
     font-weight: 800;
     font-family: inherit;
@@ -129,8 +156,8 @@
     background: linear-gradient(180deg, #fde047, #eab308);
     color: #09090b;
     border: 2px solid #fef9c3;
-    padding: 10px 24px;
-    font-size: clamp(13px, 2.2vw, 18px);
+    padding: 9px 22px;
+    font-size: clamp(12px, 2.2vw, 18px);
     font-weight: 900;
     font-family: inherit;
     cursor: pointer;
@@ -237,15 +264,17 @@
   }
   #btn-jump:active { transform: translateY(3px); box-shadow: 0 2px 0 #7f1d1d; }
 
-  /* --- MOBILE / TABLET LANDSCAPE: FULL FIT SCREEN + COMPACT OVERLAY CONTROLS --- */
+  /* --- MOBILE / TABLET LANDSCAPE: PERFECT FIT USING DYNAMIC VIEWPORT HEIGHT (NO BOTTOM CUTOFF) --- */
   @media (orientation: landscape) and (pointer: coarse) {
     body {
       justify-content: center;
-      padding: 4px;
-      height: 100vh;
+      padding: 6px;
+      height: 100dvh;
+      min-height: 100dvh;
     }
     #card-frame {
-      height: 92vh;
+      height: calc(100dvh - 14px);
+      max-height: calc(100dvh - 14px);
       width: auto;
       max-width: 96vw;
       aspect-ratio: 16 / 10;
@@ -297,6 +326,7 @@
     #card-frame {
       width: 100vw;
       height: auto;
+      max-height: 94vh;
     }
     .touch-controls {
       position: absolute;
@@ -341,6 +371,10 @@
 <div id="card-frame">
   <div id="sig-badge">DOGEPARTY NFT &bull; BY PAPETO</div>
   <canvas id="game" width="640" height="400"></canvas>
+  <div id="level-banner">
+    <h2 id="lb-title">WORLD 1-1 CLEARED!</h2>
+    <p id="lb-sub">ENTERING WORLD 1-2...</p>
+  </div>
   <div id="overlay">
     <h1 id="ov-title">SUPER DOGE BROS</h1>
     <div class="byline">HD 10 WORLDS EDITION &bull; BY PAPETO</div>
@@ -375,6 +409,9 @@
   var overlay = document.getElementById('overlay');
   var ovTitle = document.getElementById('ov-title');
   var ovSub = document.getElementById('ov-sub');
+  var levelBanner = document.getElementById('level-banner');
+  var lbTitle = document.getElementById('lb-title');
+  var lbSub = document.getElementById('lb-sub');
   var startBtn = document.getElementById('start-btn');
   var contBtn = document.getElementById('cont-btn');
   var easyBtn = document.getElementById('easy-btn');
@@ -586,6 +623,7 @@
   function launchWorld(wIndex, keepScore) {
     initAudio();
     overlay.style.display = 'none';
+    levelBanner.style.display = 'none';
     loadLevel(wIndex, keepScore);
     mode = 'play';
     lastTime = performance.now();
@@ -593,8 +631,7 @@
   }
 
   startBtn.onclick = function() {
-    if (mode === 'nextlevel') launchWorld(lvlIdx + 1, true);
-    else if (mode === 'gameover') launchWorld(lvlIdx, false);
+    if (mode === 'gameover') launchWorld(lvlIdx, false);
     else launchWorld(0, false);
   };
   contBtn.onclick = function() {
@@ -849,7 +886,7 @@
       }
     }
 
-    // Flagpole Win Check
+    // Flagpole Win Check -> AUTO ADVANCE TO NEXT WORLD!
     var pCenterTile = tileAt(player.x + player.w / 2, player.y + player.h / 2);
     if (pCenterTile === 9) {
       if (bossAlive) {
@@ -858,15 +895,22 @@
       }
       score += 500;
       tone(523, 1046, 0.35, 'triangle');
+      spawnBurst(player.x + 14, player.y, '#facc15', 28);
       if (lvlIdx < 9) {
-        mode = 'nextlevel';
-        savedWorld = Math.max(savedWorld, lvlIdx + 1);
+        mode = 'transition';
+        var nextW = lvlIdx + 1;
+        savedWorld = Math.max(savedWorld, nextW);
         try { localStorage.setItem('papeto_mario_world', String(savedWorld)); } catch (e) {}
-        ovTitle.textContent = 'WORLD 1-' + (lvlIdx + 1) + ' CLEARED!';
-        ovSub.innerHTML = 'SCORE: ' + score + ' &bull; COINS: ' + coinCount + '<br>NEXT: ' + THEMES[lvlIdx + 1].name;
-        startBtn.textContent = 'NEXT WORLD 1-' + (lvlIdx + 2);
-        contBtn.style.display = 'none';
-        overlay.style.display = 'flex';
+        lbTitle.textContent = 'WORLD 1-' + (lvlIdx + 1) + ' CLEARED!';
+        lbSub.textContent = 'NEXT: ' + THEMES[nextW].name;
+        levelBanner.style.display = 'flex';
+        setTimeout(function() {
+          levelBanner.style.display = 'none';
+          loadLevel(nextW, true);
+          mode = 'play';
+          lastTime = performance.now();
+          requestAnimationFrame(loop);
+        }, 1600);
       } else {
         mode = 'win';
         ovTitle.textContent = 'ALL 10 WORLDS CLEARED!';
