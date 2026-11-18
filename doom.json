@@ -1,0 +1,12 @@
+{
+  "name": "DOGE DOOM",
+  "description": "Playable 2.5D retro browser NFT game by PAPETO. 3 levels + Mega FUD Boss.",
+  "image": "https://papetoart.github.io/papeto-cards/doom_cover.png",
+  "animation_url": "https://papetoart.github.io/papeto-cards/dogedoom.html",
+  "external_url": "https://papetoart.github.io/papeto-cards/dogedoom.html",
+  "attributes": [
+    { "trait_type": "Creator", "value": "PAPETO" },
+    { "trait_type": "Genre", "value": "2.5D Retro FPS" },
+    { "trait_type": "Playable", "value": "Yes" }
+  ]
+}

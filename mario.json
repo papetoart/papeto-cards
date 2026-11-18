@@ -1,0 +1,12 @@
+{
+  "name": "SUPER DOGE BROS",
+  "description": "Playable retro platformer browser NFT game by PAPETO. 3 worlds + Mega FUD King.",
+  "image": "https://papetoart.github.io/papeto-cards/mario_cover.png",
+  "animation_url": "https://papetoart.github.io/papeto-cards/superdoge.html",
+  "external_url": "https://papetoart.github.io/papeto-cards/superdoge.html",
+  "attributes": [
+    { "trait_type": "Creator", "value": "PAPETO" },
+    { "trait_type": "Genre", "value": "Retro Platformer" },
+    { "trait_type": "Playable", "value": "Yes" }
+  ]
+}
