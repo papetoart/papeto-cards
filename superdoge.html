@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>SUPER DOGE BROS - Playable NFT Card by PAPETO</title>
+<title>SUPER DOGE BROS - 10 Worlds NFT Card by PAPETO</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
   body {
@@ -22,8 +22,8 @@
     max-width: 800px;
     aspect-ratio: 16 / 10;
     border: 3px solid #eab308;
-    box-shadow: 0 0 28px rgba(234, 179, 8, 0.45);
-    background: #38bdf8;
+    box-shadow: 0 0 32px rgba(234, 179, 8, 0.5);
+    background: #1e3a8a;
     overflow: hidden;
   }
   canvas {
@@ -37,12 +37,12 @@
     position: absolute;
     top: 6px;
     right: 8px;
-    background: rgba(9, 9, 11, 0.8);
+    background: rgba(9, 9, 11, 0.85);
     border: 1px solid #eab308;
     color: #facc15;
     font-size: clamp(9px, 1.5vw, 12px);
     font-weight: bold;
-    padding: 2px 7px;
+    padding: 2px 8px;
     letter-spacing: 1px;
     z-index: 4;
     pointer-events: none;
@@ -50,142 +50,215 @@
   #overlay {
     position: absolute;
     inset: 0;
-    background: rgba(9, 9, 11, 0.88);
+    background: rgba(9, 9, 11, 0.92);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     color: #fff;
-    padding: 16px;
-    z-index: 10;
+    padding: 14px;
+    z-index: 20;
   }
   #overlay h1 {
-    font-size: clamp(22px, 4.8vw, 40px);
-    color: #eab308;
+    font-size: clamp(22px, 4.8vw, 42px);
+    color: #facc15;
     text-shadow: 3px 3px 0 #b91c1c;
     letter-spacing: 2px;
     margin-bottom: 4px;
   }
   .byline {
-    font-size: clamp(11px, 2vw, 14px);
+    font-size: clamp(10px, 1.8vw, 14px);
     color: #fef08a;
     letter-spacing: 2px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     font-weight: bold;
   }
   #overlay p {
-    font-size: clamp(11px, 2vw, 14px);
-    color: #d4d4d8;
-    margin-bottom: 16px;
-    max-width: 480px;
-    line-height: 1.45;
+    font-size: clamp(10px, 1.8vw, 13px);
+    color: #e4e4e7;
+    margin-bottom: 12px;
+    max-width: 520px;
+    line-height: 1.4;
   }
-  #start-btn {
-    background: #eab308;
-    color: #09090b;
-    border: none;
-    padding: 11px 26px;
-    font-size: clamp(14px, 2.4vw, 18px);
+  .mode-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .mode-btn {
+    background: #18181b;
+    color: #a1a1aa;
+    border: 2px solid #52525b;
+    padding: 6px 14px;
+    font-size: clamp(11px, 1.8vw, 14px);
     font-weight: bold;
     font-family: inherit;
     cursor: pointer;
-    box-shadow: 0 4px 0 #a16207;
+  }
+  .mode-btn.active {
+    background: #14532d;
+    color: #4ade80;
+    border-color: #4ade80;
+  }
+  .mode-btn.norm.active {
+    background: #713f12;
+    color: #facc15;
+    border-color: #facc15;
+  }
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .action-btn {
+    background: #eab308;
+    color: #09090b;
+    border: 2px solid #fef08a;
+    padding: 10px 24px;
+    font-size: clamp(13px, 2.2vw, 17px);
+    font-weight: bold;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #713f12;
     text-transform: uppercase;
   }
-  #start-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #a16207; }
+  .action-btn:hover { background: #facc15; }
+  .action-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #713f12; }
+  #cont-btn {
+    background: #22c55e;
+    border-color: #bbf7d0;
+    box-shadow: 0 4px 0 #14532d;
+    display: none;
+  }
   .touch-controls {
     position: absolute;
-    bottom: 20%;
+    bottom: 10px;
     left: 0;
     right: 0;
     display: flex;
     justify-content: space-between;
-    padding: 0 12px;
+    padding: 0 14px;
     pointer-events: none;
     z-index: 5;
   }
-  .pad-group { pointer-events: auto; display: flex; gap: 8px; align-items: center; }
+  .dpad { pointer-events: auto; display: flex; gap: 8px; }
   .tbtn {
-    width: 44px;
-    height: 44px;
-    background: rgba(9, 9, 11, 0.35);
-    border: 1px solid rgba(234, 179, 8, 0.65);
+    width: 46px;
+    height: 46px;
+    background: rgba(9, 9, 11, 0.45);
+    border: 2px solid rgba(234, 179, 8, 0.75);
     color: #fef08a;
     font-weight: bold;
-    font-size: 15px;
+    font-size: 16px;
     border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
   }
-  .tbtn:active { background: rgba(234, 179, 8, 0.55); }
-  .act-btn {
-    width: 54px;
-    height: 54px;
+  .tbtn:active { background: rgba(234, 179, 8, 0.65); }
+  #btn-jump {
+    pointer-events: auto;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    font-size: 11px;
+    background: rgba(220, 38, 38, 0.55);
+    border: 2px solid #f87171;
+    color: #fff;
+    font-weight: bold;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
   }
-  #btn-fire { background: rgba(220, 38, 38, 0.45); border-color: #f87171; }
-  #btn-jump { background: rgba(22, 163, 74, 0.45); border-color: #4ade80; }
   @media (min-width: 820px) and (pointer: fine) {
-    .touch-controls { opacity: 0.3; }
-    .touch-controls:hover { opacity: 0.9; }
+    .touch-controls { opacity: 0.35; }
+    .touch-controls:hover { opacity: 0.95; }
   }
 </style>
 </head>
 <body>
 <div id="card-frame">
   <div id="sig-badge">DOGEPARTY NFT &bull; BY PAPETO</div>
-  <canvas id="screen" width="320" height="200"></canvas>
+  <canvas id="game" width="320" height="200"></canvas>
   <div class="touch-controls">
-    <div class="pad-group">
+    <div class="dpad">
       <div class="tbtn" data-key="ArrowLeft">◀</div>
       <div class="tbtn" data-key="ArrowRight">▶</div>
     </div>
-    <div class="pad-group">
-      <div class="tbtn act-btn" id="btn-fire" data-key="KeyX">FIRE</div>
-      <div class="tbtn act-btn" id="btn-jump" data-key="Space">JUMP</div>
-    </div>
+    <div id="btn-jump">JUMP</div>
   </div>
   <div id="overlay">
     <h1 id="ov-title">SUPER DOGE BROS</h1>
-    <div class="byline">CREATED BY PAPETO &bull; EASY MODE</div>
-    <p id="ov-sub">3 WORLDS + MEGA FUD KING BOSS!<br>[A/D or ARROWS] Run &bull; [SPACE/W] Jump &bull; [X/CLICK] Ð-Shot</p>
-    <button id="start-btn">PLAY CARD</button>
+    <div class="byline">10 WORLDS EDITION &bull; BY PAPETO</div>
+    <p id="ov-sub">STOMP FUD ENEMIES &amp; DEFEAT THE MEGA FUD KING IN WORLD 10!<br>[A/D or ◀/▶] Run &bull; [W / SPACE / ▲] Jump &amp; Stomp</p>
+    <div class="mode-row">
+      <button id="easy-btn" class="mode-btn active" type="button">EASY MODE (9 LIVES)</button>
+      <button id="norm-btn" class="mode-btn norm" type="button">NORMAL (3 LIVES)</button>
+    </div>
+    <div class="btn-row">
+      <button id="start-btn" class="action-btn" type="button">PLAY WORLD 1</button>
+      <button id="cont-btn" class="action-btn" type="button">CONTINUE</button>
+    </div>
   </div>
 </div>
 
 <script>
-(() => {
-  const canvas = document.getElementById('screen');
-  const ctx = canvas.getContext('2d');
-  const overlay = document.getElementById('overlay');
-  const ovTitle = document.getElementById('ov-title');
-  const ovSub = document.getElementById('ov-sub');
-  const startBtn = document.getElementById('start-btn');
+(function() {
+  var canvas = document.getElementById('game');
+  var ctx = canvas.getContext('2d');
+  var overlay = document.getElementById('overlay');
+  var ovTitle = document.getElementById('ov-title');
+  var ovSub = document.getElementById('ov-sub');
+  var startBtn = document.getElementById('start-btn');
+  var contBtn = document.getElementById('cont-btn');
+  var easyBtn = document.getElementById('easy-btn');
+  var normBtn = document.getElementById('norm-btn');
 
-  const W = 320, H = 200, HUD_H = 36, VIEW_H = H - HUD_H;
-  const TILE = 16;
+  var W = 320, H = 200, TILE = 16;
+  var difficulty = 'easy';
+  var savedWorld = 0;
+  try {
+    var sw = localStorage.getItem('papeto_mario_world');
+    if (sw !== null) savedWorld = Math.max(0, Math.min(9, parseInt(sw, 10) || 0));
+  } catch (e) {}
+
+  function setDiff(d) {
+    difficulty = d;
+    if (d === 'easy') {
+      easyBtn.classList.add('active');
+      normBtn.classList.remove('active');
+    } else {
+      normBtn.classList.add('active');
+      easyBtn.classList.remove('active');
+    }
+  }
+  easyBtn.onclick = function() { setDiff('easy'); };
+  normBtn.onclick = function() { setDiff('normal'); };
 
   // --- RETRO AUDIO ---
-  let audioCtx = null;
+  var audioCtx = null;
   function initAudio() {
     try {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (AC && !audioCtx) audioCtx = new AC();
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
     } catch (e) {}
   }
-  function beep(freq1, freq2, dur, type = 'square', vol = 0.14) {
+  function tone(f1, f2, dur, type, vol) {
     if (!audioCtx) return;
+    type = type || 'square';
+    vol = vol || 0.14;
     try {
-      const now = audioCtx.currentTime;
-      const osc = audioCtx.createOscillator();
-      const g = audioCtx.createGain();
+      var now = audioCtx.currentTime;
+      var osc = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
       osc.type = type;
-      osc.frequency.setValueAtTime(freq1, now);
-      if (freq2) osc.frequency.exponentialRampToValueAtTime(freq2, now + dur);
+      osc.frequency.setValueAtTime(f1, now);
+      if (f2) osc.frequency.exponentialRampToValueAtTime(f2, now + dur);
       g.gain.setValueAtTime(vol, now);
       g.gain.exponentialRampToValueAtTime(0.005, now + dur);
       osc.connect(g); g.connect(audioCtx.destination);
@@ -193,632 +266,503 @@
     } catch (e) {}
   }
 
-  // --- 3 LEVELS (10 rows x 68 cols) ---
-  // # = ground, B = brick, ? = Doge Bone block, P = PAPETO gold block, T = pipe, L = lava
-  const LEVELS = [
-    {
-      name: '1-1 DOGE MEADOWS',
-      sky: '#38bdf8',
-      groundTop: '#22c55e',
-      groundBody: '#92400e',
-      rows: [
-        '                                                                    ',
-        '                                                                    ',
-        '              ?   P                                                 ',
-        '                                    B?B                P?P          ',
-        '         B?B                                                        ',
-        '                      TT                      TT                    ',
-        '                      TT       B?B            TT                    ',
-        '                      TT                      TT               F    ',
-        '################################  ##################################',
-        '################################  ##################################'
-      ],
-      coins: [[10,3],[11,3],[15,1],[25,3],[26,3],[37,2],[38,2],[47,3],[56,2],[57,2]],
-      enemies: [
-        { type: 'fud', x: 16, y: 7 },
-        { type: 'fud', x: 28, y: 7 },
-        { type: 'fud', x: 41, y: 7 },
-        { type: 'fud', x: 52, y: 7 }
-      ],
-      boss: null
-    },
-    {
-      name: '1-2 CRYPTO CAVERNS',
-      sky: '#0f172a',
-      groundTop: '#38bdf8',
-      groundBody: '#1e293b',
-      rows: [
-        '                                                                    ',
-        '                                                                    ',
-        '                  P?P                          ?                    ',
-        '                                     B?B                            ',
-        '          B?B             BB                     PBP                ',
-        '                                           TT                       ',
-        '                   TT                      TT                       ',
-        '                   TT                      TT                  F    ',
-        '###############  ##############  ################  #################',
-        '###############  ##############  ################  #################'
-      ],
-      coins: [[11,3],[19,1],[20,1],[27,3],[38,2],[39,2],[50,3],[51,3],[58,5]],
-      enemies: [
-        { type: 'fud', x: 12, y: 7 },
-        { type: 'paper', x: 23, y: 7 },
-        { type: 'fud', x: 37, y: 7 },
-        { type: 'paper', x: 46, y: 7 },
-        { type: 'fud', x: 56, y: 7 }
-      ],
-      boss: null
-    },
-    {
-      name: '1-3 MOON CASTLE',
-      sky: '#18181b',
-      groundTop: '#eab308',
-      groundBody: '#3f3f46',
-      rows: [
-        '                                                                    ',
-        '                                                                    ',
-        '              ?                           P?P                       ',
-        '                        B?B                                         ',
-        '       PBP                                        B?B               ',
-        '                 TT                                                 ',
-        '                 TT           B?B                                   ',
-        '                 TT                                            F    ',
-        '##############LLLLL#################################################',
-        '##############LLLLL#################################################'
-      ],
-      coins: [[8,3],[14,1],[25,2],[26,2],[31,5],[32,5],[42,3],[43,3]],
-      enemies: [
-        { type: 'paper', x: 11, y: 7 },
-        { type: 'fud', x: 24, y: 7 },
-        { type: 'paper', x: 36, y: 7 }
-      ],
-      boss: { x: 54, y: 5.5, hp: 8, maxHp: 8 }
-    }
+  var THEMES = [
+    { name: '1-1 DOGE MEADOWS', sky1: '#1d4ed8', sky2: '#60a5fa', ground: '#15803d', dirt: '#78350f' },
+    { name: '1-2 SUNSET HILLS', sky1: '#7c2d12', sky2: '#f97316', ground: '#ca8a04', dirt: '#451a03' },
+    { name: '1-3 MOON CAVERN', sky1: '#09090b', sky2: '#1e1b4b', ground: '#6366f1', dirt: '#1e1b4b' },
+    { name: '1-4 EMERALD VALLEY', sky1: '#064e3b', sky2: '#10b981', ground: '#047857', dirt: '#3f2e21' },
+    { name: '1-5 GOLD MINES', sky1: '#422006', sky2: '#eab308', ground: '#a16207', dirt: '#451a03' },
+    { name: '1-6 CYBER SKYWAY', sky1: '#0c4a6e', sky2: '#38bdf8', ground: '#0284c7', dirt: '#1e293b' },
+    { name: '1-7 LAVA RIDGE', sky1: '#450a0a', sky2: '#dc2626', ground: '#991b1b', dirt: '#18181b' },
+    { name: '1-8 STARLIGHT BRIDGE', sky1: '#1e1b4b', sky2: '#4338ca', ground: '#eab308', dirt: '#312e81' },
+    { name: '1-9 CITADEL APPROACH', sky1: '#18181b', sky2: '#52525b', ground: '#dc2626', dirt: '#27272a' },
+    { name: '1-10 MEGA FUD CASTLE!', sky1: '#18181b', sky2: '#7f1d1d', ground: '#b91c1c', dirt: '#09090b' }
   ];
 
-  let lvlIdx = 0, mode = 'title', keys = {}, justPressed = {};
-  let grid = [], coins = [], enemies = [], shots = [], popups = [], boss = null;
-  let player, camX = 0, coolTimer = 0, shootCD = 0, lastTime = 0;
+  // Tiles: 0=Air, 1=Ground, 2=Brick, 3=?Block, 4=Used, 5=PipeTop, 6=PipeBody, 9=FlagPole
+  function generateWorld(wIdx) {
+    var isBossWorld = (wIdx === 9);
+    var cols = isBossWorld ? 46 : (52 + wIdx * 2);
+    var rows = 13;
+    var grid = [];
+    for (var r = 0; r < rows; r++) {
+      var row = [];
+      for (var c = 0; c < cols; c++) row.push(r >= 11 ? 1 : 0);
+      grid.push(row);
+    }
 
-  function loadLevel(idx, keepStats = false) {
+    var enemies = [];
+    var coins = [];
+
+    if (isBossWorld) {
+      // Flat castle bridges + Mega FUD King Boss Arena at the end!
+      grid[11][12] = 0; grid[12][12] = 0;
+      grid[11][22] = 0; grid[12][22] = 0;
+      // Arena Platforms
+      for (var p = 28; p <= 32; p++) grid[7][p] = 2;
+      for (var p2 = 36; p2 <= 40; p2++) grid[7][p2] = 2;
+      grid[8][8] = 3; grid[8][16] = 3; grid[8][25] = 3;
+      coins.push({ x: 8 * TILE + 8, y: 6 * TILE, got: false });
+      coins.push({ x: 16 * TILE + 8, y: 6 * TILE, got: false });
+      coins.push({ x: 25 * TILE + 8, y: 6 * TILE, got: false });
+
+      enemies.push({ x: 10 * TILE, y: 10 * TILE, vx: -0.7, alive: true, boss: false });
+      enemies.push({ x: 19 * TILE, y: 10 * TILE, vx: -0.8, alive: true, boss: false });
+
+      var bHp = (difficulty === 'easy') ? 5 : 8;
+      enemies.push({
+        x: 35 * TILE, y: 8 * TILE, vx: -1.1,
+        alive: true, boss: true, hp: bHp, maxHp: bHp, hurt: 0
+      });
+
+      // Flag at col 43
+      for (var fr = 4; fr <= 10; fr++) grid[fr][43] = 9;
+    } else {
+      var cPos = 9;
+      while (cPos < cols - 8) {
+        var pat = (cPos + wIdx) % 4;
+        if (pat === 0) {
+          // Question & Brick cluster
+          grid[7][cPos] = 2; grid[7][cPos + 1] = 3; grid[7][cPos + 2] = 2;
+          coins.push({ x: (cPos + 1) * TILE + 8, y: 5 * TILE, got: false });
+          enemies.push({ x: (cPos + 1) * TILE, y: 10 * TILE, vx: -0.65 - wIdx * 0.04, alive: true, boss: false });
+          cPos += 6;
+        } else if (pat === 1) {
+          // Green Warp Pipe
+          grid[9][cPos] = 5; grid[9][cPos + 1] = 5;
+          grid[10][cPos] = 6; grid[10][cPos + 1] = 6;
+          coins.push({ x: cPos * TILE + 8, y: 7 * TILE, got: false });
+          enemies.push({ x: (cPos + 3) * TILE, y: 10 * TILE, vx: -0.7, alive: true, boss: false });
+          cPos += 6;
+        } else if (pat === 2) {
+          // Safe Pit Jump (2 tiles wide) + High Gold Coins
+          grid[11][cPos] = 0; grid[12][cPos] = 0;
+          if (difficulty !== 'easy') { grid[11][cPos + 1] = 0; grid[12][cPos + 1] = 0; }
+          coins.push({ x: cPos * TILE + 8, y: 8 * TILE, got: false });
+          coins.push({ x: (cPos + 1) * TILE + 8, y: 8 * TILE, got: false });
+          cPos += 5;
+        } else {
+          // Elevated Stepping Blocks
+          grid[8][cPos] = 2; grid[8][cPos + 1] = 2;
+          grid[5][cPos + 2] = 3;
+          coins.push({ x: (cPos + 2) * TILE + 8, y: 3 * TILE, got: false });
+          enemies.push({ x: (cPos + 2) * TILE, y: 10 * TILE, vx: -0.75, alive: true, boss: false });
+          cPos += 6;
+        }
+      }
+      var flagCol = cols - 4;
+      for (var fr2 = 4; fr2 <= 10; fr2++) grid[fr2][flagCol] = 9;
+    }
+
+    return { grid: grid, enemies: enemies, coins: coins, cols: cols, rows: rows };
+  }
+
+  var lvlIdx = 0, mode = 'title', keys = {};
+  var world = null, camX = 0, score = 0, coinCount = 0, lives = 9, coolTimer = 0;
+  var player = { x: 28, y: 140, vx: 0, vy: 0, w: 12, h: 14, onGround: false, facing: 1, inv: 0 };
+
+  function updateContinueUI() {
+    if (savedWorld > 0) {
+      contBtn.style.display = 'inline-block';
+      contBtn.textContent = 'CONTINUE (WORLD 1-' + (savedWorld + 1) + ')';
+    } else {
+      contBtn.style.display = 'none';
+    }
+  }
+  updateContinueUI();
+
+  function loadLevel(idx, keepScore) {
     lvlIdx = idx;
-    const L = LEVELS[idx];
-    grid = L.rows.map(r => r.split(''));
-    coins = L.coins.map(([cx, cy]) => ({ x: cx * TILE + 4, y: cy * TILE + 4, got: false }));
-    enemies = L.enemies.map(e => ({
-      type: e.type, x: e.x * TILE, y: e.y * TILE, vx: -0.55, alive: true, hurt: 0
-    }));
-    boss = L.boss ? {
-      x: L.boss.x * TILE, y: L.boss.y * TILE, vx: -0.7, vy: 0,
-      hp: L.boss.hp, maxHp: L.boss.maxHp, alive: true, hurt: 0, jumpCD: 1.5
-    } : null;
-    shots = [];
-    popups = [];
-    const prevHp = keepStats ? Math.min(5, player.hp + 1) : 5;
-    const prevCoins = keepStats ? player.coins : 0;
-    const prevScore = keepStats ? player.score : 0;
-    player = {
-      x: 2 * TILE, y: 6 * TILE, vx: 0, vy: 0,
-      w: 12, h: 14, dir: 1, onGround: false, coyote: 0,
-      hp: prevHp, maxHp: 5, coins: prevCoins, score: prevScore,
-      invuln: 0, safeX: 2 * TILE, safeY: 6 * TILE
-    };
+    if (idx > savedWorld) {
+      savedWorld = idx;
+      try { localStorage.setItem('papeto_mario_world', String(savedWorld)); } catch (e) {}
+    }
+    world = generateWorld(idx);
+    player.x = 28;
+    player.y = 140;
+    player.vx = 0;
+    player.vy = 0;
+    player.inv = 1.0;
     camX = 0;
-    shootCD = 0;
-  }
-
-  function addPopup(x, y, text, color = '#facc15') {
-    popups.push({ x, y, text, color, life: 0.9 });
-  }
-
-  function isSolid(tx, ty) {
-    if (ty < 0) return false;
-    if (ty >= grid.length || tx < 0 || tx >= grid[0].length) return ty >= grid.length ? false : true;
-    const ch = grid[ty][tx];
-    return ch === '#' || ch === 'B' || ch === '?' || ch === 'P' || ch === 'T' || ch === 'U';
-  }
-
-  function hitBlock(tx, ty) {
-    const ch = grid[ty]?.[tx];
-    if (!ch) return;
-    if (ch === '?') {
-      grid[ty][tx] = 'U';
-      player.hp = Math.min(player.maxHp, player.hp + 1);
-      player.score += 200;
-      coolTimer = 45;
-      addPopup(tx * TILE, ty * TILE - 6, '+1 BONE HP!', '#4ade80');
-      beep(520, 880, 0.16, 'triangle');
-    } else if (ch === 'P') {
-      grid[ty][tx] = 'U';
-      player.coins += 3;
-      player.score += 500;
-      coolTimer = 45;
-      addPopup(tx * TILE - 6, ty * TILE - 6, 'PAPETO +500!', '#facc15');
-      beep(660, 990, 0.18, 'triangle');
-    } else if (ch === 'B') {
-      player.score += 50;
-      beep(220, 140, 0.08);
+    if (!keepScore) {
+      score = 0;
+      coinCount = 0;
+      lives = (difficulty === 'easy') ? 9 : 3;
     }
   }
 
-  function shootDogeCoin() {
-    if (mode !== 'play' || shootCD > 0) return;
-    shootCD = 0.25;
-    shots.push({
-      x: player.x + (player.dir > 0 ? 12 : -4),
-      y: player.y + 5,
-      vx: player.dir * 3.6,
-      life: 1.4
-    });
-    beep(480, 260, 0.09, 'square', 0.1);
+  function tileAt(px, py) {
+    var c = Math.floor(px / TILE), r = Math.floor(py / TILE);
+    if (r < 0 || r >= world.rows || c < 0 || c >= world.cols) return 0;
+    return world.grid[r][c];
   }
+  function isSolid(t) { return t === 1 || t === 2 || t === 3 || t === 4 || t === 5 || t === 6; }
 
-  function hurtPlayer(respawnSafe = false) {
-    if (player.invuln > 0) return;
-    player.hp--;
-    player.invuln = 1.4;
-    beep(180, 65, 0.22, 'sawtooth');
-    if (player.hp <= 0) {
-      mode = 'gameover';
-      ovTitle.textContent = 'GAME OVER';
-      ovTitle.style.color = '#ef4444';
-      ovSub.innerHTML = `FINAL SCORE: ${player.score} &bull; COINS: ${player.coins} Ð<br>TRY AGAIN, PAPETO!`;
-      startBtn.textContent = 'RETRY';
-      overlay.style.display = 'flex';
-      return;
-    }
-    if (respawnSafe) {
-      player.x = player.safeX;
-      player.y = player.safeY;
-      player.vx = 0;
-      player.vy = 0;
-      addPopup(player.x, player.y - 8, 'SAFE RESPAWN!', '#38bdf8');
-    }
-  }
-
-  // --- INPUTS ---
-  window.addEventListener('keydown', e => {
-    if (!keys[e.code]) justPressed[e.code] = true;
-    keys[e.code] = true;
-    if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) e.preventDefault();
-    if (e.code === 'KeyX' || e.code === 'KeyZ' || e.code === 'ShiftLeft') shootDogeCoin();
-  });
-  window.addEventListener('keyup', e => { keys[e.code] = false; });
-  canvas.addEventListener('mousedown', () => { initAudio(); shootDogeCoin(); });
-
-  document.querySelectorAll('.tbtn').forEach(btn => {
-    const code = btn.dataset.key;
-    const down = e => {
-      e.preventDefault();
-      initAudio();
-      if (!keys[code]) justPressed[code] = true;
-      keys[code] = true;
-      if (code === 'KeyX') shootDogeCoin();
-    };
-    const up = e => { e.preventDefault(); keys[code] = false; };
-    btn.addEventListener('touchstart', down, { passive: false });
-    btn.addEventListener('touchend', up, { passive: false });
-    btn.addEventListener('mousedown', down);
-    btn.addEventListener('mouseup', up);
-    btn.addEventListener('mouseleave', up);
-  });
-
-  startBtn.addEventListener('click', () => {
+  function launchWorld(wIndex, keepScore) {
     initAudio();
     overlay.style.display = 'none';
-    if (mode === 'nextlevel') {
-      loadLevel(lvlIdx + 1, true);
-    } else {
-      loadLevel(0, false);
-    }
+    loadLevel(wIndex, keepScore);
     mode = 'play';
     lastTime = performance.now();
     requestAnimationFrame(loop);
+  }
+
+  startBtn.onclick = function() {
+    if (mode === 'nextlevel') launchWorld(lvlIdx + 1, true);
+    else if (mode === 'gameover') launchWorld(lvlIdx, false);
+    else launchWorld(0, false);
+  };
+  contBtn.onclick = function() {
+    launchWorld(savedWorld, false);
+  };
+
+  // --- INPUTS ---
+  window.addEventListener('keydown', function(e) {
+    keys[e.code] = true;
+    if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.code) !== -1) e.preventDefault();
   });
+  window.addEventListener('keyup', function(e) { keys[e.code] = false; });
+
+  var tbtns = document.querySelectorAll('.tbtn');
+  for (var b = 0; b < tbtns.length; b++) {
+    (function(btn) {
+      var code = btn.getAttribute('data-key');
+      function down(e) { e.preventDefault(); initAudio(); keys[code] = true; }
+      function up(e) { e.preventDefault(); keys[code] = false; }
+      btn.addEventListener('touchstart', down, { passive: false });
+      btn.addEventListener('touchend', up, { passive: false });
+      btn.addEventListener('mousedown', down);
+      btn.addEventListener('mouseup', up);
+      btn.addEventListener('mouseleave', up);
+    })(tbtns[b]);
+  }
+
+  var jumpBtn = document.getElementById('btn-jump');
+  jumpBtn.addEventListener('touchstart', function(e) { e.preventDefault(); initAudio(); keys['Space'] = true; }, { passive: false });
+  jumpBtn.addEventListener('touchend', function(e) { e.preventDefault(); keys['Space'] = false; }, { passive: false });
+  jumpBtn.addEventListener('mousedown', function(e) { e.preventDefault(); initAudio(); keys['Space'] = true; });
+  jumpBtn.addEventListener('mouseup', function() { keys['Space'] = false; });
+
+  function loseLife() {
+    tone(220, 70, 0.35, 'sawtooth');
+    lives--;
+    if (lives <= 0) {
+      mode = 'gameover';
+      ovTitle.textContent = 'GAME OVER!';
+      ovTitle.style.color = '#ef4444';
+      ovSub.innerHTML = 'FALLEN IN WORLD 1-' + (lvlIdx + 1) + ' &bull; SCORE: ' + score + '<br>CONTINUE DIRECTLY FROM WORLD 1-' + (lvlIdx + 1) + '!';
+      startBtn.textContent = 'CONTINUE WORLD 1-' + (lvlIdx + 1);
+      updateContinueUI();
+      overlay.style.display = 'flex';
+    } else {
+      player.x = 28;
+      player.y = 140;
+      player.vx = 0;
+      player.vy = 0;
+      player.inv = 1.6;
+      camX = 0;
+    }
+  }
 
   // --- UPDATE ---
   function update(dt) {
+    if (player.inv > 0) player.inv -= dt;
     if (coolTimer > 0) coolTimer--;
-    if (shootCD > 0) shootCD -= dt;
-    if (player.invuln > 0) player.invuln -= dt;
 
-    // Horizontal move
-    let move = 0;
-    if (keys['ArrowLeft'] || keys['KeyA']) move -= 1;
-    if (keys['ArrowRight'] || keys['KeyD']) move += 1;
-    if (move !== 0) player.dir = move;
-    player.vx = move * 1.75;
+    var moveAcc = 2.4;
+    if (keys['ArrowLeft'] || keys['KeyA']) { player.vx = -moveAcc; player.facing = -1; }
+    else if (keys['ArrowRight'] || keys['KeyD']) { player.vx = moveAcc; player.facing = 1; }
+    else { player.vx *= 0.72; if (Math.abs(player.vx) < 0.08) player.vx = 0; }
 
-    // Jump with Coyote Time (Easy Mode)
-    if (player.onGround) player.coyote = 0.14;
-    else player.coyote -= dt;
-
-    const jumpTrig = justPressed['Space'] || justPressed['ArrowUp'] || justPressed['KeyW'];
-    if (jumpTrig && player.coyote > 0) {
-      player.vy = -4.35;
+    if ((keys['Space'] || keys['ArrowUp'] || keys['KeyW']) && player.onGround) {
+      player.vy = -5.7;
       player.onGround = false;
-      player.coyote = 0;
-      beep(260, 540, 0.13, 'square', 0.11);
+      tone(320, 640, 0.14, 'square');
     }
-    justPressed = {};
 
-    // Gravity
-    player.vy = Math.min(4.8, player.vy + 11.5 * dt);
+    player.vy = Math.min(7.5, player.vy + 0.28);
 
-    // Move X & Collide
+    // Horizontal Move
     player.x += player.vx;
-    if (player.x < 0) player.x = 0;
-    let leftT = Math.floor(player.x / TILE);
-    let rightT = Math.floor((player.x + player.w - 1) / TILE);
-    let topT = Math.floor(player.y / TILE);
-    let botT = Math.floor((player.y + player.h - 1) / TILE);
-
-    if (player.vx > 0 && (isSolid(rightT, topT) || isSolid(rightT, botT))) {
-      player.x = rightT * TILE - player.w;
-    } else if (player.vx < 0 && (isSolid(leftT, topT) || isSolid(leftT, botT))) {
-      player.x = (leftT + 1) * TILE;
+    if (player.x < 4) player.x = 4;
+    if (player.vx > 0) {
+      if (isSolid(tileAt(player.x + player.w, player.y + 2)) || isSolid(tileAt(player.x + player.w, player.y + player.h - 2))) {
+        player.x = Math.floor((player.x + player.w) / TILE) * TILE - player.w - 0.1;
+      }
+    } else if (player.vx < 0) {
+      if (isSolid(tileAt(player.x, player.y + 2)) || isSolid(tileAt(player.x, player.y + player.h - 2))) {
+        player.x = (Math.floor(player.x / TILE) + 1) * TILE + 0.1;
+      }
     }
 
-    // Move Y & Collide
+    // Vertical Move
     player.y += player.vy;
     player.onGround = false;
-    leftT = Math.floor((player.x + 2) / TILE);
-    rightT = Math.floor((player.x + player.w - 3) / TILE);
-    topT = Math.floor(player.y / TILE);
-    botT = Math.floor((player.y + player.h - 1) / TILE);
-
-    if (player.vy > 0 && (isSolid(leftT, botT) || isSolid(rightT, botT))) {
-      player.y = botT * TILE - player.h;
-      player.vy = 0;
-      player.onGround = true;
-      // Record safe ground position
-      if (grid[botT]?.[leftT] === '#' && grid[botT]?.[rightT] === '#') {
-        player.safeX = player.x;
-        player.safeY = player.y;
+    if (player.vy > 0) {
+      if (isSolid(tileAt(player.x + 2, player.y + player.h)) || isSolid(tileAt(player.x + player.w - 2, player.y + player.h))) {
+        player.y = Math.floor((player.y + player.h) / TILE) * TILE - player.h;
+        player.vy = 0;
+        player.onGround = true;
       }
-    } else if (player.vy < 0 && (isSolid(leftT, topT) || isSolid(rightT, topT))) {
-      player.y = (topT + 1) * TILE;
-      player.vy = 0;
-      if (isSolid(leftT, topT)) hitBlock(leftT, topT);
-      else hitBlock(rightT, topT);
-    }
-
-    // Check Lava or Pit Fall (Easy Mode safe respawn)
-    const footTile = grid[Math.floor((player.y + player.h) / TILE)]?.[Math.floor((player.x + 6) / TILE)];
-    if (footTile === 'L' || player.y > VIEW_H + 10) {
-      hurtPlayer(true);
-      if (mode !== 'play') return;
-    }
-
-    // Coins
-    for (const c of coins) {
-      if (!c.got && Math.abs(player.x - c.x) < 12 && Math.abs(player.y - c.y) < 14) {
-        c.got = true;
-        player.coins++;
-        player.score += 100;
-        beep(740, 1050, 0.09, 'triangle', 0.11);
-      }
-    }
-
-    // Ð-Shots
-    for (const s of shots) {
-      s.x += s.vx;
-      s.life -= dt;
-      const stx = Math.floor((s.x + 3) / TILE);
-      const sty = Math.floor((s.y + 3) / TILE);
-      if (isSolid(stx, sty)) s.life = 0;
-    }
-    shots = shots.filter(s => s.life > 0);
-
-    // Enemies
-    for (const e of enemies) {
-      if (!e.alive) continue;
-      if (e.hurt > 0) e.hurt--;
-      e.x += e.vx;
-      const checkX = e.vx < 0 ? Math.floor(e.x / TILE) : Math.floor((e.x + 13) / TILE);
-      const bodyY = Math.floor((e.y + 8) / TILE);
-      const floorY = Math.floor((e.y + 17) / TILE);
-      if (isSolid(checkX, bodyY) || !isSolid(checkX, floorY)) e.vx *= -1;
-
-      // Shot hit enemy
-      for (const s of shots) {
-        if (Math.abs(s.x - e.x) < 13 && Math.abs(s.y - e.y) < 13) {
-          s.life = 0;
-          e.alive = false;
-          player.score += 150;
-          coolTimer = 30;
-          addPopup(e.x, e.y - 6, 'MUCH WOW! +150');
-          beep(320, 120, 0.12);
-        }
-      }
-
-      // Player vs Enemy
-      if (e.alive && Math.abs(player.x - e.x) < 11 && Math.abs(player.y - e.y) < 12) {
-        if (player.vy > 0 && player.y + player.h < e.y + 10) {
-          e.alive = false;
-          player.vy = -3.3;
-          player.score += 150;
-          coolTimer = 30;
-          addPopup(e.x, e.y - 6, 'BONK! +150');
-          beep(360, 150, 0.12);
-        } else {
-          hurtPlayer(false);
-        }
-      }
-    }
-
-    // Boss (Level 3)
-    if (boss && boss.alive) {
-      if (boss.hurt > 0) boss.hurt--;
-      boss.x += boss.vx;
-      if (boss.x < 48 * TILE) { boss.x = 48 * TILE; boss.vx = Math.abs(boss.vx); }
-      if (boss.x > 60 * TILE) { boss.x = 60 * TILE; boss.vx = -Math.abs(boss.vx); }
-
-      boss.jumpCD -= dt;
-      if (boss.jumpCD <= 0 && boss.y >= 5.5 * TILE - 1) {
-        boss.vy = -3.6;
-        boss.jumpCD = 2.0;
-      }
-      boss.vy += 9.5 * dt;
-      boss.y += boss.vy;
-      if (boss.y > 5.5 * TILE) { boss.y = 5.5 * TILE; boss.vy = 0; }
-
-      // Shot hit boss
-      for (const s of shots) {
-        if (s.x > boss.x - 4 && s.x < boss.x + 28 && s.y > boss.y - 4 && s.y < boss.y + 38) {
-          s.life = 0;
-          boss.hp--;
-          boss.hurt = 8;
-          beep(220, 95, 0.12);
-          if (boss.hp <= 0) {
-            boss.alive = false;
-            player.score += 1500;
-            coolTimer = 60;
-            addPopup(boss.x, boss.y - 10, 'MEGA FUD DEFEATED!', '#4ade80');
-            beep(440, 880, 0.35, 'triangle');
+    } else if (player.vy < 0) {
+      var headCols = [Math.floor((player.x + 2) / TILE), Math.floor((player.x + player.w - 2) / TILE)];
+      var headRow = Math.floor(player.y / TILE);
+      var hitHead = false;
+      for (var hc = 0; hc < headCols.length; hc++) {
+        var col = headCols[hc];
+        var t = world.grid[headRow] ? world.grid[headRow][col] : 0;
+        if (isSolid(t)) {
+          hitHead = true;
+          if (t === 3) {
+            world.grid[headRow][col] = 4;
+            coinCount++;
+            score += 200;
+            coolTimer = 35;
+            tone(880, 1320, 0.14, 'triangle');
           }
         }
       }
-
-      // Player vs Boss
-      if (boss.alive && player.x + 10 > boss.x && player.x < boss.x + 24 && player.y + 12 > boss.y && player.y < boss.y + 36) {
-        if (player.vy > 0 && player.y + player.h < boss.y + 16) {
-          boss.hp -= 2;
-          boss.hurt = 10;
-          player.vy = -3.8;
-          beep(260, 110, 0.14);
-          if (boss.hp <= 0) {
-            boss.alive = false;
-            player.score += 1500;
-            coolTimer = 60;
-            addPopup(boss.x, boss.y - 10, 'MEGA FUD DEFEATED!', '#4ade80');
-          }
-        } else {
-          hurtPlayer(false);
-        }
+      if (hitHead) {
+        player.y = (headRow + 1) * TILE + 0.1;
+        player.vy = 0;
       }
     }
 
-    // Flag Goal Check (Col 63)
-    if (player.x >= 62.5 * TILE) {
-      if (boss && boss.alive) {
-        player.x = 62.4 * TILE;
-        addPopup(player.x - 24, player.y - 12, 'DEFEAT BOSS FIRST!', '#f87171');
-      } else {
-        player.score += 500;
-        beep(523, 1046, 0.3, 'triangle');
-        if (lvlIdx < LEVELS.length - 1) {
-          mode = 'nextlevel';
-          ovTitle.textContent = `WORLD 1-${lvlIdx + 1} CLEAR!`;
-          ovTitle.style.color = '#4ade80';
-          ovSub.innerHTML = `+1 HEART RESTORED! SCORE: ${player.score}<br>NEXT: ${LEVELS[lvlIdx + 1].name}`;
-          startBtn.textContent = 'NEXT WORLD';
-          overlay.style.display = 'flex';
-        } else {
-          mode = 'win';
-          ovTitle.textContent = 'TO THE MOON!';
-          ovTitle.style.color = '#facc15';
-          ovSub.innerHTML = `ALL 3 WORLDS + MEGA FUD KING CLEARED!<br>FINAL SCORE: ${player.score} &bull; CARD BY PAPETO`;
-          startBtn.textContent = 'PLAY AGAIN';
-          overlay.style.display = 'flex';
-        }
-        return;
-      }
-    }
-
-    // Popups
-    for (const p of popups) { p.y -= 14 * dt; p.life -= dt; }
-    popups = popups.filter(p => p.life > 0);
+    if (player.y > H + 16) { loseLife(); return; }
 
     // Camera Follow
-    const maxCam = grid[0].length * TILE - W;
+    var maxCam = world.cols * TILE - W;
     camX = Math.max(0, Math.min(maxCam, player.x - W * 0.35));
+
+    // Coins
+    for (var i = 0; i < world.coins.length; i++) {
+      var c = world.coins[i];
+      if (!c.got && Math.hypot(player.x + 6 - c.x, player.y + 7 - c.y) < 13) {
+        c.got = true;
+        coinCount++;
+        score += 100;
+        tone(987, 1318, 0.12, 'triangle');
+      }
+    }
+
+    // Enemies & Mega FUD King Boss
+    var bossAlive = false;
+    for (var j = 0; j < world.enemies.length; j++) {
+      var e = world.enemies[j];
+      if (!e.alive) continue;
+      if (e.boss) bossAlive = true;
+      if (e.hurt > 0) e.hurt -= dt;
+
+      var ew = e.boss ? 28 : 14;
+      var eh = e.boss ? 28 : 14;
+      var speedScale = (difficulty === 'easy') ? 0.72 : 1.0;
+
+      e.x += e.vx * speedScale;
+      if (e.boss) {
+        if (e.x < 28 * TILE) { e.x = 28 * TILE; e.vx = Math.abs(e.vx); }
+        if (e.x > 40 * TILE) { e.x = 40 * TILE; e.vx = -Math.abs(e.vx); }
+      } else {
+        var frontX = e.vx < 0 ? e.x - 1 : e.x + ew + 1;
+        if (isSolid(tileAt(frontX, e.y + 6)) || !isSolid(tileAt(frontX, e.y + eh + 3))) {
+          e.vx = -e.vx;
+        }
+      }
+
+      if (player.x < e.x + ew - 2 && player.x + player.w > e.x + 2 &&
+          player.y < e.y + eh - 2 && player.y + player.h > e.y + 2) {
+        if (player.vy > 0 && player.y + player.h - player.vy <= e.y + (e.boss ? 12 : 8)) {
+          player.vy = -5.0;
+          coolTimer = 45;
+          if (e.boss) {
+            e.hp--;
+            e.hurt = 0.25;
+            tone(260, 520, 0.16, 'square');
+            if (e.hp <= 0) {
+              e.alive = false;
+              score += 5000;
+              tone(523, 1046, 0.35, 'triangle');
+            }
+          } else {
+            e.alive = false;
+            score += 250;
+            tone(260, 520, 0.16, 'square');
+          }
+        } else if (player.inv <= 0) {
+          loseLife();
+          return;
+        }
+      }
+    }
+
+    // Flagpole Win Check
+    var pCenterTile = tileAt(player.x + player.w / 2, player.y + player.h / 2);
+    if (pCenterTile === 9) {
+      if (bossAlive) {
+        player.vx = -2.0; // Bounce back until Mega FUD King is stomped!
+        return;
+      }
+      score += 500;
+      tone(523, 1046, 0.35, 'triangle');
+      if (lvlIdx < 9) {
+        mode = 'nextlevel';
+        savedWorld = Math.max(savedWorld, lvlIdx + 1);
+        try { localStorage.setItem('papeto_mario_world', String(savedWorld)); } catch (e) {}
+        ovTitle.textContent = 'WORLD 1-' + (lvlIdx + 1) + ' CLEARED!';
+        ovTitle.style.color = '#4ade80';
+        ovSub.innerHTML = 'SCORE: ' + score + ' &bull; COINS: ' + coinCount + '<br>NEXT: ' + THEMES[lvlIdx + 1].name;
+        startBtn.textContent = 'NEXT WORLD 1-' + (lvlIdx + 2);
+        contBtn.style.display = 'none';
+        overlay.style.display = 'flex';
+      } else {
+        mode = 'win';
+        ovTitle.textContent = 'ALL 10 WORLDS CLEARED!';
+        ovTitle.style.color = '#facc15';
+        ovSub.innerHTML = 'MEGA FUD KING DEFEATED!<br>FINAL SCORE: ' + score + ' &bull; BY PAPETO';
+        startBtn.textContent = 'PLAY AGAIN';
+        contBtn.style.display = 'none';
+        overlay.style.display = 'flex';
+      }
+    }
   }
 
   // --- RENDER ---
   function render() {
-    const L = LEVELS[lvlIdx];
-    ctx.fillStyle = L.sky;
-    ctx.fillRect(0, 0, W, VIEW_H);
+    var th = THEMES[lvlIdx];
+    var sky = ctx.createLinearGradient(0, 0, 0, H);
+    sky.addColorStop(0, th.sky1);
+    sky.addColorStop(1, th.sky2);
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, W, H);
 
-    // Parallax Hills / Stars
-    if (lvlIdx === 0) {
-      ctx.fillStyle = '#16a34a';
-      for (let i = 0; i < 10; i++) {
-        const hx = ((i * 130 - camX * 0.35) % 1300 + 1300) % 1300 - 80;
-        ctx.beginPath(); ctx.arc(hx, VIEW_H - 30, 42, Math.PI, 0); ctx.fill();
-      }
-    } else {
-      ctx.fillStyle = '#fef08a';
-      for (let i = 0; i < 24; i++) {
-        const sx = ((i * 53 - camX * 0.2) % W + W) % W;
-        const sy = (i * 29) % 105;
-        ctx.fillRect(sx, sy, 2, 2);
-      }
+    // Parallax Clouds & PAPETO Banner
+    ctx.fillStyle = 'rgba(255,255,255,0.22)';
+    for (var i = 0; i < 6; i++) {
+      var cx = ((i * 110 - camX * 0.25) % (W + 80) + (W + 80)) % (W + 80) - 40;
+      ctx.fillRect(cx, 24 + (i % 2) * 14, 34, 10);
+      ctx.fillRect(cx + 6, 19 + (i % 2) * 14, 22, 6);
     }
 
     ctx.save();
     ctx.translate(-Math.floor(camX), 0);
 
-    // Draw Tiles
-    const startCol = Math.max(0, Math.floor(camX / TILE));
-    const endCol = Math.min(grid[0].length - 1, Math.ceil((camX + W) / TILE));
+    var startCol = Math.max(0, Math.floor(camX / TILE));
+    var endCol = Math.min(world.cols - 1, Math.ceil((camX + W) / TILE));
 
-    for (let r = 0; r < grid.length; r++) {
-      for (let c = startCol; c <= endCol; c++) {
-        const ch = grid[r][c];
-        const x = c * TILE, y = r * TILE;
-        if (ch === '#') {
-          ctx.fillStyle = r === 8 ? L.groundTop : L.groundBody;
-          ctx.fillRect(x, y, TILE, TILE);
-          ctx.fillStyle = 'rgba(0,0,0,0.18)';
-          ctx.fillRect(x, y + TILE - 2, TILE, 2);
-        } else if (ch === 'B') {
+    for (var r = 0; r < world.rows; r++) {
+      for (var c = startCol; c <= endCol; c++) {
+        var t = world.grid[r][c];
+        if (!t) continue;
+        var x = c * TILE, y = r * TILE;
+        if (t === 1) {
+          ctx.fillStyle = th.dirt; ctx.fillRect(x, y, TILE, TILE);
+          if (r === 11) { ctx.fillStyle = th.ground; ctx.fillRect(x, y, TILE, 4); }
+        } else if (t === 2) {
           ctx.fillStyle = '#b45309'; ctx.fillRect(x, y, TILE, TILE);
           ctx.strokeStyle = '#451a03'; ctx.strokeRect(x + 0.5, y + 0.5, TILE - 1, TILE - 1);
-        } else if (ch === '?') {
-          ctx.fillStyle = '#eab308'; ctx.fillRect(x, y, TILE, TILE);
-          ctx.strokeStyle = '#713f12'; ctx.strokeRect(x + 0.5, y + 0.5, TILE - 1, TILE - 1);
-          ctx.fillStyle = '#422006'; ctx.font = 'bold 11px Courier New'; ctx.fillText('?', x + 5, y + 12);
-        } else if (ch === 'P') {
+        } else if (t === 3) {
           ctx.fillStyle = '#facc15'; ctx.fillRect(x, y, TILE, TILE);
-          ctx.strokeStyle = '#991b1b'; ctx.strokeRect(x + 0.5, y + 0.5, TILE - 1, TILE - 1);
-          ctx.fillStyle = '#991b1b'; ctx.font = 'bold 11px Courier New'; ctx.fillText('P', x + 5, y + 12);
-        } else if (ch === 'U') {
+          ctx.strokeStyle = '#713f12'; ctx.strokeRect(x + 0.5, y + 0.5, TILE - 1, TILE - 1);
+          ctx.fillStyle = '#713f12'; ctx.font = 'bold 11px Courier New'; ctx.fillText('Ð', x + 5, y + 12);
+        } else if (t === 4) {
           ctx.fillStyle = '#52525b'; ctx.fillRect(x, y, TILE, TILE);
-          ctx.strokeStyle = '#27272a'; ctx.strokeRect(x + 0.5, y + 0.5, TILE - 1, TILE - 1);
-        } else if (ch === 'T') {
-          ctx.fillStyle = '#15803d'; ctx.fillRect(x, y, TILE, TILE);
-          ctx.fillStyle = '#22c55e'; ctx.fillRect(x + 2, y, 4, TILE);
-        } else if (ch === 'L') {
-          ctx.fillStyle = '#dc2626'; ctx.fillRect(x, y, TILE, TILE);
-          ctx.fillStyle = '#f97316'; ctx.fillRect(x, y, TILE, 4);
-        } else if (ch === 'F') {
-          // Goal Flagpole + Castle
-          ctx.fillStyle = '#e4e4e7'; ctx.fillRect(x + 6, y - 64, 3, 80);
-          ctx.fillStyle = '#eab308'; ctx.fillRect(x + 9, y - 62, 16, 11);
-          ctx.fillStyle = '#09090b'; ctx.font = 'bold 9px Courier New'; ctx.fillText('Ð', x + 13, y - 53);
-          // Mini Castle
-          ctx.fillStyle = '#78350f'; ctx.fillRect(x + 28, y - 24, 34, 40);
-          ctx.fillStyle = '#09090b'; ctx.fillRect(x + 40, y - 4, 10, 20);
-          ctx.fillStyle = '#facc15'; ctx.font = 'bold 7px Courier New'; ctx.fillText('PAPETO', x + 31, y - 14);
+        } else if (t === 5) {
+          ctx.fillStyle = '#16a34a'; ctx.fillRect(x, y, TILE, TILE);
+          ctx.fillStyle = '#4ade80'; ctx.fillRect(x + 2, y + 2, 4, TILE - 4);
+        } else if (t === 6) {
+          ctx.fillStyle = '#15803d'; ctx.fillRect(x + 1, y, TILE - 2, TILE);
+        } else if (t === 9) {
+          ctx.fillStyle = '#fef08a'; ctx.fillRect(x + 7, y, 2, TILE);
+          if (r === 4) {
+            ctx.fillStyle = '#facc15'; ctx.fillRect(x + 9, y + 2, 16, 11);
+            ctx.fillStyle = '#09090b'; ctx.font = 'bold 8px Courier New'; ctx.fillText('Ð', x + 14, y + 10);
+          }
         }
       }
     }
 
-    // Draw Coins
-    for (const c of coins) {
-      if (c.got) continue;
+    // Coins
+    for (var ci = 0; ci < world.coins.length; ci++) {
+      var coin = world.coins[ci];
+      if (coin.got) continue;
       ctx.fillStyle = '#facc15';
-      ctx.beginPath(); ctx.arc(c.x + 4, c.y + 4, 5, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#854d0e'; ctx.font = 'bold 8px Courier New'; ctx.fillText('Ð', c.x + 1.5, c.y + 7);
+      ctx.beginPath(); ctx.arc(coin.x, coin.y, 5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#713f12'; ctx.font = 'bold 7px Courier New'; ctx.fillText('Ð', coin.x - 2, coin.y + 2.5);
     }
 
-    // Draw Ð-Shots
-    for (const s of shots) {
-      ctx.fillStyle = '#fef08a';
-      ctx.beginPath(); ctx.arc(s.x + 3, s.y + 3, 4, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#ca8a04';
-      ctx.beginPath(); ctx.arc(s.x + 3, s.y + 3, 2, 0, Math.PI * 2); ctx.fill();
-    }
-
-    // Draw Enemies
-    for (const e of enemies) {
+    // Enemies & Mega FUD King Boss
+    for (var ei = 0; ei < world.enemies.length; ei++) {
+      var e = world.enemies[ei];
       if (!e.alive) continue;
-      ctx.fillStyle = e.type === 'fud' ? '#b91c1c' : '#e4e4e7';
-      ctx.fillRect(e.x + 1, e.y + 3, 12, 11);
-      // Angry Eyes
-      ctx.fillStyle = '#facc15';
-      ctx.fillRect(e.x + 3, e.y + 6, 2, 2); ctx.fillRect(e.x + 9, e.y + 6, 2, 2);
-      // Feet
+      if (e.boss) {
+        // Mega FUD King (28x28)
+        ctx.fillStyle = e.hurt > 0 ? '#ffffff' : '#991b1b';
+        ctx.fillRect(e.x, e.y + 4, 28, 24);
+        // Gold Crown
+        ctx.fillStyle = '#facc15';
+        ctx.fillRect(e.x + 4, e.y - 2, 20, 6);
+        // Glowing Eyes
+        ctx.fillStyle = '#facc15';
+        ctx.fillRect(e.x + 5, e.y + 9, 5, 4);
+        ctx.fillRect(e.x + 18, e.y + 9, 5, 4);
+        ctx.fillStyle = '#09090b';
+        ctx.fillRect(e.x + 6, e.y + 18, 16, 4);
+      } else {
+        ctx.fillStyle = '#dc2626';
+        ctx.fillRect(e.x, e.y + 2, 14, 12);
+        ctx.fillStyle = '#facc15';
+        ctx.fillRect(e.x + 3, e.y + 5, 2, 2);
+        ctx.fillRect(e.x + 9, e.y + 5, 2, 2);
+      }
+    }
+
+    // Shiba Hero
+    if (!(player.inv > 0 && Math.floor(player.inv * 15) % 2 === 1)) {
+      var px = Math.floor(player.x), py = Math.floor(player.y);
+      ctx.fillStyle = '#dc2626'; ctx.fillRect(px + 2, py, 8, 3);
+      ctx.fillStyle = '#eab308'; ctx.fillRect(px + 1, py + 3, 10, 6);
+      ctx.fillStyle = '#fef9c3'; ctx.fillRect(px + (player.facing === 1 ? 5 : 1), py + 6, 6, 3);
       ctx.fillStyle = '#09090b';
-      ctx.fillRect(e.x + 2, e.y + 14, 4, 2); ctx.fillRect(e.x + 8, e.y + 14, 4, 2);
-    }
-
-    // Draw Mega FUD King Boss
-    if (boss && boss.alive) {
-      ctx.fillStyle = boss.hurt > 0 ? '#ffffff' : '#991b1b';
-      ctx.fillRect(boss.x, boss.y + 6, 28, 32);
-      // Gold Crown
-      ctx.fillStyle = '#facc15';
-      ctx.fillRect(boss.x + 4, boss.y, 20, 6);
-      // Glowing Eyes
-      ctx.fillStyle = '#fef08a';
-      ctx.fillRect(boss.x + 6, boss.y + 12, 4, 4); ctx.fillRect(boss.x + 18, boss.y + 12, 4, 4);
-      // Boss HP Bar
-      ctx.fillStyle = '#09090b'; ctx.fillRect(boss.x - 2, boss.y - 9, 32, 5);
-      ctx.fillStyle = '#ef4444'; ctx.fillRect(boss.x - 1, boss.y - 8, 30 * (boss.hp / boss.maxHp), 3);
-    }
-
-    // Draw Super Shiba Player
-    if (!(player.invuln > 0 && Math.floor(player.invuln * 14) % 2 === 0)) {
-      const px = Math.floor(player.x), py = Math.floor(player.y);
-      // Overalls
-      ctx.fillStyle = '#2563eb'; ctx.fillRect(px + 2, py + 8, 8, 6);
-      // Shiba Head
-      ctx.fillStyle = '#eab308'; ctx.fillRect(px + 1, py + 2, 10, 7);
-      // Red Mario-Doge Cap
-      ctx.fillStyle = '#dc2626'; ctx.fillRect(px + 1, py, 10, 3);
-      if (player.dir > 0) ctx.fillRect(px + 8, py + 2, 5, 2);
-      else ctx.fillRect(px - 1, py + 2, 5, 2);
-      // Eye
-      ctx.fillStyle = '#09090b';
-      ctx.fillRect(player.dir > 0 ? px + 8 : px + 3, py + 4, 2, 2);
-    }
-
-    // Floating Popups
-    ctx.font = 'bold 8px Courier New';
-    for (const p of popups) {
-      ctx.fillStyle = p.color;
-      ctx.fillText(p.text, p.x, p.y);
+      if (coolTimer > 0) ctx.fillRect(px + 2, py + 4, 8, 2);
+      else ctx.fillRect(px + (player.facing === 1 ? 8 : 3), py + 4, 2, 2);
+      ctx.fillStyle = '#2563eb'; ctx.fillRect(px + 2, py + 9, 8, 5);
     }
 
     ctx.restore();
 
-    // --- BOTTOM RETRO HUD ---
-    ctx.fillStyle = '#18181b';
-    ctx.fillRect(0, VIEW_H, W, HUD_H);
-    ctx.strokeStyle = '#eab308';
-    ctx.lineWidth = 1;
-    ctx.strokeRect(0.5, VIEW_H + 0.5, W - 1, HUD_H - 1);
-
-    // Shiba Portrait Box
-    const fx = W / 2 - 14, fy = VIEW_H + 3;
-    ctx.fillStyle = '#27272a'; ctx.fillRect(fx, fy, 28, 30);
-    ctx.strokeStyle = '#eab308'; ctx.strokeRect(fx, fy, 28, 30);
-    ctx.fillStyle = '#eab308'; ctx.fillRect(fx + 6, fy + 9, 16, 15);
-    ctx.fillStyle = '#dc2626'; ctx.fillRect(fx + 5, fy + 5, 18, 4); // Red Cap
-    ctx.fillStyle = '#fef9c3'; ctx.fillRect(fx + 9, fy + 16, 10, 7);
-    ctx.fillStyle = '#09090b';
-    if (coolTimer > 0) {
-      ctx.fillRect(fx + 7, fy + 11, 14, 3); // Sunglasses
-    } else {
-      ctx.fillRect(fx + 9, fy + 12, 2, 2); ctx.fillRect(fx + 17, fy + 12, 2, 2);
+    // Boss HP Bar in World 1-10
+    for (var bi = 0; bi < world.enemies.length; bi++) {
+      var b = world.enemies[bi];
+      if (b.boss && b.alive) {
+        ctx.fillStyle = 'rgba(9, 9, 11, 0.85)';
+        ctx.fillRect(60, 22, 200, 12);
+        ctx.strokeStyle = '#eab308';
+        ctx.strokeRect(60, 22, 200, 12);
+        ctx.fillStyle = '#dc2626';
+        ctx.fillRect(62, 24, 196 * (b.hp / b.maxHp), 8);
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 7px Courier New';
+        ctx.fillText('MEGA FUD KING: ' + b.hp + '/' + b.maxHp, 106, 30);
+      }
     }
 
-    // HUD Stats
-    ctx.font = 'bold 8px Courier New';
-    ctx.fillStyle = '#a1a1aa';
-    ctx.fillText('HEARTS', 10, VIEW_H + 11);
-    ctx.fillText('DOGE Ð', 82, VIEW_H + 11);
-    ctx.fillText('WORLD', 202, VIEW_H + 11);
-    ctx.fillText('CREATOR', 260, VIEW_H + 11);
-
-    ctx.font = 'bold 12px Courier New';
-    ctx.fillStyle = '#ef4444';
-    ctx.fillText('♥'.repeat(player.hp) + '♡'.repeat(player.maxHp - player.hp), 10, VIEW_H + 26);
+    // Top Retro HUD
+    ctx.fillStyle = 'rgba(9, 9, 11, 0.8)';
+    ctx.fillRect(0, 0, W, 18);
+    ctx.font = 'bold 9px Courier New';
     ctx.fillStyle = '#facc15';
-    ctx.fillText(`${player.coins}`, 82, VIEW_H + 26);
+    ctx.fillText('PAPETO:' + score, 6, 12);
+    ctx.fillStyle = '#fef08a';
+    ctx.fillText('Ð:' + coinCount, 92, 12);
+    ctx.fillStyle = '#38bdf8';
+    ctx.fillText('W:1-' + (lvlIdx + 1) + '/10', 142, 12);
     ctx.fillStyle = '#4ade80';
-    ctx.fillText(`1-${lvlIdx + 1}`, 202, VIEW_H + 26);
-    ctx.font = 'bold 10px Courier New';
-    ctx.fillStyle = '#facc15';
-    ctx.fillText('PAPETO', 260, VIEW_H + 26);
+    ctx.fillText('LIVES:' + lives, 214, 12);
   }
 
+  var lastTime = 0;
   function loop(now) {
     if (mode !== 'play') return;
-    const dt = Math.min(0.05, (now - lastTime) / 1000);
+    var dt = Math.min(0.05, (now - lastTime) / 1000);
     lastTime = now;
     update(dt);
     render();
