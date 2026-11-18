@@ -1,67 +1,18 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>SUPER DOGE BROS HD - 10 Worlds NFT Card by PAPETO</title>
 <style>
- /* --- MOBILE HANDHELD FIX --- */
-@media (max-width: 900px) and (orientation: portrait) {
-  body {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    align-items: center !important;
-    padding-top: 12px !important;
-  }
-
-  /* Move touch controls below the game screen like a Game Boy */
-  #mobile-controls, .mobile-controls, .controls, .touch-controls {
-    position: relative !important;
-    bottom: auto !important;
-    left: auto !important;
-    right: auto !important;
-    width: 100% !important;
-    max-width: 500px !important;
-    margin-top: 24px !important;
-    padding: 0 16px !important;
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    pointer-events: auto !important;
-  }
-
-  /* Scale buttons nicely for thumbs */
-  #mobile-controls button, .mobile-controls button, .controls button, .touch-controls button,
-  .ctrl-btn, .touch-btn {
-    width: 68px !important;
-    height: 68px !important;
-    font-size: 14px !important;
-    opacity: 0.95 !important;
-  }
-}
-
-/* Landscape mode: smaller, semi-transparent corner buttons */
-@media (max-width: 950px) and (orientation: landscape) {
-  #mobile-controls button, .mobile-controls button, .controls button, .touch-controls button,
-  .ctrl-btn, .touch-btn {
-    width: 52px !important;
-    height: 52px !important;
-    font-size: 12px !important;
-    opacity: 0.55 !important;
-opacity: 0.55 !important;
-  }
-}
-</style>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
   * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
   body {
     background: radial-gradient(circle at top, #1e1b4b, #050507);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     overflow: hidden;
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     touch-action: none;
@@ -114,7 +65,7 @@ opacity: 0.55 !important;
     z-index: 20;
   }
   #overlay h1 {
-    font-size: clamp(26px, 5.2vw, 48px);
+    font-size: clamp(24px, 5vw, 48px);
     font-weight: 900;
     background: linear-gradient(180deg, #fef08a 0%, #facc15 50%, #ca8a04 100%);
     -webkit-background-clip: text;
@@ -124,31 +75,31 @@ opacity: 0.55 !important;
     margin-bottom: 4px;
   }
   .byline {
-    font-size: clamp(11px, 1.8vw, 14px);
+    font-size: clamp(10px, 1.8vw, 14px);
     color: #38bdf8;
     letter-spacing: 2.5px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     font-weight: 800;
     text-transform: uppercase;
   }
   #overlay p {
-    font-size: clamp(11px, 1.8vw, 14px);
+    font-size: clamp(10px, 1.8vw, 14px);
     color: #e2e8f0;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
     max-width: 540px;
-    line-height: 1.5;
+    line-height: 1.45;
   }
   .mode-row {
     display: flex;
-    gap: 12px;
-    margin-bottom: 14px;
+    gap: 10px;
+    margin-bottom: 12px;
   }
   .mode-btn {
     background: rgba(30, 41, 59, 0.85);
     color: #94a3b8;
     border: 2px solid #475569;
-    padding: 8px 16px;
-    font-size: clamp(11px, 1.8vw, 14px);
+    padding: 7px 14px;
+    font-size: clamp(10px, 1.8vw, 14px);
     font-weight: 800;
     font-family: inherit;
     cursor: pointer;
@@ -169,7 +120,7 @@ opacity: 0.55 !important;
   }
   .btn-row {
     display: flex;
-    gap: 14px;
+    gap: 12px;
     flex-wrap: wrap;
     justify-content: center;
   }
@@ -177,8 +128,8 @@ opacity: 0.55 !important;
     background: linear-gradient(180deg, #fde047, #eab308);
     color: #09090b;
     border: 2px solid #fef9c3;
-    padding: 12px 28px;
-    font-size: clamp(14px, 2.3vw, 18px);
+    padding: 10px 24px;
+    font-size: clamp(13px, 2.2vw, 18px);
     font-weight: 900;
     font-family: inherit;
     cursor: pointer;
@@ -196,7 +147,7 @@ opacity: 0.55 !important;
     display: none;
   }
 
-  /* MODERN GLASS ARCADE CONTROLS */
+  /* DESKTOP & DEFAULT TOUCH CONTROLS (INSIDE FRAME) */
   .touch-controls {
     position: absolute;
     bottom: 14px;
@@ -278,22 +229,86 @@ opacity: 0.55 !important;
     text-shadow: 0 2px 2px rgba(0,0,0,0.7);
   }
   #btn-jump:active { transform: translateY(3px); box-shadow: 0 2px 0 #7f1d1d; }
+
+  /* --- MOBILE PORTRAIT: GAME BOY HANDHELD CONSOLE LAYOUT --- */
+  @media (max-width: 900px) and (orientation: portrait) {
+    body {
+      justify-content: flex-start;
+      padding: 14px 8px 20px;
+    }
+    #card-frame {
+      width: 96vw;
+      border-radius: 14px 14px 6px 6px;
+      border-bottom-width: 4px;
+    }
+    .touch-controls {
+      position: relative;
+      bottom: auto;
+      left: auto;
+      right: auto;
+      width: 96vw;
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      border: 3px solid #334155;
+      border-top: none;
+      border-radius: 0 0 24px 24px;
+      padding: 26px 18px 32px;
+      box-shadow: 0 18px 35px rgba(0, 0, 0, 0.8), inset 0 2px 10px rgba(255, 255, 255, 0.05);
+      align-items: center;
+      pointer-events: auto;
+    }
+    .tbtn {
+      width: 64px;
+      height: 64px;
+      font-size: 24px;
+    }
+    #btn-fire {
+      width: 66px;
+      height: 66px;
+      font-size: 14px;
+    }
+    #btn-jump {
+      width: 74px;
+      height: 74px;
+      font-size: 15px;
+    }
+  }
+
+  /* --- MOBILE LANDSCAPE: COMPACT SEMI-TRANSPARENT OVERLAY --- */
+  @media (max-width: 950px) and (orientation: landscape) {
+    #card-frame {
+      height: 94vh;
+      width: auto;
+      max-width: 98vw;
+    }
+    .touch-controls {
+      bottom: 8px;
+      padding: 0 12px;
+    }
+    .tbtn {
+      width: 42px;
+      height: 42px;
+      font-size: 16px;
+      opacity: 0.55;
+    }
+    #btn-fire {
+      width: 46px;
+      height: 46px;
+      font-size: 11px;
+      opacity: 0.6;
+    }
+    #btn-jump {
+      width: 50px;
+      height: 50px;
+      font-size: 11px;
+      opacity: 0.6;
+    }
+  }
 </style>
 </head>
 <body>
 <div id="card-frame">
   <div id="sig-badge">DOGEPARTY NFT &bull; BY PAPETO</div>
   <canvas id="game" width="640" height="400"></canvas>
-  <div class="touch-controls">
-    <div class="dpad">
-      <div class="tbtn" data-key="ArrowLeft">◀</div>
-      <div class="tbtn" data-key="ArrowRight">▶</div>
-    </div>
-    <div class="action-group">
-      <div id="btn-fire">FIRE</div>
-      <div id="btn-jump">JUMP</div>
-    </div>
-  </div>
   <div id="overlay">
     <h1 id="ov-title">SUPER DOGE BROS</h1>
     <div class="byline">HD 10 WORLDS EDITION &bull; BY PAPETO</div>
@@ -306,6 +321,17 @@ opacity: 0.55 !important;
       <button id="start-btn" class="action-btn" type="button">PLAY WORLD 1</button>
       <button id="cont-btn" class="action-btn" type="button">CONTINUE</button>
     </div>
+  </div>
+</div>
+
+<div class="touch-controls">
+  <div class="dpad">
+    <div class="tbtn" data-key="ArrowLeft">◀</div>
+    <div class="tbtn" data-key="ArrowRight">▶</div>
+  </div>
+  <div class="action-group">
+    <div id="btn-fire">FIRE</div>
+    <div id="btn-jump">JUMP</div>
   </div>
 </div>
 
@@ -980,7 +1006,6 @@ opacity: 0.55 !important;
             ctx.fillRect(x, y, TILE, 3);
           }
         } else if (t === 2) {
-          // 3D Beveled Brick
           ctx.fillStyle = '#b45309';
           ctx.fillRect(x, y, TILE, TILE);
           ctx.fillStyle = '#f59e0b';
@@ -993,7 +1018,6 @@ opacity: 0.55 !important;
           ctx.moveTo(x + 16, y); ctx.lineTo(x + 16, y + 16);
           ctx.stroke();
         } else if (t === 3) {
-          // Glowing Gold ? Block
           var gBlk = ctx.createLinearGradient(x, y, x + TILE, y + TILE);
           gBlk.addColorStop(0, '#fef08a');
           gBlk.addColorStop(0.5, '#eab308');
@@ -1072,21 +1096,18 @@ opacity: 0.55 !important;
         ctx.fillStyle = e.hurt > 0 ? '#ffffff' : '#991b1b';
         ctx.beginPath(); ctx.roundRect(e.x, e.y + 8, 56, 48, 8); ctx.fill();
         ctx.strokeStyle = '#facc15'; ctx.lineWidth = 3; ctx.stroke();
-        // Royal Crown
         ctx.fillStyle = '#facc15';
         ctx.beginPath();
         ctx.moveTo(e.x + 8, e.y + 8); ctx.lineTo(e.x + 8, e.y - 6);
         ctx.lineTo(e.x + 18, e.y + 2); ctx.lineTo(e.x + 28, e.y - 8);
         ctx.lineTo(e.x + 38, e.y + 2); ctx.lineTo(e.x + 48, e.y - 6);
         ctx.lineTo(e.x + 48, e.y + 8); ctx.fill();
-        // Glowing Eyes
         ctx.fillStyle = '#fef08a';
         ctx.beginPath(); ctx.arc(e.x + 16, e.y + 24, 5, 0, Math.PI * 2); ctx.fill();
         ctx.beginPath(); ctx.arc(e.x + 40, e.y + 24, 5, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = '#09090b';
         ctx.fillRect(e.x + 12, e.y + 38, 32, 7);
       } else {
-        // FUD Imp
         ctx.fillStyle = '#fef08a';
         ctx.beginPath(); ctx.moveTo(e.x + 4, e.y + 6); ctx.lineTo(e.x + 2, e.y - 2); ctx.lineTo(e.x + 10, e.y + 5); ctx.fill();
         ctx.beginPath(); ctx.moveTo(e.x + 24, e.y + 6); ctx.lineTo(e.x + 26, e.y - 2); ctx.lineTo(e.x + 18, e.y + 5); ctx.fill();
@@ -1160,3 +1181,4 @@ opacity: 0.55 !important;
 </script>
 </body>
 </html>
+
