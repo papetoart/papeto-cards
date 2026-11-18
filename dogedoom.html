@@ -188,8 +188,8 @@
   <canvas id="game" width="640" height="400"></canvas>
   <div id="overlay">
     <h1>DOGE DOOM</h1>
-    <div class="byline">2.5D RETO RAYCASTER &bull; BY PAPETO</div>
-    <p>BLAST THE FUD MONSTERS IN THE RETO LABYRINTH!<br>[A/D or ◀/▶] Turn &bull; [W/S or ▲/▼] Move &bull; [SPACE / SHOOT] Plasma Blast</p>
+    <div class="byline">2.5D RETRO RAYCASTER &bull; BY PAPETO</div>
+    <p>BLAST THE FUD MONSTERS IN THE RETRO LABYRINTH!<br>[A/D or ◀/▶] Turn &bull; [W/S or ▲/▼] Move &bull; [SPACE / SHOOT] Plasma Blast</p>
     <button id="start-btn" class="action-btn" type="button">START DOOM</button>
   </div>
 </div>
@@ -235,9 +235,6 @@
     { x: 8.5, y: 7.5, alive: true }
   ];
   var score = 0, health = 100, shootAnim = 0;
-
-  function initAudio() {}
-  function tone() {}
 
   startBtn.onclick = function() {
     overlay.style.display = 'none';
@@ -288,93 +285,3 @@
 
   function update() {
     var rotSpeed = 0.038, moveSpeed = 0.055;
-    if (keys['ArrowLeft'] || keys['KeyA']) player.dir -= rotSpeed;
-    if (keys['ArrowRight'] || keys['KeyD']) player.dir += rotSpeed;
-
-    var dx = Math.cos(player.dir) * moveSpeed;
-    var dy = Math.sin(player.dir) * moveSpeed;
-
-    if (keys['ArrowUp'] || keys['KeyW']) {
-      if (!map[Math.floor(player.y)][Math.floor(player.x + dx * 2)]) player.x += dx;
-      if (!map[Math.floor(player.y + dy * 2)][Math.floor(player.x)]) player.y += dy;
-    }
-    if (keys['ArrowDown'] || keys['KeyS']) {
-      if (!map[Math.floor(player.y)][Math.floor(player.x - dx * 2)]) player.x -= dx;
-      if (!map[Math.floor(player.y + dy * 2)][Math.floor(player.x)]) player.y -= dy;
-    }
-    if (shootAnim > 0) shootAnim--;
-  }
-
-  function render() {
-    // Ceiling & Floor
-    ctx.fillStyle = '#1e1b4b'; ctx.fillRect(0, 0, W, H / 2);
-    ctx.fillStyle = '#27272a'; ctx.fillRect(0, H / 2, W, H / 2);
-
-    // Raycasting Walls
-    var numRays = W, halfFov = player.fov / 2;
-    for (var i = 0; i < numRays; i++) {
-      var rayAngle = player.dir - halfFov + (i / numRays) * player.fov;
-      var dist = 0, hit = false;
-      var cos = Math.cos(rayAngle), sin = Math.sin(rayAngle);
-
-      while (!hit && dist < 16) {
-        dist += 0.05;
-        var checkX = Math.floor(player.x + cos * dist);
-        var checkY = Math.floor(player.y + sin * dist);
-        if (checkX < 0 || checkX >= mapW || checkY < 0 || checkY >= mapH) {
-          hit = true; dist = 16;
-        } else if (map[checkY][checkX] > 0) {
-          hit = true;
-        }
-      }
-
-      dist *= Math.cos(rayAngle - player.dir); // Fix fisheye
-      var wallH = Math.min(H, Math.floor(H / (dist + 0.0001)));
-      var y1 = Math.floor((H - wallH) / 2);
-
-      ctx.fillStyle = (i % 2 === 0) ? '#dc2626' : '#991b1b';
-      ctx.fillRect(i, y1, 1, wallH);
-    }
-
-    // Enemies render
-    for (var e = 0; e < enemies.length; e++) {
-      var en = enemies[e];
-      if (!en.alive) continue;
-      var ex = en.x - player.x, ey = en.y - player.y;
-      var spriteAngle = Math.atan2(ey, ex) - player.dir;
-      while (spriteAngle < -Math.PI) spriteAngle += Math.PI * 2;
-      while (spriteAngle > Math.PI) spriteAngle -= Math.PI * 2;
-
-      if (Math.abs(spriteAngle) < player.fov) {
-        var screenX = (W / 2) + Math.tan(spriteAngle) * (W / 2);
-        var dist = Math.hypot(ex, ey);
-        var size = Math.min(300, Math.floor(H / (dist + 0.0001)));
-
-        ctx.fillStyle = '#ef4444';
-        ctx.beginPath(); ctx.arc(screenX, H / 2, size / 4, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#fef08a'; ctx.fillRect(screenX - 6, H / 2 - 8, 4, 4); ctx.fillRect(screenX + 2, H / 2 - 8, 4, 4);
-      }
-    }
-
-    // HUD & Weapon Gun
-    ctx.fillStyle = '#ef4444';
-    ctx.fillRect(W / 2 - 12 + (shootAnim ? (Math.random() * 8 - 4) : 0), H - 110 + (shootAnim * 3), 24, 110);
-
-    ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
-    ctx.fillRect(0, 0, W, 32);
-    ctx.fillStyle = '#facc15'; ctx.font = '800 14px sans-serif';
-    ctx.fillText('SCORE: ' + score, 16, 21);
-    ctx.fillStyle = '#ef4444';
-    ctx.fillText('HEALTH: ' + health + '%', 490, 21);
-  }
-
-  function loop() {
-    if (mode !== 'play') return;
-    update();
-    render();
-    requestAnimationFrame(loop);
-  }
-})();
-</script>
-</body>
-</html>
