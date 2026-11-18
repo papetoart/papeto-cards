@@ -1,12 +1,10 @@
-{
-  "name": "SUPER DOGE BROS",
-  "description": "Playable retro platformer browser NFT game by PAPETO. 3 worlds + Mega FUD King.",
-  "image": "https://papetoart.github.io/papeto-cards/mario_cover.png",
-  "animation_url": "https://papetoart.github.io/papeto-cards/superdoge.html",
-  "external_url": "https://papetoart.github.io/papeto-cards/superdoge.html",
-  "attributes": [
-    { "trait_type": "Creator", "value": "PAPETO" },
-    { "trait_type": "Genre", "value": "Retro Platformer" },
-    { "trait_type": "Playable", "value": "Yes" }
-  ]
+ {
+  "title": "SUPER DOGE BROS HD - 10 Worlds NFT",
+  "description": "The ultimate 16-bit retro platformer adventure starring Shiba Doge across 10 worlds with Easy Mode and Mega FUD King boss. Created by papeto.",
+  "image": "https://raw.githubusercontent.com/papeto/dogeparty/main/superdoge.png",
+  "animation_url": "https://raw.githubusercontent.com/papeto/dogeparty/main/superdoge.html",
+  "properties": {
+    "creator": "papeto",
+    "edition": "10 Worlds HD Edition"
+  }
 }
