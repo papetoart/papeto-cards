@@ -714,7 +714,7 @@
       var wallX = side === 0 ? (py + rawDist * rayDirY) : (px + rawDist * rayDirX);
       wallX -= Math.floor(wallX);
       var texX = Math.floor(wallX * TEX);
-      if ((side === 0 && rayDirX > 0) || (side === 1 && rayDirY < 0)) texX = TEX - texX - 1;
+      if ((side === 0 && rayDirX < 0) || (side === 1 && rayDirY > 0)) texX = TEX - texX - 1;
 
       var lineH = Math.floor(VIEW_H / perpDist);
       var drawStart = Math.floor(VIEW_H / 2 - lineH / 2);
