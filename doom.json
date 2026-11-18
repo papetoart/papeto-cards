@@ -1,10 +1,10 @@
  {
-  "title": "DOGE DOOM HD - 10 Sectors NFT",
-  "description": "A high-res retro 2.5D raycaster action game featuring 10 sectors, plasma blasters, dynamic lighting, and the Mega FUD Emperor. Created by papeto.",
-  "image": "https://raw.githubusercontent.com/papeto/dogeparty/main/dogedoom.png",
-  "animation_url": "https://raw.githubusercontent.com/papeto/dogeparty/main/dogedoom.html",
+  "title": "DOGE DOOM HD - Retro FPS NFT",
+  "description": "The ultimate 2.5D retro raycaster shooter starring Shiba Doge against the FUD demons. Created by papeto.",
+  "image": "https://raw.githubusercontent.com/papetoart/papeto-cards/main/dogedoom.png",
+  "animation_url": "https://papetoart.github.io/papeto-cards/dogedoom.html",
   "properties": {
     "creator": "papeto",
-    "edition": "10 Sectors HD Edition"
+    "edition": "Doom Edition"
   }
 }
