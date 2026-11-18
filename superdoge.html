@@ -19,10 +19,11 @@
   #card-frame {
     position: relative;
     width: 100vw;
-    max-width: 800px;
+    max-width: 820px;
     aspect-ratio: 16 / 10;
-    border: 3px solid #eab308;
-    box-shadow: 0 0 32px rgba(234, 179, 8, 0.5);
+    border: 4px solid #eab308;
+    border-radius: 6px;
+    box-shadow: 0 0 36px rgba(234, 179, 8, 0.55);
     background: #1e3a8a;
     overflow: hidden;
   }
@@ -35,12 +36,12 @@
   }
   #sig-badge {
     position: absolute;
-    top: 6px;
+    top: 24px;
     right: 8px;
     background: rgba(9, 9, 11, 0.85);
-    border: 1px solid #eab308;
+    border: 1.5px solid #eab308;
     color: #facc15;
-    font-size: clamp(9px, 1.5vw, 12px);
+    font-size: clamp(9px, 1.4vw, 12px);
     font-weight: bold;
     padding: 2px 8px;
     letter-spacing: 1px;
@@ -50,7 +51,7 @@
   #overlay {
     position: absolute;
     inset: 0;
-    background: rgba(9, 9, 11, 0.92);
+    background: radial-gradient(circle at center, rgba(23, 37, 84, 0.94), rgba(9, 9, 11, 0.97));
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -63,7 +64,7 @@
   #overlay h1 {
     font-size: clamp(22px, 4.8vw, 42px);
     color: #facc15;
-    text-shadow: 3px 3px 0 #b91c1c;
+    text-shadow: 3px 3px 0 #b91c1c, 0 0 16px rgba(250, 204, 21, 0.5);
     letter-spacing: 2px;
     margin-bottom: 4px;
   }
@@ -78,8 +79,8 @@
     font-size: clamp(10px, 1.8vw, 13px);
     color: #e4e4e7;
     margin-bottom: 12px;
-    max-width: 520px;
-    line-height: 1.4;
+    max-width: 530px;
+    line-height: 1.45;
   }
   .mode-row {
     display: flex;
@@ -90,21 +91,24 @@
     background: #18181b;
     color: #a1a1aa;
     border: 2px solid #52525b;
-    padding: 6px 14px;
+    padding: 7px 14px;
     font-size: clamp(11px, 1.8vw, 14px);
     font-weight: bold;
     font-family: inherit;
     cursor: pointer;
+    border-radius: 4px;
   }
   .mode-btn.active {
     background: #14532d;
     color: #4ade80;
     border-color: #4ade80;
+    box-shadow: 0 0 10px rgba(74, 222, 128, 0.35);
   }
   .mode-btn.norm.active {
     background: #713f12;
     color: #facc15;
     border-color: #facc15;
+    box-shadow: 0 0 10px rgba(250, 204, 21, 0.35);
   }
   .btn-row {
     display: flex;
@@ -113,7 +117,7 @@
     justify-content: center;
   }
   .action-btn {
-    background: #eab308;
+    background: linear-gradient(180deg, #facc15, #ca8a04);
     color: #09090b;
     border: 2px solid #fef08a;
     padding: 10px 24px;
@@ -123,15 +127,18 @@
     cursor: pointer;
     box-shadow: 0 4px 0 #713f12;
     text-transform: uppercase;
+    border-radius: 4px;
   }
-  .action-btn:hover { background: #facc15; }
+  .action-btn:hover { filter: brightness(1.1); }
   .action-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #713f12; }
   #cont-btn {
-    background: #22c55e;
+    background: linear-gradient(180deg, #4ade80, #16a34a);
     border-color: #bbf7d0;
     box-shadow: 0 4px 0 #14532d;
     display: none;
   }
+
+  /* HIGH-VISIBILITY RETRO ARCADE CONTROLS */
   .touch-controls {
     position: absolute;
     bottom: 10px;
@@ -139,44 +146,85 @@
     right: 0;
     display: flex;
     justify-content: space-between;
+    align-items: flex-end;
     padding: 0 14px;
     pointer-events: none;
-    z-index: 5;
+    z-index: 8;
   }
-  .dpad { pointer-events: auto; display: flex; gap: 8px; }
+  .dpad {
+    pointer-events: auto;
+    display: flex;
+    gap: 10px;
+  }
   .tbtn {
-    width: 46px;
-    height: 46px;
-    background: rgba(9, 9, 11, 0.45);
-    border: 2px solid rgba(234, 179, 8, 0.75);
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(180deg, rgba(39, 39, 42, 0.9), rgba(9, 9, 11, 0.95));
+    border: 2.5px solid #facc15;
     color: #fef08a;
     font-weight: bold;
-    font-size: 16px;
-    border-radius: 8px;
+    font-size: 20px;
+    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    box-shadow: 0 4px 0 #854d0e, 0 0 12px rgba(0, 0, 0, 0.75);
+    text-shadow: 1px 1px 0 #000;
   }
-  .tbtn:active { background: rgba(234, 179, 8, 0.65); }
-  #btn-jump {
+  .tbtn:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #854d0e;
+    background: #eab308;
+    color: #09090b;
+  }
+  .action-group {
     pointer-events: auto;
-    width: 60px;
-    height: 60px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  #btn-fire {
+    width: 58px;
+    height: 58px;
     border-radius: 50%;
-    background: rgba(220, 38, 38, 0.55);
-    border: 2px solid #f87171;
+    background: linear-gradient(180deg, #f97316, #c2410c);
+    border: 2.5px solid #fed7aa;
     color: #fff;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 13px;
+    font-family: inherit;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    box-shadow: 0 4px 0 #7c2d12, 0 0 14px rgba(0, 0, 0, 0.8);
+    text-shadow: 1px 1px 0 #000;
   }
-  @media (min-width: 820px) and (pointer: fine) {
-    .touch-controls { opacity: 0.35; }
-    .touch-controls:hover { opacity: 0.95; }
+  #btn-fire:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #7c2d12;
+  }
+  #btn-jump {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #ef4444, #b91c1c);
+    border: 2.5px solid #fecaca;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+    font-family: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #7f1d1d, 0 0 14px rgba(0, 0, 0, 0.8);
+    text-shadow: 1px 1px 0 #000;
+  }
+  #btn-jump:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #7f1d1d;
   }
 </style>
 </head>
@@ -189,12 +237,15 @@
       <div class="tbtn" data-key="ArrowLeft">◀</div>
       <div class="tbtn" data-key="ArrowRight">▶</div>
     </div>
-    <div id="btn-jump">JUMP</div>
+    <div class="action-group">
+      <div id="btn-fire">FIRE</div>
+      <div id="btn-jump">JUMP</div>
+    </div>
   </div>
   <div id="overlay">
     <h1 id="ov-title">SUPER DOGE BROS</h1>
     <div class="byline">10 WORLDS EDITION &bull; BY PAPETO</div>
-    <p id="ov-sub">STOMP FUD ENEMIES &amp; DEFEAT THE MEGA FUD KING IN WORLD 10!<br>[A/D or ◀/▶] Run &bull; [W / SPACE / ▲] Jump &amp; Stomp</p>
+    <p id="ov-sub">BLAST OR STOMP FUD &amp; DEFEAT THE MEGA FUD KING IN WORLD 10!<br>[A/D or ◀/▶] Run &bull; [W/SPACE/▲] Jump &bull; [F / FIRE] Ð-Fireball</p>
     <div class="mode-row">
       <button id="easy-btn" class="mode-btn active" type="button">EASY MODE (9 LIVES)</button>
       <button id="norm-btn" class="mode-btn norm" type="button">NORMAL (3 LIVES)</button>
@@ -267,16 +318,16 @@
   }
 
   var THEMES = [
-    { name: '1-1 DOGE MEADOWS', sky1: '#1d4ed8', sky2: '#60a5fa', ground: '#15803d', dirt: '#78350f' },
-    { name: '1-2 SUNSET HILLS', sky1: '#7c2d12', sky2: '#f97316', ground: '#ca8a04', dirt: '#451a03' },
-    { name: '1-3 MOON CAVERN', sky1: '#09090b', sky2: '#1e1b4b', ground: '#6366f1', dirt: '#1e1b4b' },
-    { name: '1-4 EMERALD VALLEY', sky1: '#064e3b', sky2: '#10b981', ground: '#047857', dirt: '#3f2e21' },
-    { name: '1-5 GOLD MINES', sky1: '#422006', sky2: '#eab308', ground: '#a16207', dirt: '#451a03' },
-    { name: '1-6 CYBER SKYWAY', sky1: '#0c4a6e', sky2: '#38bdf8', ground: '#0284c7', dirt: '#1e293b' },
-    { name: '1-7 LAVA RIDGE', sky1: '#450a0a', sky2: '#dc2626', ground: '#991b1b', dirt: '#18181b' },
-    { name: '1-8 STARLIGHT BRIDGE', sky1: '#1e1b4b', sky2: '#4338ca', ground: '#eab308', dirt: '#312e81' },
-    { name: '1-9 CITADEL APPROACH', sky1: '#18181b', sky2: '#52525b', ground: '#dc2626', dirt: '#27272a' },
-    { name: '1-10 MEGA FUD CASTLE!', sky1: '#18181b', sky2: '#7f1d1d', ground: '#b91c1c', dirt: '#09090b' }
+    { name: '1-1 DOGE MEADOWS', sky1: '#1e3a8a', sky2: '#60a5fa', hill: '#1e40af', ground: '#22c55e', dirt: '#92400e' },
+    { name: '1-2 SUNSET HILLS', sky1: '#7c2d12', sky2: '#fb923c', hill: '#9a3412', ground: '#eab308', dirt: '#713f12' },
+    { name: '1-3 MOON CAVERN', sky1: '#09090b', sky2: '#1e1b4b', hill: '#312e81', ground: '#818cf8', dirt: '#1e1b4b' },
+    { name: '1-4 EMERALD VALLEY', sky1: '#064e3b', sky2: '#34d399', hill: '#065f46', ground: '#10b981', dirt: '#78350f' },
+    { name: '1-5 GOLD MINES', sky1: '#422006', sky2: '#facc15', hill: '#713f12', ground: '#eab308', dirt: '#451a03' },
+    { name: '1-6 CYBER SKYWAY', sky1: '#0c4a6e', sky2: '#38bdf8', hill: '#075985', ground: '#0ea5e9', dirt: '#1e293b' },
+    { name: '1-7 LAVA RIDGE', sky1: '#450a0a', sky2: '#ef4444', hill: '#7f1d1d', ground: '#f97316', dirt: '#18181b' },
+    { name: '1-8 STARLIGHT BRIDGE', sky1: '#1e1b4b', sky2: '#6366f1', hill: '#3730a3', ground: '#facc15', dirt: '#312e81' },
+    { name: '1-9 CITADEL APPROACH', sky1: '#18181b', sky2: '#52525b', hill: '#27272a', ground: '#ef4444', dirt: '#27272a' },
+    { name: '1-10 MEGA FUD CASTLE!', sky1: '#09090b', sky2: '#991b1b', hill: '#450a0a', ground: '#dc2626', dirt: '#18181b' }
   ];
 
   // Tiles: 0=Air, 1=Ground, 2=Brick, 3=?Block, 4=Used, 5=PipeTop, 6=PipeBody, 9=FlagPole
@@ -295,10 +346,8 @@
     var coins = [];
 
     if (isBossWorld) {
-      // Flat castle bridges + Mega FUD King Boss Arena at the end!
       grid[11][12] = 0; grid[12][12] = 0;
       grid[11][22] = 0; grid[12][22] = 0;
-      // Arena Platforms
       for (var p = 28; p <= 32; p++) grid[7][p] = 2;
       for (var p2 = 36; p2 <= 40; p2++) grid[7][p2] = 2;
       grid[8][8] = 3; grid[8][16] = 3; grid[8][25] = 3;
@@ -306,47 +355,42 @@
       coins.push({ x: 16 * TILE + 8, y: 6 * TILE, got: false });
       coins.push({ x: 25 * TILE + 8, y: 6 * TILE, got: false });
 
-      enemies.push({ x: 10 * TILE, y: 10 * TILE, vx: -0.7, alive: true, boss: false });
-      enemies.push({ x: 19 * TILE, y: 10 * TILE, vx: -0.8, alive: true, boss: false });
+      enemies.push({ x: 10 * TILE, y: 10 * TILE, vx: -0.7, alive: true, boss: false, hp: 1 });
+      enemies.push({ x: 19 * TILE, y: 10 * TILE, vx: -0.8, alive: true, boss: false, hp: 1 });
 
-      var bHp = (difficulty === 'easy') ? 5 : 8;
+      var bHp = (difficulty === 'easy') ? 8 : 14;
       enemies.push({
         x: 35 * TILE, y: 8 * TILE, vx: -1.1,
         alive: true, boss: true, hp: bHp, maxHp: bHp, hurt: 0
       });
 
-      // Flag at col 43
       for (var fr = 4; fr <= 10; fr++) grid[fr][43] = 9;
     } else {
       var cPos = 9;
       while (cPos < cols - 8) {
         var pat = (cPos + wIdx) % 4;
         if (pat === 0) {
-          // Question & Brick cluster
           grid[7][cPos] = 2; grid[7][cPos + 1] = 3; grid[7][cPos + 2] = 2;
           coins.push({ x: (cPos + 1) * TILE + 8, y: 5 * TILE, got: false });
-          enemies.push({ x: (cPos + 1) * TILE, y: 10 * TILE, vx: -0.65 - wIdx * 0.04, alive: true, boss: false });
+          enemies.push({ x: (cPos + 1) * TILE, y: 10 * TILE, vx: -0.65 - wIdx * 0.04, alive: true, boss: false, hp: 1 });
           cPos += 6;
         } else if (pat === 1) {
-          // Green Warp Pipe
           grid[9][cPos] = 5; grid[9][cPos + 1] = 5;
           grid[10][cPos] = 6; grid[10][cPos + 1] = 6;
           coins.push({ x: cPos * TILE + 8, y: 7 * TILE, got: false });
-          enemies.push({ x: (cPos + 3) * TILE, y: 10 * TILE, vx: -0.7, alive: true, boss: false });
+          enemies.push({ x: (cPos + 3) * TILE, y: 10 * TILE, vx: -0.7, alive: true, boss: false, hp: 1 });
           cPos += 6;
         } else if (pat === 2) {
-          // Safe Pit Jump (2 tiles wide) + High Gold Coins
           grid[11][cPos] = 0; grid[12][cPos] = 0;
           if (difficulty !== 'easy') { grid[11][cPos + 1] = 0; grid[12][cPos + 1] = 0; }
           coins.push({ x: cPos * TILE + 8, y: 8 * TILE, got: false });
           coins.push({ x: (cPos + 1) * TILE + 8, y: 8 * TILE, got: false });
           cPos += 5;
         } else {
-          // Elevated Stepping Blocks
           grid[8][cPos] = 2; grid[8][cPos + 1] = 2;
           grid[5][cPos + 2] = 3;
           coins.push({ x: (cPos + 2) * TILE + 8, y: 3 * TILE, got: false });
-          enemies.push({ x: (cPos + 2) * TILE, y: 10 * TILE, vx: -0.75, alive: true, boss: false });
+          enemies.push({ x: (cPos + 2) * TILE, y: 10 * TILE, vx: -0.75, alive: true, boss: false, hp: 1 });
           cPos += 6;
         }
       }
@@ -359,6 +403,7 @@
 
   var lvlIdx = 0, mode = 'title', keys = {};
   var world = null, camX = 0, score = 0, coinCount = 0, lives = 9, coolTimer = 0;
+  var fireballs = [], particles = [], fireCD = 0, animTick = 0;
   var player = { x: 28, y: 140, vx: 0, vy: 0, w: 12, h: 14, onGround: false, facing: 1, inv: 0 };
 
   function updateContinueUI() {
@@ -370,6 +415,31 @@
     }
   }
   updateContinueUI();
+
+  function spawnBurst(x, y, color, count) {
+    for (var i = 0; i < count; i++) {
+      particles.push({
+        x: x, y: y,
+        vx: (Math.random() - 0.5) * 4,
+        vy: (Math.random() - 0.8) * 4,
+        life: 0.35 + Math.random() * 0.25,
+        color: color
+      });
+    }
+  }
+
+  function shootFireball() {
+    if (mode !== 'play' || fireCD > 0) return;
+    fireCD = 0.24;
+    fireballs.push({
+      x: player.x + (player.facing === 1 ? player.w + 2 : -4),
+      y: player.y + 6,
+      vx: player.facing * 4.6,
+      vy: 1.5,
+      life: 1.8
+    });
+    tone(680, 260, 0.11, 'sawtooth', 0.14);
+  }
 
   function loadLevel(idx, keepScore) {
     lvlIdx = idx;
@@ -383,6 +453,8 @@
     player.vx = 0;
     player.vy = 0;
     player.inv = 1.0;
+    fireballs = [];
+    particles = [];
     camX = 0;
     if (!keepScore) {
       score = 0;
@@ -420,6 +492,7 @@
   window.addEventListener('keydown', function(e) {
     keys[e.code] = true;
     if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.code) !== -1) e.preventDefault();
+    if (e.code === 'KeyF' || e.code === 'KeyX' || e.code === 'ShiftLeft' || e.code === 'ControlLeft') shootFireball();
   });
   window.addEventListener('keyup', function(e) { keys[e.code] = false; });
 
@@ -437,6 +510,10 @@
     })(tbtns[b]);
   }
 
+  var fireBtn = document.getElementById('btn-fire');
+  fireBtn.addEventListener('touchstart', function(e) { e.preventDefault(); initAudio(); shootFireball(); }, { passive: false });
+  fireBtn.addEventListener('mousedown', function(e) { e.preventDefault(); initAudio(); shootFireball(); });
+
   var jumpBtn = document.getElementById('btn-jump');
   jumpBtn.addEventListener('touchstart', function(e) { e.preventDefault(); initAudio(); keys['Space'] = true; }, { passive: false });
   jumpBtn.addEventListener('touchend', function(e) { e.preventDefault(); keys['Space'] = false; }, { passive: false });
@@ -445,6 +522,7 @@
 
   function loseLife() {
     tone(220, 70, 0.35, 'sawtooth');
+    spawnBurst(player.x + 6, player.y + 7, '#ef4444', 12);
     lives--;
     if (lives <= 0) {
       mode = 'gameover';
@@ -466,10 +544,12 @@
 
   // --- UPDATE ---
   function update(dt) {
+    animTick += dt * 10;
     if (player.inv > 0) player.inv -= dt;
     if (coolTimer > 0) coolTimer--;
+    if (fireCD > 0) fireCD -= dt;
 
-    var moveAcc = 2.4;
+    var moveAcc = 2.45;
     if (keys['ArrowLeft'] || keys['KeyA']) { player.vx = -moveAcc; player.facing = -1; }
     else if (keys['ArrowRight'] || keys['KeyD']) { player.vx = moveAcc; player.facing = 1; }
     else { player.vx *= 0.72; if (Math.abs(player.vx) < 0.08) player.vx = 0; }
@@ -518,6 +598,7 @@
             coinCount++;
             score += 200;
             coolTimer = 35;
+            spawnBurst(col * TILE + 8, headRow * TILE, '#facc15', 8);
             tone(880, 1320, 0.14, 'triangle');
           }
         }
@@ -530,9 +611,70 @@
 
     if (player.y > H + 16) { loseLife(); return; }
 
-    // Camera Follow
     var maxCam = world.cols * TILE - W;
     camX = Math.max(0, Math.min(maxCam, player.x - W * 0.35));
+
+    // Fireballs Physics & Hit Detection
+    for (var fi = fireballs.length - 1; fi >= 0; fi--) {
+      var fb = fireballs[fi];
+      fb.life -= dt;
+      fb.x += fb.vx;
+      fb.vy += 0.25;
+      fb.y += fb.vy;
+
+      // Bounce on floor
+      if (isSolid(tileAt(fb.x, fb.y + 3))) {
+        fb.y = Math.floor((fb.y + 3) / TILE) * TILE - 3;
+        fb.vy = -2.8;
+      }
+      // Hit wall or expire
+      if (fb.life <= 0 || isSolid(tileAt(fb.x + (fb.vx > 0 ? 3 : -3), fb.y))) {
+        spawnBurst(fb.x, fb.y, '#f97316', 5);
+        fireballs.splice(fi, 1);
+        continue;
+      }
+
+      // Check collision with Enemies & Mega FUD King
+      var hitTarget = false;
+      for (var ei2 = 0; ei2 < world.enemies.length; ei2++) {
+        var en = world.enemies[ei2];
+        if (!en.alive) continue;
+        var ew2 = en.boss ? 28 : 14;
+        var eh2 = en.boss ? 28 : 14;
+        if (fb.x + 3 > en.x && fb.x - 3 < en.x + ew2 && fb.y + 3 > en.y && fb.y - 3 < en.y + eh2) {
+          hitTarget = true;
+          coolTimer = 35;
+          spawnBurst(fb.x, fb.y, '#facc15', 10);
+          if (en.boss) {
+            en.hp--;
+            en.hurt = 0.22;
+            tone(240, 520, 0.14, 'square');
+            if (en.hp <= 0) {
+              en.alive = false;
+              score += 5000;
+              spawnBurst(en.x + 14, en.y + 14, '#ef4444', 24);
+              tone(523, 1046, 0.35, 'triangle');
+            }
+          } else {
+            en.alive = false;
+            score += 250;
+            tone(300, 620, 0.14, 'square');
+          }
+          break;
+        }
+      }
+      if (hitTarget) fireballs.splice(fi, 1);
+    }
+
+    // Particles
+    for (var pi = particles.length - 1; pi >= 0; pi--) {
+      var pt = particles[pi];
+      pt.x += pt.vx;
+      pt.y += pt.vy;
+      pt.vy += 0.18;
+      pt.life -= dt;
+      if (pt.life <= 0) particles.splice(pi, 1);
+    }
 
     // Coins
     for (var i = 0; i < world.coins.length; i++) {
@@ -541,6 +683,7 @@
         c.got = true;
         coinCount++;
         score += 100;
+        spawnBurst(c.x, c.y, '#fef08a', 6);
         tone(987, 1318, 0.12, 'triangle');
       }
     }
@@ -573,6 +716,7 @@
         if (player.vy > 0 && player.y + player.h - player.vy <= e.y + (e.boss ? 12 : 8)) {
           player.vy = -5.0;
           coolTimer = 45;
+          spawnBurst(e.x + ew / 2, e.y + 4, '#facc15', 8);
           if (e.boss) {
             e.hp--;
             e.hurt = 0.25;
@@ -580,6 +724,7 @@
             if (e.hp <= 0) {
               e.alive = false;
               score += 5000;
+              spawnBurst(e.x + 14, e.y + 14, '#ef4444', 24);
               tone(523, 1046, 0.35, 'triangle');
             }
           } else {
@@ -598,7 +743,7 @@
     var pCenterTile = tileAt(player.x + player.w / 2, player.y + player.h / 2);
     if (pCenterTile === 9) {
       if (bossAlive) {
-        player.vx = -2.0; // Bounce back until Mega FUD King is stomped!
+        player.vx = -2.0;
         return;
       }
       score += 500;
@@ -625,7 +770,7 @@
     }
   }
 
-  // --- RENDER ---
+  // --- 16-BIT RENDER ---
   function render() {
     var th = THEMES[lvlIdx];
     var sky = ctx.createLinearGradient(0, 0, 0, H);
@@ -634,12 +779,23 @@
     ctx.fillStyle = sky;
     ctx.fillRect(0, 0, W, H);
 
-    // Parallax Clouds & PAPETO Banner
-    ctx.fillStyle = 'rgba(255,255,255,0.22)';
+    // Distant Parallax Mountains
+    ctx.fillStyle = th.hill;
+    for (var m = 0; m < 6; m++) {
+      var mx = ((m * 130 - camX * 0.2) % (W + 140) + (W + 140)) % (W + 140) - 70;
+      ctx.beginPath();
+      ctx.moveTo(mx, H - 24);
+      ctx.lineTo(mx + 45, H - 75 - (m % 2) * 20);
+      ctx.lineTo(mx + 90, H - 24);
+      ctx.fill();
+    }
+
+    // Pixel Clouds
+    ctx.fillStyle = 'rgba(255,255,255,0.28)';
     for (var i = 0; i < 6; i++) {
-      var cx = ((i * 110 - camX * 0.25) % (W + 80) + (W + 80)) % (W + 80) - 40;
-      ctx.fillRect(cx, 24 + (i % 2) * 14, 34, 10);
-      ctx.fillRect(cx + 6, 19 + (i % 2) * 14, 22, 6);
+      var cx = ((i * 110 - camX * 0.35) % (W + 80) + (W + 80)) % (W + 80) - 40;
+      ctx.fillRect(cx, 26 + (i % 2) * 14, 34, 9);
+      ctx.fillRect(cx + 6, 21 + (i % 2) * 14, 22, 6);
     }
 
     ctx.save();
@@ -655,76 +811,124 @@
         var x = c * TILE, y = r * TILE;
         if (t === 1) {
           ctx.fillStyle = th.dirt; ctx.fillRect(x, y, TILE, TILE);
-          if (r === 11) { ctx.fillStyle = th.ground; ctx.fillRect(x, y, TILE, 4); }
+          // Soil Pebbles
+          ctx.fillStyle = 'rgba(0,0,0,0.25)';
+          ctx.fillRect(x + 3, y + 7, 3, 3); ctx.fillRect(x + 10, y + 11, 3, 3);
+          if (r === 11) {
+            ctx.fillStyle = th.ground; ctx.fillRect(x, y, TILE, 5);
+            ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.fillRect(x, y, TILE, 2);
+          }
         } else if (t === 2) {
+          // 16-bit Brick with Highlights
           ctx.fillStyle = '#b45309'; ctx.fillRect(x, y, TILE, TILE);
+          ctx.fillStyle = '#f59e0b'; ctx.fillRect(x + 1, y + 1, TILE - 2, 2);
           ctx.strokeStyle = '#451a03'; ctx.strokeRect(x + 0.5, y + 0.5, TILE - 1, TILE - 1);
+          ctx.beginPath(); ctx.moveTo(x, y + 8); ctx.lineTo(x + TILE, y + 8); ctx.stroke();
         } else if (t === 3) {
-          ctx.fillStyle = '#facc15'; ctx.fillRect(x, y, TILE, TILE);
+          // Animated Gold ? Block
+          ctx.fillStyle = '#eab308'; ctx.fillRect(x, y, TILE, TILE);
+          ctx.fillStyle = '#fef08a'; ctx.fillRect(x + 1, y + 1, TILE - 2, 2);
           ctx.strokeStyle = '#713f12'; ctx.strokeRect(x + 0.5, y + 0.5, TILE - 1, TILE - 1);
           ctx.fillStyle = '#713f12'; ctx.font = 'bold 11px Courier New'; ctx.fillText('Ð', x + 5, y + 12);
         } else if (t === 4) {
           ctx.fillStyle = '#52525b'; ctx.fillRect(x, y, TILE, TILE);
+          ctx.strokeStyle = '#27272a'; ctx.strokeRect(x + 0.5, y + 0.5, TILE - 1, TILE - 1);
         } else if (t === 5) {
           ctx.fillStyle = '#16a34a'; ctx.fillRect(x, y, TILE, TILE);
           ctx.fillStyle = '#4ade80'; ctx.fillRect(x + 2, y + 2, 4, TILE - 4);
+          ctx.strokeStyle = '#052e16'; ctx.strokeRect(x + 0.5, y + 0.5, TILE - 1, TILE - 1);
         } else if (t === 6) {
           ctx.fillStyle = '#15803d'; ctx.fillRect(x + 1, y, TILE - 2, TILE);
+          ctx.fillStyle = '#22c55e'; ctx.fillRect(x + 3, y, 3, TILE);
         } else if (t === 9) {
           ctx.fillStyle = '#fef08a'; ctx.fillRect(x + 7, y, 2, TILE);
           if (r === 4) {
-            ctx.fillStyle = '#facc15'; ctx.fillRect(x + 9, y + 2, 16, 11);
-            ctx.fillStyle = '#09090b'; ctx.font = 'bold 8px Courier New'; ctx.fillText('Ð', x + 14, y + 10);
+            ctx.fillStyle = '#facc15'; ctx.fillRect(x + 9, y + 2, 18, 12);
+            ctx.strokeStyle = '#713f12'; ctx.strokeRect(x + 9, y + 2, 18, 12);
+            ctx.fillStyle = '#09090b'; ctx.font = 'bold 9px Courier New'; ctx.fillText('Ð', x + 15, y + 11);
           }
         }
       }
     }
 
-    // Coins
+    // Spinning Gold Coins
+    var coinStretch = Math.max(0.35, Math.abs(Math.cos(animTick * 0.6)));
     for (var ci = 0; ci < world.coins.length; ci++) {
       var coin = world.coins[ci];
       if (coin.got) continue;
       ctx.fillStyle = '#facc15';
-      ctx.beginPath(); ctx.arc(coin.x, coin.y, 5, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#713f12'; ctx.font = 'bold 7px Courier New'; ctx.fillText('Ð', coin.x - 2, coin.y + 2.5);
+      ctx.beginPath(); ctx.ellipse(coin.x, coin.y, 5 * coinStretch, 5.5, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#fef08a'; ctx.stroke();
     }
 
-    // Enemies & Mega FUD King Boss
+    // Fireballs
+    for (var fi = 0; fi < fireballs.length; fi++) {
+      var fb = fireballs[fi];
+      ctx.fillStyle = '#f97316';
+      ctx.beginPath(); ctx.arc(fb.x, fb.y, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fef08a';
+      ctx.beginPath(); ctx.arc(fb.x, fb.y, 2, 0, Math.PI * 2); ctx.fill();
+    }
+
+    // Particles
+    for (var pi = 0; pi < particles.length; pi++) {
+      var pt = particles[pi];
+      ctx.fillStyle = pt.color;
+      ctx.fillRect(pt.x, pt.y, 2.5, 2.5);
+    }
+
+    // Detailed Enemies & Mega FUD King Boss
     for (var ei = 0; ei < world.enemies.length; ei++) {
       var e = world.enemies[ei];
       if (!e.alive) continue;
       if (e.boss) {
-        // Mega FUD King (28x28)
         ctx.fillStyle = e.hurt > 0 ? '#ffffff' : '#991b1b';
         ctx.fillRect(e.x, e.y + 4, 28, 24);
-        // Gold Crown
+        ctx.strokeStyle = '#facc15'; ctx.strokeRect(e.x + 0.5, e.y + 4.5, 27, 23);
         ctx.fillStyle = '#facc15';
         ctx.fillRect(e.x + 4, e.y - 2, 20, 6);
-        // Glowing Eyes
+        ctx.fillRect(e.x + 4, e.y - 5, 4, 3); ctx.fillRect(e.x + 12, e.y - 5, 4, 3); ctx.fillRect(e.x + 20, e.y - 5, 4, 3);
         ctx.fillStyle = '#facc15';
-        ctx.fillRect(e.x + 5, e.y + 9, 5, 4);
-        ctx.fillRect(e.x + 18, e.y + 9, 5, 4);
-        ctx.fillStyle = '#09090b';
-        ctx.fillRect(e.x + 6, e.y + 18, 16, 4);
+        ctx.fillRect(e.x + 5, e.y + 9, 5, 4); ctx.fillRect(e.x + 18, e.y + 9, 5, 4);
+        ctx.fillStyle = '#09090b'; ctx.fillRect(e.x + 6, e.y + 18, 16, 4);
       } else {
+        // FUD Imp with Horns & Feet
+        ctx.fillStyle = '#fef08a';
+        ctx.fillRect(e.x + 2, e.y, 2, 3); ctx.fillRect(e.x + 10, e.y, 2, 3);
         ctx.fillStyle = '#dc2626';
-        ctx.fillRect(e.x, e.y + 2, 14, 12);
+        ctx.fillRect(e.x + 1, e.y + 2, 12, 10);
         ctx.fillStyle = '#facc15';
-        ctx.fillRect(e.x + 3, e.y + 5, 2, 2);
-        ctx.fillRect(e.x + 9, e.y + 5, 2, 2);
+        ctx.fillRect(e.x + 3, e.y + 5, 2, 2); ctx.fillRect(e.x + 9, e.y + 5, 2, 2);
+        var step = Math.floor(animTick) % 2;
+        ctx.fillStyle = '#7f1d1d';
+        ctx.fillRect(e.x + 2, e.y + 12 + step, 4, 2);
+        ctx.fillRect(e.x + 8, e.y + 12 + (1 - step), 4, 2);
       }
     }
 
-    // Shiba Hero
+    // Detailed Shiba Doge Hero
     if (!(player.inv > 0 && Math.floor(player.inv * 15) % 2 === 1)) {
       var px = Math.floor(player.x), py = Math.floor(player.y);
+      // Red Cap & Ears
       ctx.fillStyle = '#dc2626'; ctx.fillRect(px + 2, py, 8, 3);
+      ctx.fillRect(px + (player.facing === 1 ? 6 : 0), py + 2, 6, 1.5);
+      // Shiba Head & Snout
       ctx.fillStyle = '#eab308'; ctx.fillRect(px + 1, py + 3, 10, 6);
       ctx.fillStyle = '#fef9c3'; ctx.fillRect(px + (player.facing === 1 ? 5 : 1), py + 6, 6, 3);
       ctx.fillStyle = '#09090b';
-      if (coolTimer > 0) ctx.fillRect(px + 2, py + 4, 8, 2);
-      else ctx.fillRect(px + (player.facing === 1 ? 8 : 3), py + 4, 2, 2);
-      ctx.fillStyle = '#2563eb'; ctx.fillRect(px + 2, py + 9, 8, 5);
+      if (coolTimer > 0) {
+        ctx.fillRect(px + 2, py + 4, 8, 2);
+        ctx.fillStyle = '#38bdf8'; ctx.fillRect(px + 3, py + 4, 2, 1.5); ctx.fillRect(px + 7, py + 4, 2, 1.5);
+      } else {
+        ctx.fillRect(px + (player.facing === 1 ? 8 : 3), py + 4, 2, 2);
+      }
+      // Overalls & Running Legs
+      ctx.fillStyle = '#2563eb'; ctx.fillRect(px + 2, py + 9, 8, 4);
+      ctx.fillStyle = '#facc15'; ctx.fillRect(px + 4, py + 10, 1.5, 1.5); ctx.fillRect(px + 7, py + 10, 1.5, 1.5);
+      var runOff = (Math.abs(player.vx) > 0.2) ? (Math.floor(animTick * 1.5) % 2) : 0;
+      ctx.fillStyle = '#78350f';
+      ctx.fillRect(px + 2, py + 13 - runOff, 3, 2);
+      ctx.fillRect(px + 7, py + 12 + runOff, 3, 2);
     }
 
     ctx.restore();
@@ -746,17 +950,19 @@
     }
 
     // Top Retro HUD
-    ctx.fillStyle = 'rgba(9, 9, 11, 0.8)';
+    ctx.fillStyle = 'rgba(9, 9, 11, 0.85)';
     ctx.fillRect(0, 0, W, 18);
+    ctx.fillStyle = '#eab308';
+    ctx.fillRect(0, 18, W, 1);
     ctx.font = 'bold 9px Courier New';
     ctx.fillStyle = '#facc15';
     ctx.fillText('PAPETO:' + score, 6, 12);
     ctx.fillStyle = '#fef08a';
-    ctx.fillText('Ð:' + coinCount, 92, 12);
+    ctx.fillText('Ð:' + coinCount, 94, 12);
     ctx.fillStyle = '#38bdf8';
-    ctx.fillText('W:1-' + (lvlIdx + 1) + '/10', 142, 12);
+    ctx.fillText('W:1-' + (lvlIdx + 1) + '/10', 144, 12);
     ctx.fillStyle = '#4ade80';
-    ctx.fillText('LIVES:' + lives, 214, 12);
+    ctx.fillText('LIVES:' + lives, 216, 12);
   }
 
   var lastTime = 0;
