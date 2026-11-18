@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>DOGE DOOM - BY PAPETO (Playable NFT Card)</title>
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  body {
+    background: #09090b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    font-family: 'Courier New', Courier, monospace;
+    touch-action: none;
+  }
+
+  #card-frame {
+    position: relative;
+    width: 100vw;
+    max-width: 800px;
+    aspect-ratio: 16 / 10;
+    border: 3px solid #eab308;
+    box-shadow: 0 0 28px rgba(234, 179, 8, 0.42);
+    background: #000000;
+    overflow: hidden;
+  }
+
+  #nft-top-badge {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    z-index: 15;
+    background: rgba(9, 9, 11, 0.82);
+    border: 1px solid rgba(234, 179, 8, 0.78);
+    color: #facc15;
+    font-size: clamp(8px, 1.4vw, 11px);
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    pointer-events: none;
+    text-shadow: 1px 1px 0 #000;
+  }
+
+  canvas#screen {
+    width: 100%;
+    height: 100%;
+    display: block;
+    outline: none;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    cursor: crosshair;
+  }
+
+  #overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(9, 9, 11, 0.88);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #ffffff;
+    padding: 16px;
+    z-index: 25;
+  }
+
+  #ov-creator {
+    font-size: clamp(10px, 1.8vw, 13px);
+    font-weight: bold;
+    color: #fef08a;
+    background: rgba(234, 179, 8, 0.16);
+    border: 1px solid rgba(234, 179, 8, 0.75);
+    padding: 3px 12px;
+    border-radius: 999px;
+    letter-spacing: 1.4px;
+    margin-bottom: 8px;
+  }
+
+  #overlay h1 {
+    font-size: clamp(24px, 5.2vw, 44px);
+    color: #eab308;
+    text-shadow: 3px 3px 0 #991b1b;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  #ov-sub {
+    font-size: clamp(11px, 2.1vw, 15px);
+    color: #e4e4e7;
+    margin-bottom: 18px;
+    max-width: 500px;
+    line-height: 1.45;
+  }
+
+  #start-btn {
+    background: #eab308;
+    color: #09090b;
+    border: 2px solid #fef08a;
+    border-radius: 6px;
+    padding: 11px 28px;
+    font-size: clamp(14px, 2.4vw, 19px);
+    font-weight: bold;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #a16207;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  #start-btn:hover {
+    background: #facc15;
+  }
+
+  #start-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #a16207;
+  }
+
+  .touch-controls {
+    position: absolute;
+    bottom: 20%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 14px;
+    pointer-events: none;
+    z-index: 12;
+  }
+
+  .dpad, .action-pad {
+    pointer-events: auto;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .dpad {
+    flex-direction: column;
+  }
+
+  .dpad-row {
+    display: flex;
+    gap: 6px;
+  }
+
+  .tbtn {
+    width: 44px;
+    height: 44px;
+    background: rgba(24, 24, 27, 0.52);
+    border: 1.5px solid rgba(234, 179, 8, 0.65);
+    color: #fef08a;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    touch-action: none;
+  }
+
+  .tbtn.active {
+    background: rgba(234, 179, 8, 0.72);
+    color: #09090b;
+  }
+
+  #btn-fire {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(220, 38, 38, 0.38);
+    border-color: rgba(248, 113, 113, 0.8);
+    color: #ffffff;
+    font-size: 13px;
+  }
+
+  #btn-fire.active {
+    background: rgba(239, 68, 68, 0.82);
+  }
+
+  @media (min-width: 820px) and (pointer: fine) {
+    .touch-controls {
+      opacity: 0.36;
+      transition: opacity 0.18s ease;
+    }
+    .touch-controls:hover {
+      opacity: 0.92;
+    }
+  }
+</style>
+</head>
+<body>
+<div id="card-frame">
+  <div id="nft-top-badge">DOGEPARTY NFT &bull; BY PAPETO</div>
+  <canvas id="screen" width="320" height="200" tabindex="0"></canvas>
+
+  <div class="touch-controls">
+    <div class="dpad">
+      <div class="dpad-row"><div class="tbtn" data-key="ArrowUp">▲</div></div>
+      <div class="dpad-row">
+        <div class="tbtn" data-key="ArrowLeft">◀</div>
+        <div class="tbtn" data-key="ArrowDown">▼</div>
+        <div class="tbtn" data-key="ArrowRight">▶</div>
+      </div>
+    </div>
+    <div class="action-pad">
+      <div class="tbtn" id="btn-fire" data-key="Space">FIRE</div>
+    </div>
+  </div>
+
+  <div id="overlay">
+    <div id="ov-creator">CREATED BY PAPETO</div>
+    <h1 id="ov-title">DOGE DOOM</h1>
+    <p id="ov-sub">
+      3 LEVELS EASY MODE &bull; DEFEAT THE MEGA FUD BOSS!<br>
+      [WASD / ARROWS] Move &bull; [HOLD SPACE / CLICK] Ð-Canon Auto-Fire
+    </p>
+    <button id="start-btn" type="button">PLAY CARD</button>
+  </div>
+</div>
+
+<script>
+(() => {
+  const canvas = document.getElementById('screen');
+  const ctx = canvas.getContext('2d');
+  const overlay = document.getElementById('overlay');
+  const ovCreator = document.getElementById('ov-creator');
+  const ovTitle = document.getElementById('ov-title');
+  const ovSub = document.getElementById('ov-sub');
+  const startBtn = document.getElementById('start-btn');
+
+  const W = 320;
+  const H = 200;
+  const HUD_H = 36;
+  const VIEW_H = H - HUD_H; // 164px 3D viewport
+
+  // ===========================================================================
+  // 1. SAFE RETRO WEB AUDIO SYNTHESIZER
+  // ===========================================================================
+  let audioCtx = null;
+  function initAudio() {
+    try {
+      if (!audioCtx) {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (Ctx) audioCtx = new Ctx();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    } catch (e) {}
+  }
+
+  function playTone(type) {
+    try {
+      if (!audioCtx || audioCtx.state !== 'running') return;
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      if (type === 'shoot') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(210, now);
+        osc.frequency.exponentialRampToValueAtTime(42, now + 0.13);
+        gain.gain.setValueAtTime(0.22, now);
+        gain.gain.exponentialRampToValueAtTime(0.008, now + 0.13);
+        osc.start(now);
+        osc.stop(now + 0.13);
+      } else if (type === 'hit') {
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(340, now);
+        osc.frequency.exponentialRampToValueAtTime(130, now + 0.08);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.008, now + 0.08);
+        osc.start(now);
+        osc.stop(now + 0.08);
+      } else if (type === 'kill') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(150, now);
+        osc.frequency.linearRampToValueAtTime(28, now + 0.32);
+        gain.gain.setValueAtTime(0.26, now);
+        gain.gain.exponentialRampToValueAtTime(0.008, now + 0.32);
+        osc.start(now);
+        osc.stop(now + 0.32);
+      } else if (type === 'pickup') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(540, now);
+        osc.frequency.setValueAtTime(820, now + 0.06);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.008, now + 0.15);
+        osc.start(now);
+        osc.stop(now + 0.15);
+      } else if (type === 'hurt') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(105, now);
+        osc.frequency.linearRampToValueAtTime(55, now + 0.18);
+        gain.gain.setValueAtTime(0.22, now);
+        gain.gain.exponentialRampToValueAtTime(0.008, now + 0.18);
+        osc.start(now);
+        osc.stop(now + 0.18);
+      } else if (type === 'clear') {
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.setValueAtTime(554, now + 0.08);
+        osc.frequency.setValueAtTime(659, now + 0.16);
+        osc.frequency.setValueAtTime(880, now + 0.24);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.008, now + 0.42);
+        osc.start(now);
+        osc.stop(now + 0.42);
+      }
+    } catch (e) {}
+  }
+
+  // ===========================================================================
+  // 2. PROCEDURAL 64x64 DOGE, PAPETO & CYBER WALL TEXTURES
+  // ===========================================================================
+  const TEX_SIZE = 64;
+  const textures = {};
+
+  function makeTexture(id, drawFn) {
+    const c = document.createElement('canvas');
+    c.width = TEX_SIZE;
+    c.height = TEX_SIZE;
+    const g = c.getContext('2d');
+    drawFn(g);
+    textures[id] = g.getImageData(0, 0, TEX_SIZE, TEX_SIZE).data;
+  }
+
+  // 1: Crimson Bunker Bricks
+  makeTexture(1, g => {
+    g.fillStyle = '#5c1d16';
+    g.fillRect(0, 0, 64, 64);
+    for (let y = 0; y < 64; y += 8) {
+      const off = (y / 8) % 2 === 0 ? 0 : 8;
+      for (let x = -8; x < 64; x += 16) {
+        g.fillStyle = ((x + y) % 3 === 0) ? '#7f291e' : '#6b2118';
+        g.fillRect(x + off + 1, y + 1, 14, 6);
+      }
+    }
+  });
+
+  // 2: "PAPETO" Engraved Gold & Slate Tech Wall
+  makeTexture(2, g => {
+    g.fillStyle = '#1e293b';
+    g.fillRect(0, 0, 64, 64);
+    g.strokeStyle = '#eab308';
+    g.lineWidth = 2;
+    g.strokeRect(3, 3, 58, 58);
+    g.fillStyle = '#09090b';
+    g.fillRect(7, 21, 50, 22);
+    g.strokeStyle = '#facc15';
+    g.lineWidth = 1;
+    g.strokeRect(7.5, 21.5, 49, 21);
+    g.fillStyle = '#facc15';
+    g.font = 'bold 11px Courier New';
+    g.fillText('PAPETO', 12, 35);
+    // Corner bolts
+    [6, 56].forEach(x => [6, 56].forEach(y => g.fillRect(x, y, 2, 2)));
+  });
+
+  // 3: Shiba Inu "WOW" Wall Mural
+  makeTexture(3, g => {
+    g.fillStyle = '#334155';
+    g.fillRect(0, 0, 64, 64);
+    g.strokeStyle = '#475569';
+    g.lineWidth = 2;
+    g.strokeRect(2, 2, 60, 60);
+    // Pixel Shiba Head
+    g.fillStyle = '#ca8a04';
+    g.fillRect(18, 12, 6, 8);
+    g.fillRect(40, 12, 6, 8);
+    g.fillStyle = '#eab308';
+    g.fillRect(16, 18, 32, 26);
+    g.fillStyle = '#fef9c3';
+    g.fillRect(22, 30, 20, 12);
+    g.fillStyle = '#09090b';
+    g.fillRect(23, 24, 3, 3);
+    g.fillRect(38, 24, 3, 3);
+    g.fillRect(30, 32, 4, 3);
+    // "WOW" Text
+    g.fillStyle = '#4ade80';
+    g.font = 'bold 10px Courier New';
+    g.fillText('WOW!', 20, 56);
+  });
+
+  // 4: Golden Dogecoin ("Ð") Sanctuary Wall
+  makeTexture(4, g => {
+    g.fillStyle = '#451a03';
+    g.fillRect(0, 0, 64, 64);
+    g.fillStyle = '#eab308';
+    g.beginPath();
+    g.arc(32, 32, 21, 0, Math.PI * 2);
+    g.fill();
+    g.fillStyle = '#facc15';
+    g.beginPath();
+    g.arc(32, 32, 17, 0, Math.PI * 2);
+    g.fill();
+    g.fillStyle = '#78350f';
+    g.font = 'bold 24px Courier New';
+    g.fillText('Ð', 24, 40);
+  });
+
+  // 5: Cyber Emerald Matrix Wall (Level 2)
+  makeTexture(5, g => {
+    g.fillStyle = '#0f172a';
+    g.fillRect(0, 0, 64, 64);
+    g.strokeStyle = '#10b981';
+    g.lineWidth = 2;
+    g.strokeRect(4, 4, 56, 56);
+    g.fillStyle = '#059669';
+    for (let y = 10; y < 54; y += 10) {
+      g.fillRect(10, y, 44, 3);
+    }
+    g.fillStyle = '#34d399';
+    g.fillRect(28, 8, 8, 48);
+  });
+
+  // ===========================================================================
+  // 3. PROCEDURAL 32x32 SPRITES (FUD BEARS, MEGA BOSS, DOGE BONES, Ð-COINS)
+  // ===========================================================================
+  function makeSprite(drawFn) {
+    const c = document.createElement('canvas');
+    c.width = 32;
+    c.height = 32;
+    drawFn(c.getContext('2d'));
+    return c;
+  }
+
+  // FUD Bear Enemy
+  const sprBear = makeSprite(g => {
+    // Bear Ears
+    g.fillStyle = '#7f1d1d';
+    g.fillRect(8, 4, 4, 4);
+    g.fillRect(20, 4, 4, 4);
+    // Crimson Fur Torso & Head
+    g.fillStyle = '#b91c1c';
+    g.fillRect(9, 7, 14, 16);
+    g.fillStyle = '#991b1b';
+    g.fillRect(6, 11, 20, 10);
+    // Claws
+    g.fillStyle = '#fef08a';
+    g.fillRect(5, 19, 2, 3);
+    g.fillRect(25, 19, 2, 3);
+    // Legs
+    g.fillStyle = '#7f1d1d';
+    g.fillRect(9, 23, 5, 7);
+    g.fillRect(18, 23, 5, 7);
+    // Angry Glowing Yellow Eyes & FUD Snout
+    g.fillStyle = '#facc15';
+    g.fillRect(11, 10, 3, 2);
+    g.fillRect(18, 10, 3, 2);
+    g.fillStyle = '#fecaca';
+    g.fillRect(13, 13, 6, 4);
+    g.fillStyle = '#09090b';
+    g.fillRect(14, 15, 4, 2);
+  });
+
+  const sprBearHurt = makeSprite(g => {
+    g.drawImage(sprBear, 0, 0);
+    g.globalCompositeOperation = 'source-atop';
+    g.fillStyle = 'rgba(255, 255, 255, 0.82)';
+    g.fillRect(0, 0, 32, 32);
+  });
+
+  const sprBearDead = makeSprite(g => {
+    g.fillStyle = '#7f1d1d';
+    g.fillRect(6, 25, 20, 5);
+    g.fillStyle = '#b91c1c';
+    g.fillRect(9, 23, 14, 4);
+    g.fillStyle = '#facc15';
+    g.fillRect(11, 26, 2, 2);
+  });
+
+  // MEGA FUD BOSS (Level 3 Final Boss with Golden Crown)
+  const sprBoss = makeSprite(g => {
+    // Golden Crown
+    g.fillStyle = '#facc15';
+    g.fillRect(9, 1, 14, 4);
+    g.fillRect(9, 0, 2, 2);
+    g.fillRect(15, 0, 2, 2);
+    g.fillRect(21, 0, 2, 2);
+    g.fillStyle = '#dc2626';
+    g.fillRect(15, 2, 2, 2);
+
+    // Massive Boss Body
+    g.fillStyle = '#991b1b';
+    g.fillRect(5, 5, 22, 20);
+    g.fillStyle = '#dc2626';
+    g.fillRect(7, 6, 18, 17);
+    // Gold Chest Armor
+    g.fillStyle = '#eab308';
+    g.fillRect(10, 14, 12, 8);
+
+    // Glowing Eyes & Fangs
+    g.fillStyle = '#fef08a';
+    g.fillRect(9, 8, 4, 3);
+    g.fillRect(19, 8, 4, 3);
+    g.fillStyle = '#09090b';
+    g.fillRect(10, 12, 12, 3);
+    g.fillStyle = '#ffffff';
+    g.fillRect(11, 12, 2, 2);
+    g.fillRect(19, 12, 2, 2);
+
+    // Heavy Legs
+    g.fillStyle = '#450a0a';
+    g.fillRect(7, 25, 7, 6);
+    g.fillRect(18, 25, 7, 6);
+  });
+
+  const sprBossHurt = makeSprite(g => {
+    g.drawImage(sprBoss, 0, 0);
+    g.globalCompositeOperation = 'source-atop';
+    g.fillStyle = 'rgba(255, 255, 255, 0.85)';
+    g.fillRect(0, 0, 32, 32);
+  });
+
+  // Dogecoin ("Ð") Ammo Pickup (+25 Ð-Ammo)
+  const sprCoinAmmo = makeSprite(g => {
+    g.fillStyle = '#ca8a04';
+    g.beginPath();
+    g.arc(16, 21, 8, 0, Math.PI * 2);
+    g.fill();
+    g.fillStyle = '#facc15';
+    g.beginPath();
+    g.arc(16, 21, 6, 0, Math.PI * 2);
+    g.fill();
+    g.fillStyle = '#78350f';
+    g.font = 'bold 10px Courier New';
+    g.fillText('Ð', 13, 24);
+  });
+
+  // Doge Bone Medkit (+45 HP)
+  const sprBoneHealth = makeSprite(g => {
+    g.fillStyle = '#fef9c3';
+    g.fillRect(8, 17, 4, 4);
+    g.fillRect(8, 23, 4, 4);
+    g.fillRect(20, 17, 4, 4);
+    g.fillRect(20, 23, 4, 4);
+    g.fillStyle = '#fde047';
+    g.fillRect(10, 19, 12, 6);
+    g.fillStyle = '#dc2626';
+    g.fillRect(15, 18, 2, 8);
+  });
+
+  // ===========================================================================
+  // 4. THREE LEVELS (FUD BUNKER, PAPER HANDS LAB, MOON CITADEL)
+  // ===========================================================================
+  const LEVELS = [
+    {
+      name: 'FUD BUNKER',
+      map: [
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,2,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,3,0,0,0,0,1],
+        [1,0,0,2,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,2,0,1],
+        [1,0,0,0,0,0,3,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,4,0,0,0,0,0,1],
+        [1,0,0,3,0,0,0,0,0,0,0,0,2,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,2,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,3,0,0,0,0,0,1],
+        [1,0,2,0,0,0,0,0,0,0,0,0,0,4,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+      ],
+      spawns: [
+        // 4 FUD Bears (2 HP each)
+        { type: 'enemy', x: 5.5, y: 2.5, hp: 2, maxHp: 2, alive: true, hurt: 0, cd: 0 },
+        { type: 'enemy', x: 11.5, y: 4.5, hp: 2, maxHp: 2, alive: true, hurt: 0, cd: 0 },
+        { type: 'enemy', x: 5.5, y: 10.5, hp: 2, maxHp: 2, alive: true, hurt: 0, cd: 0 },
+        { type: 'enemy', x: 12.5, y: 11.5, hp: 2, maxHp: 2, alive: true, hurt: 0, cd: 0 },
+        // 3 Doge Bones (+45 HP) & 3 Ð-Coins (+25 Ammo)
+        { type: 'health', x: 4.5, y: 3.5, active: true },
+        { type: 'ammo', x: 8.5, y: 2.5, active: true },
+        { type: 'health', x: 3.5, y: 9.5, active: true },
+        { type: 'ammo', x: 10.5, y: 7.5, active: true },
+        { type: 'health', x: 11.5, y: 13.5, active: true },
+        { type: 'ammo', x: 4.5, y: 13.5, active: true }
+      ]
+    },
+    {
+      name: 'PAPER HANDS LAB',
+      map: [
+        [5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5],
+        [5,0,0,0,0,0,2,0,0,0,0,0,0,0,0,5],
+        [5,0,0,0,0,0,2,0,0,0,3,3,0,0,0,5],
+        [5,0,0,2,0,0,0,0,0,0,0,0,0,0,0,5],
+        [5,0,0,2,0,0,0,0,0,0,0,0,0,2,0,5],
+        [5,0,0,0,0,0,5,5,0,0,0,0,0,2,0,5],
+        [5,2,0,0,0,0,0,0,0,0,0,0,0,0,0,5],
+        [5,0,0,0,0,0,0,0,0,3,0,0,0,0,0,5],
+        [5,0,0,5,0,0,0,0,0,3,0,0,2,2,0,5],
+        [5,0,0,5,0,0,0,0,0,0,0,0,0,0,0,5],
+        [5,0,0,0,0,0,2,0,0,0,0,0,0,0,0,5],
+        [5,0,2,2,0,0,0,0,0,3,3,0,0,0,0,5],
+        [5,0,0,0,0,0,0,0,0,0,0,0,0,4,0,5],
+        [5,0,0,0,0,0,0,0,0,0,0,0,0,4,0,5],
+        [5,0,0,0,0,0,2,0,0,0,0,0,0,0,0,5],
+        [5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5]
+      ],
+      spawns: [
+        // 6 FUD Bears (2 HP each)
+        { type: 'enemy', x: 4.5, y: 2.5, hp: 2, maxHp: 2, alive: true, hurt: 0, cd: 0 },
+        { type: 'enemy', x: 9.5, y: 3.5, hp: 2, maxHp: 2, alive: true, hurt: 0, cd: 0 },
+        { type: 'enemy', x: 13.5, y: 6.5, hp: 2, maxHp: 2, alive: true, hurt: 0, cd: 0 },
+        { type: 'enemy', x: 5.5, y: 8.5, hp: 2, maxHp: 2, alive: true, hurt: 0, cd: 0 },
+        { type: 'enemy', x: 11.5, y: 10.5, hp: 2, maxHp: 2, alive: true, hurt: 0, cd: 0 },
+        { type: 'enemy', x: 8.5, y: 13.5, hp: 2, maxHp: 2, alive: true, hurt: 0, cd: 0 },
+        // Supplies
+        { type: 'health', x: 4.5, y: 4.5, active: true },
+        { type: 'ammo', x: 8.5, y: 2.5, active: true },
+        { type: 'health', x: 2.5, y: 10.5, active: true },
+        { type: 'ammo', x: 11.5, y: 7.5, active: true },
+        { type: 'health', x: 12.5, y: 13.5, active: true },
+        { type: 'ammo', x: 4.5, y: 13.5, active: true }
+      ]
+    },
+    {
+      name: 'MOON CITADEL',
+      map: [
+        [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+        [4,0,0,0,0,0,2,0,0,0,0,0,0,0,0,4],
+        [4,0,0,0,0,0,0,0,0,0,3,0,0,0,0,4],
+        [4,0,0,2,0,0,0,0,0,0,0,0,0,0,0,4],
+        [4,0,0,0,0,0,0,0,0,0,0,0,0,2,0,4],
+        [4,0,0,0,0,0,4,0,0,0,0,0,0,0,0,4],
+        [4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4],
+        [4,0,0,0,0,0,0,0,0,4,0,0,0,0,0,4],
+        [4,0,0,3,0,0,0,0,0,0,0,0,2,0,0,4],
+        [4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4],
+        [4,0,0,0,0,0,2,0,0,0,0,0,0,0,0,4],
+        [4,0,0,0,0,0,0,0,0,3,0,0,0,0,0,4],
+        [4,0,2,0,0,0,0,0,0,0,0,0,0,0,0,4],
+        [4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4],
+        [4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4],
+        [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4]
+      ],
+      spawns: [
+        // 5 FUD Bears (2 HP) + MEGA FUD BOSS (8 HP)
+        { type: 'enemy', x: 5.5, y: 2.5, hp: 2, maxHp: 2, alive: true, hurt: 0, cd: 0 },
+        { type: 'enemy', x: 11.5, y: 3.5, hp: 2, maxHp: 2, alive: true, hurt: 0, cd: 0 },
+        { type: 'enemy', x: 4.5, y: 9.5, hp: 2, maxHp: 2, alive: true, hurt: 0, cd: 0 },
+        { type: 'enemy', x: 10.5, y: 9.5, hp: 2, maxHp: 2, alive: true, hurt: 0, cd: 0 },
+        { type: 'enemy', x: 6.5, y: 13.5, hp: 2, maxHp: 2, alive: true, hurt: 0, cd: 0 },
+        { type: 'boss', x: 12.5, y: 12.5, hp: 8, maxHp: 8, alive: true, hurt: 0, cd: 0 },
+        // Plenty of Doge Bones & Ð-Ammo for Boss Fight
+        { type: 'health', x: 3.5, y: 4.5, active: true },
+        { type: 'ammo', x: 8.5, y: 2.5, active: true },
+        { type: 'health', x: 8.5, y: 7.5, active: true },
+        { type: 'ammo', x: 2.5, y: 11.5, active: true },
+        { type: 'health', x: 13.5, y: 8.5, active: true },
+        { type: 'ammo', x: 9.5, y: 13.5, active: true }
+      ]
+    }
+  ];
+
+  // ===========================================================================
+  // 5. GAME STATE, FLOATING MEME POPUPS & LEVEL PROGRESSION
+  // ===========================================================================
+  let levelIdx = 0;
+  let MAP = LEVELS[0].map;
+  let player = { x: 1.5, y: 1.5, dirX: 1, dirY: 0, planeX: 0, planeY: 0.66, hp: 150, ammo: 50, kills: 0, totalTargets: 4 };
+  let sprites = [];
+  let popups = [];
+  let running = false;
+  let mode = 'start'; // 'start' | 'play' | 'clear' | 'victory' | 'gameover'
+  let keys = {};
+  let mouseDown = false;
+  let lastTime = 0;
+  let muzzleFlash = 0;
+  let weaponRecoil = 0;
+  let hurtFlash = 0;
+  let grinTimer = 0;
+  let shootCD = 0;
+
+  const MEME_QUOTES = ['MUCH WOW!', 'TO THE MOON!', 'HODL!', 'SO REKT!', 'SUCH DOGE!'];
+
+  function addMemePopup(text, color = '#facc15') {
+    popups.push({
+      text,
+      color,
+      x: W / 2 + (Math.random() * 50 - 25),
+      y: VIEW_H / 2 - 14,
+      life: 0.85
+    });
+  }
+
+  function loadLevel(idx, isFreshGame) {
+    levelIdx = idx;
+    const lvl = LEVELS[idx];
+    MAP = lvl.map;
+    sprites = lvl.spawns.map(s => ({ ...s }));
+    const targetCount = sprites.filter(s => s.type === 'enemy' || s.type === 'boss').length;
+
+    if (isFreshGame) {
+      player = {
+        x: 1.5,
+        y: 1.5,
+        dirX: 1,
+        dirY: 0,
+        planeX: 0,
+        planeY: 0.66,
+        hp: 150,
+        ammo: 50,
+        kills: 0,
+        totalTargets: targetCount
+      };
+    } else {
+      // Carry over stats with Easy Mode +30 HP & +20 Ð-Ammo level bonus!
+      player.x = 1.5;
+      player.y = 1.5;
+      player.dirX = 1;
+      player.dirY = 0;
+      player.planeX = 0;
+      player.planeY = 0.66;
+      player.hp = Math.min(200, player.hp + 30);
+      player.ammo += 20;
+      player.kills = 0;
+      player.totalTargets = targetCount;
+    }
+
+    popups = [];
+    muzzleFlash = 0;
+    weaponRecoil = 0;
+    hurtFlash = 0;
+    grinTimer = 0;
+    shootCD = 0;
+  }
+
+  function hasLineOfSight(x1, y1, x2, y2) {
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const dist = Math.hypot(dx, dy);
+    const steps = Math.ceil(dist * 5);
+    for (let i = 1; i < steps; i++) {
+      const cx = Math.floor(x1 + (dx * i) / steps);
+      const cy = Math.floor(y1 + (dy * i) / steps);
+      if (MAP[cy] && MAP[cy][cx] > 0) return false;
+    }
+    return true;
+  }
+
+  function fireWeapon() {
+    if (!running || mode !== 'play' || shootCD > 0 || player.ammo <= 0) return;
+    player.ammo--;
+    shootCD = 0.16; // Fast Easy Mode auto-fire cooldown
+    muzzleFlash = 3;
+    weaponRecoil = 8;
+    playTone('shoot');
+
+    // Wide Easy Mode Hitscan Cone
+    const targets = sprites
+      .filter(s => (s.type === 'enemy' || s.type === 'boss') && s.alive)
+      .map(e => ({ e, dist: Math.hypot(e.x - player.x, e.y - player.y) }))
+      .sort((a, b) => a.dist - b.dist);
+
+    const invDet = 1.0 / (player.planeX * player.dirY - player.dirX * player.planeY);
+    for (const { e } of targets) {
+      const sx = e.x - player.x;
+      const sy = e.y - player.y;
+      const tx = invDet * (player.dirY * sx - player.dirX * sy);
+      const ty = invDet * (-player.planeY * sx + player.planeX * sy);
+      if (ty <= 0.2) continue;
+
+      const screenX = (W / 2) * (1 + tx / ty);
+      const baseRadius = e.type === 'boss' ? 0.52 : 0.45;
+      const hitRadius = Math.max(22, (VIEW_H / ty) * baseRadius);
+
+      if (Math.abs(screenX - W / 2) <= hitRadius && hasLineOfSight(player.x, player.y, e.x, e.y)) {
+        e.hp--;
+        e.hurt = 5;
+        if (e.hp <= 0) {
+          e.alive = false;
+          player.kills++;
+          grinTimer = 28;
+          playTone('kill');
+          const quote = e.type === 'boss'
+            ? 'BOSS REKT! TO THE MOON!'
+            : MEME_QUOTES[Math.floor(Math.random() * MEME_QUOTES.length)];
+          addMemePopup(quote, '#4ade80');
+        } else {
+          playTone('hit');
+          if (e.type === 'boss') {
+            addMemePopup(`BOSS HP: ${e.hp}/${e.maxHp}`, '#facc15');
+          }
+        }
+        break;
+      }
+    }
+  }
+
+  // ===========================================================================
+  // 6. KEYBOARD, MOUSE & MULTI-TOUCH CONTROLS
+  // ===========================================================================
+  window.addEventListener('keydown', e => {
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) {
+      e.preventDefault();
+    }
+    keys[e.code] = true;
+    if (e.code === 'Space') {
+      initAudio();
+      fireWeapon();
+    }
+  });
+
+  window.addEventListener('keyup', e => {
+    keys[e.code] = false;
+  });
+
+  window.addEventListener('blur', () => {
+    keys = {};
+    mouseDown = false;
+  });
+
+  canvas.addEventListener('mousedown', e => {
+    if (e.button === 0) {
+      initAudio();
+      mouseDown = true;
+      fireWeapon();
+    }
+  });
+
+  window.addEventListener('mouseup', () => {
+    mouseDown = false;
+  });
+
+  document.querySelectorAll('.tbtn').forEach(btn => {
+    const code = btn.dataset.key;
+    const down = e => {
+      e.preventDefault();
+      initAudio();
+      keys[code] = true;
+      btn.classList.add('active');
+      if (code === 'Space') fireWeapon();
+    };
+    const up = e => {
+      e.preventDefault();
+      keys[code] = false;
+      btn.classList.remove('active');
+    };
+    btn.addEventListener('pointerdown', down);
+    btn.addEventListener('pointerup', up);
+    btn.addEventListener('pointercancel', up);
+    btn.addEventListener('pointerleave', up);
+  });
+
+  startBtn.addEventListener('click', () => {
+    initAudio();
+    keys = {};
+    mouseDown = false;
+
+    if (mode === 'clear') {
+      loadLevel(levelIdx + 1, false);
+    } else {
+      loadLevel(0, true);
+    }
+
+    mode = 'play';
+    overlay.style.display = 'none';
+    running = true;
+    lastTime = performance.now();
+    try { canvas.focus(); } catch (e) {}
+    requestAnimationFrame(loop);
+  });
+
+  function handleLevelComplete() {
+    running = false;
+    playTone('clear');
+    if (levelIdx < LEVELS.length - 1) {
+      mode = 'clear';
+      const curName = LEVELS[levelIdx].name;
+      const nextName = LEVELS[levelIdx + 1].name;
+      ovCreator.textContent = 'CREATED BY PAPETO';
+      ovTitle.textContent = 'LEVEL CLEARED!';
+      ovTitle.style.color = '#4ade80';
+      ovSub.innerHTML = `${curName} PURGED!<br>BONUS: +30 HP &amp; +20 Ð-AMMO<br>NEXT: LEVEL ${levelIdx + 2} (${nextName})`;
+      startBtn.textContent = 'NEXT LEVEL';
+      overlay.style.display = 'flex';
+    } else {
+      mode = 'victory';
+      ovCreator.textContent = 'CREATED BY PAPETO • DOGEPARTY NFT';
+      ovTitle.textContent = 'TO THE MOON!';
+      ovTitle.style.color = '#4ade80';
+      ovSub.innerHTML = `ALL 3 LEVELS &amp; MEGA FUD BOSS DEFEATED!<br>MUCH WOW. VERY VICTORY.`;
+      startBtn.textContent = 'PLAY AGAIN';
+      overlay.style.display = 'flex';
+    }
+  }
+
+  function handleGameOver() {
+    running = false;
+    mode = 'gameover';
+    ovCreator.textContent = 'CREATED BY PAPETO';
+    ovTitle.textContent = 'WASTED!';
+    ovTitle.style.color = '#ef4444';
+    ovSub.innerHTML = `THE FUD BEARS GOT YOU IN LEVEL ${levelIdx + 1}.<br>KILLS: ${player.kills} / ${player.totalTargets}`;
+    startBtn.textContent = 'PLAY AGAIN';
+    overlay.style.display = 'flex';
+  }
+
+  // ===========================================================================
+  // 7. UPDATE SIMULATION
+  // ===========================================================================
+  function update(dt) {
+    if (shootCD > 0) shootCD -= dt;
+    if (muzzleFlash > 0) muzzleFlash--;
+    if (weaponRecoil > 0) weaponRecoil = Math.max(0, weaponRecoil - 1.5);
+    if (hurtFlash > 0) hurtFlash--;
+    if (grinTimer > 0) grinTimer--;
+
+    for (let i = popups.length - 1; i >= 0; i--) {
+      popups[i].life -= dt;
+      popups[i].y -= 18 * dt;
+      if (popups[i].life <= 0) popups.splice(i, 1);
+    }
+
+    // Continuous Auto-Fire while holding Space, Mouse Click, or FIRE button
+    if ((keys['Space'] || mouseDown) && shootCD <= 0) {
+      fireWeapon();
+    }
+
+    const moveSpeed = 3.5 * dt;
+    const rotSpeed = 2.5 * dt;
+
+    let move = 0;
+    if (keys['KeyW'] || keys['ArrowUp']) move += moveSpeed;
+    if (keys['KeyS'] || keys['ArrowDown']) move -= moveSpeed;
+
+    if (move !== 0) {
+      const nx = player.x + player.dirX * move;
+      const ny = player.y + player.dirY * move;
+      const pad = 0.25 * Math.sign(move);
+      if (MAP[Math.floor(player.y)] && MAP[Math.floor(player.y)][Math.floor(nx + pad)] === 0) {
+        player.x = nx;
+      }
+      if (MAP[Math.floor(ny + pad)] && MAP[Math.floor(ny + pad)][Math.floor(player.x)] === 0) {
+        player.y = ny;
+      }
+    }
+
+    let rot = 0;
+    if (keys['KeyA'] || keys['ArrowLeft']) rot -= rotSpeed;
+    if (keys['KeyD'] || keys['ArrowRight']) rot += rotSpeed;
+    if (rot !== 0) {
+      const oldDirX = player.dirX;
+      player.dirX = player.dirX * Math.cos(rot) - player.dirY * Math.sin(rot);
+      player.dirY = oldDirX * Math.sin(rot) + player.dirY * Math.cos(rot);
+      const oldPlaneX = player.planeX;
+      player.planeX = player.planeX * Math.cos(rot) - player.planeY * Math.sin(rot);
+      player.planeY = oldPlaneX * Math.sin(rot) + player.planeY * Math.cos(rot);
+    }
+
+    // Update FUD Bears, Mega Boss & Pickups
+    let aliveTargets = 0;
+    for (const s of sprites) {
+      const dist = Math.hypot(player.x - s.x, player.y - s.y);
+      if ((s.type === 'enemy' || s.type === 'boss') && s.alive) {
+        aliveTargets++;
+        if (s.hurt > 0) s.hurt--;
+        if (s.cd > 0) s.cd -= dt;
+
+        if (dist < 10.0 && hasLineOfSight(s.x, s.y, player.x, player.y)) {
+          if (dist > 0.95) {
+            const spd = s.type === 'boss' ? 1.15 : 1.05; // Gentle Easy Mode pursuit speed
+            const vx = ((player.x - s.x) / dist) * spd * dt;
+            const vy = ((player.y - s.y) / dist) * spd * dt;
+            if (MAP[Math.floor(s.y)][Math.floor(s.x + vx * 3)] === 0) s.x += vx;
+            if (MAP[Math.floor(s.y + vy * 3)][Math.floor(s.x)] === 0) s.y += vy;
+          } else if (s.cd <= 0) {
+            s.cd = 1.05;
+            const dmg = s.type === 'boss' ? 8 : 5; // Easy Mode low incoming damage
+            player.hp = Math.max(0, player.hp - dmg);
+            hurtFlash = 6;
+            playTone('hurt');
+            if (player.hp <= 0) {
+              handleGameOver();
+              return;
+            }
+          }
+        }
+      } else if (s.active && dist < 0.7) {
+        s.active = false;
+        grinTimer = 24;
+        playTone('pickup');
+        if (s.type === 'ammo') {
+          player.ammo += 25;
+          addMemePopup('+25 Ð-AMMO!', '#facc15');
+        } else if (s.type === 'health') {
+          player.hp = Math.min(200, player.hp + 45);
+          addMemePopup('+45 HP BONE!', '#4ade80');
+        }
+      }
+    }
+
+    if (aliveTargets === 0) {
+      handleLevelComplete();
+    }
+  }
+
+  // ===========================================================================
+  // 8. 2.5D RAYCASTER & HUD RENDERER
+  // ===========================================================================
+  const frameImg = ctx.createImageData(W, VIEW_H);
+  const zBuffer = new Float32Array(W);
+
+  function render() {
+    const buf = frameImg.data;
+
+    // Ceiling & Floor shading
+    for (let y = 0; y < VIEW_H; y++) {
+      const isFloor = y >= VIEW_H / 2;
+      const shade = isFloor ? Math.floor(((y - VIEW_H / 2) / (VIEW_H / 2)) * 45) + 18 : 16;
+      for (let x = 0; x < W; x++) {
+        const idx = (y * W + x) * 4;
+        buf[idx] = isFloor ? shade + 8 : 14;
+        buf[idx + 1] = shade;
+        buf[idx + 2] = isFloor ? shade : 24;
+        buf[idx + 3] = 255;
+      }
+    }
+
+    // Raycast Walls
+    for (let x = 0; x < W; x++) {
+      const camX = (2 * x) / W - 1;
+      const rayDirX = player.dirX + player.planeX * camX;
+      const rayDirY = player.dirY + player.planeY * camX;
+
+      let mapX = Math.floor(player.x);
+      let mapY = Math.floor(player.y);
+      const deltaDistX = Math.abs(1 / (rayDirX || 1e-6));
+      const deltaDistY = Math.abs(1 / (rayDirY || 1e-6));
+      let stepX, stepY, sideDistX, sideDistY;
+
+      if (rayDirX < 0) {
+        stepX = -1;
+        sideDistX = (player.x - mapX) * deltaDistX;
+      } else {
+        stepX = 1;
+        sideDistX = (mapX + 1.0 - player.x) * deltaDistX;
+      }
+      if (rayDirY < 0) {
+        stepY = -1;
+        sideDistY = (player.y - mapY) * deltaDistY;
+      } else {
+        stepY = 1;
+        sideDistY = (mapY + 1.0 - player.y) * deltaDistY;
+      }
+
+      let hit = 0;
+      let side = 0;
+      while (hit === 0) {
+        if (sideDistX < sideDistY) {
+          sideDistX += deltaDistX;
+          mapX += stepX;
+          side = 0;
+        } else {
+          sideDistY += deltaDistY;
+          mapY += stepY;
+          side = 1;
+        }
+        hit = (MAP[mapY] && MAP[mapY][mapX]) ? MAP[mapY][mapX] : 1;
+      }
+
+      const perpDist = side === 0 ? (sideDistX - deltaDistX) : (sideDistY - deltaDistY);
+      zBuffer[x] = perpDist;
+
+      const lineH = Math.floor(VIEW_H / (perpDist || 0.01));
+      const drawStart = Math.max(0, Math.floor(-lineH / 2 + VIEW_H / 2));
+      const drawEnd = Math.min(VIEW_H - 1, Math.floor(lineH / 2 + VIEW_H / 2));
+
+      let wallX = side === 0 ? player.y + perpDist * rayDirY : player.x + perpDist * rayDirX;
+      wallX -= Math.floor(wallX);
+      let texX = Math.floor(wallX * TEX_SIZE);
+      if ((side === 0 && rayDirX > 0) || (side === 1 && rayDirY < 0)) texX = TEX_SIZE - texX - 1;
+
+      const tex = textures[hit] || textures[1];
+      const step = TEX_SIZE / lineH;
+      let texPos = (drawStart - VIEW_H / 2 + lineH / 2) * step;
+      const dim = (side === 1 ? 0.74 : 1.0) * Math.max(0.28, 1 - perpDist / 16);
+
+      for (let y = drawStart; y <= drawEnd; y++) {
+        const texY = Math.floor(texPos) & (TEX_SIZE - 1);
+        texPos += step;
+        const tIdx = (texY * TEX_SIZE + texX) * 4;
+        const bIdx = (y * W + x) * 4;
+        buf[bIdx] = tex[tIdx] * dim;
+        buf[bIdx + 1] = tex[tIdx + 1] * dim;
+        buf[bIdx + 2] = tex[tIdx + 2] * dim;
+      }
+    }
+    ctx.putImageData(frameImg, 0, 0);
+
+    // Render Sprites sorted back-to-front
+    const visible = sprites
+      .filter(s => s.type === 'enemy' || s.type === 'boss' || s.active)
+      .map(s => ({ s, distSq: (player.x - s.x) ** 2 + (player.y - s.y) ** 2 }))
+      .sort((a, b) => b.distSq - a.distSq);
+
+    const invDet = 1.0 / (player.planeX * player.dirY - player.dirX * player.planeY);
+    let activeBoss = null;
+
+    for (const { s } of visible) {
+      if (s.type === 'boss' && s.alive) activeBoss = s;
+
+      const sx = s.x - player.x;
+      const sy = s.y - player.y;
+      const tx = invDet * (player.dirY * sx - player.dirX * sy);
+      const ty = invDet * (-player.planeY * sx + player.planeX * sy);
+      if (ty <= 0.15) continue;
+
+      const screenX = Math.floor((W / 2) * (1 + tx / ty));
+      const scaleMult = s.type === 'boss' ? 1.25 : 1.0;
+      const sprH = Math.abs(Math.floor((VIEW_H / ty) * scaleMult));
+      const sprW = sprH;
+      const drawStartY = Math.floor(-sprH / 2 + VIEW_H / 2) - (s.type === 'boss' ? 8 : 0);
+      const drawStartX = Math.floor(-sprW / 2 + screenX);
+
+      let img = sprCoinAmmo;
+      if (s.type === 'health') img = sprBoneHealth;
+      else if (s.type === 'boss') img = !s.alive ? sprBearDead : (s.hurt > 0 ? sprBossHurt : sprBoss);
+      else if (s.type === 'enemy') img = !s.alive ? sprBearDead : (s.hurt > 0 ? sprBearHurt : sprBear);
+
+      for (let stripe = Math.max(0, drawStartX); stripe < Math.min(W, drawStartX + sprW); stripe++) {
+        if (ty < zBuffer[stripe]) {
+          const texX = Math.floor(((stripe - drawStartX) * 32) / sprW);
+          ctx.drawImage(img, texX, 0, 1, 32, stripe, drawStartY, 1, sprH);
+        }
+      }
+    }
+
+    // Top-Right Level Name Indicator
+    ctx.font = 'bold 9px Courier New';
+    ctx.fillStyle = '#fef08a';
+    ctx.fillText(`LVL ${levelIdx + 1}: ${LEVELS[levelIdx].name}`, W - 122, 14);
+
+    // Mega FUD Boss Health Bar in Level 3
+    if (activeBoss) {
+      const barW = 110;
+      const bx = Math.floor((W - barW) / 2);
+      ctx.fillStyle = 'rgba(9, 9, 11, 0.82)';
+      ctx.fillRect(bx - 4, 20, barW + 8, 17);
+      ctx.fillStyle = '#facc15';
+      ctx.font = 'bold 8px Courier New';
+      ctx.fillText('MEGA FUD BOSS', bx + 22, 28);
+      ctx.fillStyle = '#450a0a';
+      ctx.fillRect(bx, 30, barW, 4);
+      ctx.fillStyle = '#ef4444';
+      ctx.fillRect(bx, 30, Math.floor((activeBoss.hp / activeBoss.maxHp) * barW), 4);
+    }
+
+    // Golden Ð-Canon Blaster & Muzzle Flash
+    const bob = (keys['KeyW'] || keys['KeyS'] || keys['ArrowUp'] || keys['ArrowDown'])
+      ? Math.sin(performance.now() * 0.012) * 3
+      : 0;
+    const wx = W / 2 - 14 + bob;
+    const wy = VIEW_H - 36 + weaponRecoil;
+
+    if (muzzleFlash > 0) {
+      ctx.fillStyle = '#fef08a';
+      ctx.beginPath();
+      ctx.arc(wx + 14, wy - 4, 15, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#f97316';
+      ctx.beginPath();
+      ctx.arc(wx + 14, wy - 4, 9, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.fillStyle = '#334155';
+    ctx.fillRect(wx + 7, wy, 14, 38);
+    ctx.fillStyle = '#eab308';
+    ctx.fillRect(wx + 10, wy + 4, 8, 28);
+    ctx.fillStyle = '#09090b';
+    ctx.fillRect(wx + 12, wy - 2, 4, 6);
+
+    // Crosshair
+    ctx.fillStyle = 'rgba(250, 204, 21, 0.85)';
+    ctx.fillRect(W / 2 - 4, VIEW_H / 2, 3, 1);
+    ctx.fillRect(W / 2 + 2, VIEW_H / 2, 3, 1);
+    ctx.fillRect(W / 2, VIEW_H / 2 - 4, 1, 3);
+    ctx.fillRect(W / 2, VIEW_H / 2 + 2, 1, 3);
+
+    // Floating Meme Popups ("MUCH WOW!", "TO THE MOON!", "HODL!")
+    ctx.font = 'bold 10px Courier New';
+    for (const pop of popups) {
+      const px = Math.floor(pop.x - pop.text.length * 3);
+      const py = Math.floor(pop.y);
+      ctx.fillStyle = '#09090b';
+      ctx.fillText(pop.text, px + 1, py + 1);
+      ctx.fillStyle = pop.color;
+      ctx.fillText(pop.text, px, py);
+    }
+
+    // Hurt Screen Tint
+    if (hurtFlash > 0) {
+      ctx.fillStyle = 'rgba(220, 38, 38, 0.30)';
+      ctx.fillRect(0, 0, W, VIEW_H);
+    }
+
+    // =========================================================================
+    // 9. BOTTOM RETRO HUD WITH REACTIVE SHIBA PORTRAIT & "PAPETO" SIGNATURE
+    // =========================================================================
+    ctx.fillStyle = '#18181b';
+    ctx.fillRect(0, VIEW_H, W, HUD_H);
+    ctx.strokeStyle = '#eab308';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(0.5, VIEW_H + 0.5, W - 1, HUD_H - 1);
+
+    // Center Reactive Shiba Inu Portrait Box
+    const fx = W / 2 - 14;
+    const fy = VIEW_H + 3;
+    ctx.fillStyle = '#27272a';
+    ctx.fillRect(fx, fy, 28, 30);
+    ctx.strokeStyle = '#71717a';
+    ctx.strokeRect(fx, fy, 28, 30);
+
+    // Shiba Face
+    ctx.fillStyle = '#eab308';
+    ctx.fillRect(fx + 6, fy + 8, 16, 16);
+    ctx.fillStyle = '#ca8a04';
+    ctx.fillRect(fx + 6, fy + 4, 4, 5);
+    ctx.fillRect(fx + 18, fy + 4, 4, 5);
+    ctx.fillStyle = '#fef9c3';
+    ctx.fillRect(fx + 9, fy + 15, 10, 8);
+    ctx.fillStyle = '#09090b';
+    ctx.fillRect(fx + 9, fy + 11, 2, 2);
+    ctx.fillRect(fx + 17, fy + 11, 2, 2);
+    ctx.fillRect(fx + 13, fy + 16, 2, 2);
+
+    if (grinTimer > 0) {
+      // Cool Sunglasses + Grin on Kill / Pickup!
+      ctx.fillStyle = '#09090b';
+      ctx.fillRect(fx + 7, fy + 10, 6, 3);
+      ctx.fillRect(fx + 15, fy + 10, 6, 3);
+      ctx.fillRect(fx + 13, fy + 11, 2, 1);
+      ctx.fillStyle = '#ef4444';
+      ctx.fillRect(fx + 11, fy + 19, 6, 3);
+    } else if (player.hp < 45) {
+      ctx.fillStyle = '#dc2626';
+      ctx.fillRect(fx + 8, fy + 9, 2, 4);
+    }
+
+    // HUD Labels
+    ctx.font = 'bold 9px Courier New';
+    ctx.fillStyle = '#a1a1aa';
+    ctx.fillText('HEALTH', 12, VIEW_H + 12);
+    ctx.fillText('Ð-AMMO', 78, VIEW_H + 12);
+    ctx.fillText('KILLS', 202, VIEW_H + 12);
+    ctx.fillText('CREATOR', 262, VIEW_H + 12);
+
+    // HUD Values
+    ctx.font = 'bold 14px Courier New';
+    ctx.fillStyle = player.hp > 40 ? '#4ade80' : '#ef4444';
+    ctx.fillText(`${player.hp}%`, 12, VIEW_H + 28);
+
+    ctx.fillStyle = '#facc15';
+    ctx.fillText(`${player.ammo}`, 78, VIEW_H + 28);
+
+    ctx.fillStyle = '#f87171';
+    ctx.fillText(`${player.kills}/${player.totalTargets}`, 202, VIEW_H + 28);
+
+    // Permanent Gold "PAPETO" Signature in Bottom-Right HUD
+    ctx.font = 'bold 11px Courier New';
+    ctx.fillStyle = '#eab308';
+    ctx.fillText('PAPETO', 262, VIEW_H + 27);
+  }
+
+  // ===========================================================================
+  // 10. ANIMATION LOOP & WINDOW ONLOAD BOOTSTRAP
+  // ===========================================================================
+  function loop(now) {
+    if (!running) return;
+    const dt = Math.min(0.05, (now - lastTime) / 1000);
+    lastTime = now;
+    update(dt);
+    if (running) render();
+    requestAnimationFrame(loop);
+  }
+
+  window.onload = function () {
+    loadLevel(0, true);
+    render();
+  };
+})();
+</script>
+</body>
+</html>

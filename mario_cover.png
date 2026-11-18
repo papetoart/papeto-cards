@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)file:///C:/Users/Norman/Desktop/DOGE_CARDS/superdoge.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SUPER DOGE BROS - Playable NFT Card by PAPETO</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
+  body {
+    background: #09090b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Courier New', Courier, monospace;
+    touch-action: none;
+  }
+  #card-frame {
+    position: relative;
+    width: 100vw;
+    max-width: 800px;
+    aspect-ratio: 16 / 10;
+    border: 3px solid #eab308;
+    box-shadow: 0 0 28px rgba(234, 179, 8, 0.45);
+    background: #38bdf8;
+    overflow: hidden;
+  }
+  canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+  #sig-badge {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    background: rgba(9, 9, 11, 0.8);
+    border: 1px solid #eab308;
+    color: #facc15;
+    font-size: clamp(9px, 1.5vw, 12px);
+    font-weight: bold;
+    padding: 2px 7px;
+    letter-spacing: 1px;
+    z-index: 4;
+    pointer-events: none;
+  }
+  #overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(9, 9, 11, 0.88);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    padding: 16px;
+    z-index: 10;
+  }
+  #overlay h1 {
+    font-size: clamp(22px, 4.8vw, 40px);
+    color: #eab308;
+    text-shadow: 3px 3px 0 #b91c1c;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .byline {
+    font-size: clamp(11px, 2vw, 14px);
+    color: #fef08a;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    font-weight: bold;
+  }
+  #overlay p {
+    font-size: clamp(11px, 2vw, 14px);
+    color: #d4d4d8;
+    margin-bottom: 16px;
+    max-width: 480px;
+    line-height: 1.45;
+  }
+  #start-btn {
+    background: #eab308;
+    color: #09090b;
+    border: none;
+    padding: 11px 26px;
+    font-size: clamp(14px, 2.4vw, 18px);
+    font-weight: bold;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #a16207;
+    text-transform: uppercase;
+  }
+  #start-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #a16207; }
+  .touch-controls {
+    position: absolute;
+    bottom: 20%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 12px;
+    pointer-events: none;
+    z-index: 5;
+  }
+  .pad-group { pointer-events: auto; display: flex; gap: 8px; align-items: center; }
+  .tbtn {
+    width: 44px;
+    height: 44px;
+    background: rgba(9, 9, 11, 0.35);
+    border: 1px solid rgba(234, 179, 8, 0.65);
+    color: #fef08a;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  .tbtn:active { background: rgba(234, 179, 8, 0.55); }
+  .act-btn {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    font-size: 11px;
+  }
+  #btn-fire { background: rgba(220, 38, 38, 0.45); border-color: #f87171; }
+  #btn-jump { background: rgba(22, 163, 74, 0.45); border-color: #4ade80; }
+  @media (min-width: 820px) and (pointer: fine) {
+    .touch-controls { opacity: 0.3; }
+    .touch-controls:hover { opacity: 0.9; }
+  }
+</style>
+</head>
+<body>
+<div id="card-frame">
+  <div id="sig-badge">DOGEPARTY NFT • BY PAPETO</div>
+  <canvas id="screen" width="320" height="200"></canvas>
+  <div class="touch-controls">
+    <div class="pad-group">
+      <div class="tbtn" data-key="ArrowLeft">◀</div>
+      <div class="tbtn" data-key="ArrowRight">▶</div>
+    </div>
+    <div class="pad-group">
+      <div class="tbtn act-btn" id="btn-fire" data-key="KeyX">FIRE</div>
+      <div class="tbtn act-btn" id="btn-jump" data-key="Space">JUMP</div>
+    </div>
+  </div>
+  <div id="overlay">
+    <h1 id="ov-title">SUPER DOGE BROS</h1>
+    <div class="byline">CREATED BY PAPETO • EASY MODE</div>
+    <p id="ov-sub">3 WORLDS + MEGA FUD KING BOSS!<br>[A/D or ARROWS] Run • [SPACE/W] Jump • [X/CLICK] Ð-Shot</p>
+    <button id="start-btn">PLAY CARD</button>
+  </div>
+</div>
+
+<script>
+(() => {
+  const canvas = document.getElementById('screen');
+  const ctx = canvas.getContext('2d');
+  const overlay = document.getElementById('overlay');
+  const ovTitle = document.getElementById('ov-title');
+  const ovSub = document.getElementById('ov-sub');
+  const startBtn = document.getElementById('start-btn');
+
+  const W = 320, H = 200, HUD_H = 36, VIEW_H = H - HUD_H;
+  const TILE = 16;
+
+  // --- RETRO AUDIO ---
+  let audioCtx = null;
+  function initAudio() {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    } catch (e) {}
+  }
+  function beep(freq1, freq2, dur, type = 'square', vol = 0.14) {
+    if (!audioCtx) return;
+    try {
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq1, now);
+      if (freq2) osc.frequency.exponentialRampToValueAtTime(freq2, now + dur);
+      g.gain.setValueAtTime(vol, now);
+      g.gain.exponentialRampToValueAtTime(0.005, now + dur);
+      osc.connect(g); g.connect(audioCtx.destination);
+      osc.start(now); osc.stop(now + dur);
+    } catch (e) {}
+  }
+
+  // --- 3 LEVELS (10 rows x 68 cols) ---
+  // # = ground, B = brick, ? = Doge Bone block, P = PAPETO gold block, T = pipe, L = lava
+  const LEVELS = [
+    {
+      name: '1-1 DOGE MEADOWS',
+      sky: '#38bdf8',
+      groundTop: '#22c55e',
+      groundBody: '#92400e',
+      rows: [
+        '                                                                    ',
+        '                                                                    ',
+        '              ?   P                                                 ',
+        '                                    B?B                P?P          ',
+        '         B?B                                                        ',
+        '                      TT                      TT                    ',
+        '                      TT       B?B            TT                    ',
+        '                      TT                      TT               F    ',
+        '################################  ##################################',
+        '################################  ##################################'
+      ],
+      coins: [[10,3],[11,3],[15,1],[25,3],[26,3],[37,2],[38,2],[47,3],[56,2],[57,2]],
+      enemies: [
+        { type: 'fud', x: 16, y: 7 },
+        { type: 'fud', x: 28, y: 7 },
+        { type: 'fud', x: 41, y: 7 },
+        { type: 'fud', x: 52, y: 7 }
+      ],
+      boss: null
+    },
+    {
+      name: '1-2 CRYPTO CAVERNS',
+      sky: '#0f172a',
+      groundTop: '#38bdf8',
+      groundBody: '#1e293b',
+      rows: [
+        '                                                                    ',
+        '                                                                    ',
+        '                  P?P                          ?                    ',
+        '                                     B?B                            ',
+        '          B?B             BB                     PBP                ',
+        '                                           TT                       ',
+        '                   TT                      TT                       ',
+        '                   TT                      TT                  F    ',
+        '###############  ##############  ################  #################',
+        '###############  ##############  ################  #################'
+      ],
+      coins: [[11,3],[19,1],[20,1],[27,3],[38,2],[39,2],[50,3],[51,3],[58,5]],
+      enemies: [
+        { type: 'fud', x: 12, y: 7 },
+        { type: 'paper', x: 23, y: 7 },
+        { type: 'fud', x: 37, y: 7 },
+        { type: 'paper', x: 46, y: 7 },
+        { type: 'fud', x: 56, y: 7 }
+      ],
+      boss: null
+    },
+    {
+      name: '1-3 MOON CASTLE',
+      sky: '#18181b',
+      groundTop: '#eab308',
+      groundBody: '#3f3f46',
+      rows: [
+        '                                                                    ',
+        '                                                                    ',
+        '              ?                           P?P                       ',
+        '                        B?B                                         ',
+        '       PBP                                        B?B               ',
+        '                 TT                                                 ',
+        '                 TT           B?B                                   ',
+        '                 TT                                            F    ',
+        '##############LLLLL#################################################',
+        '##############LLLLL#################################################'
+      ],
+      coins: [[8,3],[14,1],[25,2],[26,2],[31,5],[32,5],[42,3],[43,3]],
+      enemies: [
+        { type: 'paper', x: 11, y: 7 },
+        { type: 'fud', x: 24, y: 7 },
+        { type: 'paper', x: 36, y: 7 }
+      ],
+      boss: { x: 54, y: 5.5, hp: 8, maxHp: 8 }
+    }
+  ];
+
+  let lvlIdx = 0, mode = 'title', keys = {}, justPressed = {};
+  let grid = [], coins = [], enemies = [], shots = [], popups = [], boss = null;
+  let player, camX = 0, coolTimer = 0, shootCD = 0, lastTime = 0;
+
+  function loadLevel(idx, keepStats = false) {
+    lvlIdx = idx;
+    const L = LEVELS[idx];
+    grid = L.rows.map(r => r.split(''));
+    coins = L.coins.map(([cx, cy]) => ({ x: cx * TILE + 4, y: cy * TILE + 4, got: false }));
+    enemies = L.enemies.map(e => ({
+      type: e.type, x: e.x * TILE, y: e.y * TILE, vx: -0.55, alive: true, hurt: 0
+    }));
+    boss = L.boss ? {
+      x: L.boss.x * TILE, y: L.boss.y * TILE, vx: -0.7, vy: 0,
+      hp: L.boss.hp, maxHp: L.boss.maxHp, alive: true, hurt: 0, jumpCD: 1.5
+    } : null;
+    shots = [];
+    popups = [];
+    const prevHp = keepStats ? Math.min(5, player.hp + 1) : 5;
+    const prevCoins = keepStats ? player.coins : 0;
+    const prevScore = keepStats ? player.score : 0;
+    player = {
+      x: 2 * TILE, y: 6 * TILE, vx: 0, vy: 0,
+      w: 12, h: 14, dir: 1, onGround: false, coyote: 0,
+      hp: prevHp, maxHp: 5, coins: prevCoins, score: prevScore,
+      invuln: 0, safeX: 2 * TILE, safeY: 6 * TILE
+    };
+    camX = 0;
+    shootCD = 0;
+  }
+
+  function addPopup(x, y, text, color = '#facc15') {
+    popups.push({ x, y, text, color, life: 0.9 });
+  }
+
+  function isSolid(tx, ty) {
+    if (ty < 0) return false;
+    if (ty >= grid.length || tx < 0 || tx >= grid[0].length) return ty >= grid.length ? false : true;
+    const ch = grid[ty][tx];
+    return ch === '#' || ch === 'B' || ch === '?' || ch === 'P' || ch === 'T' || ch === 'U';
+  }
+
+  function hitBlock(tx, ty) {
+    const ch = grid[ty]?.[tx];
+    if (!ch) return;
+    if (ch === '?') {
+      grid[ty][tx] = 'U';
+      player.hp = Math.min(player.maxHp, player.hp + 1);
+      player.score += 200;
+      coolTimer = 45;
+      addPopup(tx * TILE, ty * TILE - 6, '+1 BONE HP!', '#4ade80');
+      beep(520, 880, 0.16, 'triangle');
+    } else if (ch === 'P') {
+      grid[ty][tx] = 'U';
+      player.coins += 3;
+      player.score += 500;
+      coolTimer = 45;
+      addPopup(tx * TILE - 6, ty * TILE - 6, 'PAPETO +500!', '#facc15');
+      beep(660, 990, 0.18, 'triangle');
+    } else if (ch === 'B') {
+      player.score += 50;
+      beep(220, 140, 0.08);
+    }
+  }
+
+  function shootDogeCoin() {
+    if (mode !== 'play' || shootCD > 0) return;
+    shootCD = 0.25;
+    shots.push({
+      x: player.x + (player.dir > 0 ? 12 : -4),
+      y: player.y + 5,
+      vx: player.dir * 3.6,
+      life: 1.4
+    });
+    beep(480, 260, 0.09, 'square', 0.1);
+  }
+
+  function hurtPlayer(respawnSafe = false) {
+    if (player.invuln > 0) return;
+    player.hp--;
+    player.invuln = 1.4;
+    beep(180, 65, 0.22, 'sawtooth');
+    if (player.hp <= 0) {
+      mode = 'gameover';
+      ovTitle.textContent = 'GAME OVER';
+      ovTitle.style.color = '#ef4444';
+      ovSub.innerHTML = `FINAL SCORE: ${player.score} &bull; COINS: ${player.coins} Ð<br>TRY AGAIN, PAPETO!`;
+      startBtn.textContent = 'RETRY';
+      overlay.style.display = 'flex';
+      return;
+    }
+    if (respawnSafe) {
+      player.x = player.safeX;
+      player.y = player.safeY;
+      player.vx = 0;
+      player.vy = 0;
+      addPopup(player.x, player.y - 8, 'SAFE RESPAWN!', '#38bdf8');
+    }
+  }
+
+  // --- INPUTS ---
+  window.addEventListener('keydown', e => {
+    if (!keys[e.code]) justPressed[e.code] = true;
+    keys[e.code] = true;
+    if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) e.preventDefault();
+    if (e.code === 'KeyX' || e.code === 'KeyZ' || e.code === 'ShiftLeft') shootDogeCoin();
+  });
+  window.addEventListener('keyup', e => { keys[e.code] = false; });
+  canvas.addEventListener('mousedown', () => { initAudio(); shootDogeCoin(); });
+
+  document.querySelectorAll('.tbtn').forEach(btn => {
+    const code = btn.dataset.key;
+    const down = e => {
+      e.preventDefault();
+      initAudio();
+      if (!keys[code]) justPressed[code] = true;
+      keys[code] = true;
+      if (code === 'KeyX') shootDogeCoin();
+    };
+    const up = e => { e.preventDefault(); keys[code] = false; };
+    btn.addEventListener('touchstart', down, { passive: false });
+    btn.addEventListener('touchend', up, { passive: false });
+    btn.addEventListener('mousedown', down);
+    btn.addEventListener('mouseup', up);
+    btn.addEventListener('mouseleave', up);
+  });
+
+  startBtn.addEventListener('click', () => {
+    initAudio();
+    overlay.style.display = 'none';
+    if (mode === 'nextlevel') {
+      loadLevel(lvlIdx + 1, true);
+    } else {
+      loadLevel(0, false);
+    }
+    mode = 'play';
+    lastTime = performance.now();
+    requestAnimationFrame(loop);
+  });
+
+  // --- UPDATE ---
+  function update(dt) {
+    if (coolTimer > 0) coolTimer--;
+    if (shootCD > 0) shootCD -= dt;
+    if (player.invuln > 0) player.invuln -= dt;
+
+    // Horizontal move
+    let move = 0;
+    if (keys['ArrowLeft'] || keys['KeyA']) move -= 1;
+    if (keys['ArrowRight'] || keys['KeyD']) move += 1;
+    if (move !== 0) player.dir = move;
+    player.vx = move * 1.75;
+
+    // Jump with Coyote Time (Easy Mode)
+    if (player.onGround) player.coyote = 0.14;
+    else player.coyote -= dt;
+
+    const jumpTrig = justPressed['Space'] || justPressed['ArrowUp'] || justPressed['KeyW'];
+    if (jumpTrig && player.coyote > 0) {
+      player.vy = -4.35;
+      player.onGround = false;
+      player.coyote = 0;
+      beep(260, 540, 0.13, 'square', 0.11);
+    }
+    justPressed = {};
+
+    // Gravity
+    player.vy = Math.min(4.8, player.vy + 11.5 * dt);
+
+    // Move X & Collide
+    player.x += player.vx;
+    if (player.x < 0) player.x = 0;
+    let leftT = Math.floor(player.x / TILE);
+    let rightT = Math.floor((player.x + player.w - 1) / TILE);
+    let topT = Math.floor(player.y / TILE);
+    let botT = Math.floor((player.y + player.h - 1) / TILE);
+
+    if (player.vx > 0 && (isSolid(rightT, topT) || isSolid(rightT, botT))) {
+      player.x = rightT * TILE - player.w;
+    } else if (player.vx < 0 && (isSolid(leftT, topT) || isSolid(leftT, botT))) {
+      player.x = (leftT + 1) * TILE;
+    }
+
+    // Move Y & Collide
+    player.y += player.vy;
+    player.onGround = false;
+    leftT = Math.floor((player.x + 2) / TILE);
+    rightT = Math.floor((player.x + player.w - 3) / TILE);
+    topT = Math.floor(player.y / TILE);
+    botT = Math.floor((player.y + player.h - 1) / TILE);
+
+    if (player.vy > 0 && (isSolid(leftT, botT) || isSolid(rightT, botT))) {
+      player.y = botT * TILE - player.h;
+      player.vy = 0;
+      player.onGround = true;
+      // Record safe ground position
+      if (grid[botT]?.[leftT] === '#' && grid[botT]?.[rightT] === '#') {
+        player.safeX = player.x;
+        player.safeY = player.y;
+      }
+    } else if (player.vy < 0 && (isSolid(leftT, topT) || isSolid(rightT, topT))) {
+      player.y = (topT + 1) * TILE;
+      player.vy = 0;
+      if (isSolid(leftT, topT)) hitBlock(leftT, topT);
+      else hitBlock(rightT, topT);
+    }
+
+    // Check Lava or Pit Fall (Easy Mode safe respawn)
+    const footTile = grid[Math.floor((player.y + player.h) / TILE)]?.[Math.floor((player.x + 6) / TILE)];
+    if (footTile === 'L' || player.y > VIEW_H + 10) {
+      hurtPlayer(true);
+      if (mode !== 'play') return;
+    }
+
+    // Coins
+    for (const c of coins) {
+      if (!c.got && Math.abs(player.x - c.x) < 12 && Math.abs(player.y - c.y) < 14) {
+        c.got = true;
+        player.coins++;
+        player.score += 100;
+        beep(740, 1050, 0.09, 'triangle', 0.11);
+      }
+    }
+
+    // Ð-Shots
+    for (const s of shots) {
+      s.x += s.vx;
+      s.life -= dt;
+      const stx = Math.floor((s.x + 3) / TILE);
+      const sty = Math.floor((s.y + 3) / TILE);
+      if (isSolid(stx, sty)) s.life = 0;
+    }
+    shots = shots.filter(s => s.life > 0);
+
+    // Enemies
+    for (const e of enemies) {
+      if (!e.alive) continue;
+      if (e.hurt > 0) e.hurt--;
+      e.x += e.vx;
+      const checkX = e.vx < 0 ? Math.floor(e.x / TILE) : Math.floor((e.x + 13) / TILE);
+      const bodyY = Math.floor((e.y + 8) / TILE);
+      const floorY = Math.floor((e.y + 17) / TILE);
+      if (isSolid(checkX, bodyY) || !isSolid(checkX, floorY)) e.vx *= -1;
+
+      // Shot hit enemy
+      for (const s of shots) {
+        if (Math.abs(s.x - e.x) < 13 && Math.abs(s.y - e.y) < 13) {
+          s.life = 0;
+          e.alive = false;
+          player.score += 150;
+          coolTimer = 30;
+          addPopup(e.x, e.y - 6, 'MUCH WOW! +150');
+          beep(320, 120, 0.12);
+        }
+      }
+
+      // Player vs Enemy
+      if (e.alive && Math.abs(player.x - e.x) < 11 && Math.abs(player.y - e.y) < 12) {
+        if (player.vy > 0 && player.y + player.h < e.y + 10) {
+          e.alive = false;
+          player.vy = -3.3;
+          player.score += 150;
+          coolTimer = 30;
+          addPopup(e.x, e.y - 6, 'BONK! +150');
+          beep(360, 150, 0.12);
+        } else {
+          hurtPlayer(false);
+        }
+      }
+    }
+
+    // Boss (Level 3)
+    if (boss && boss.alive) {
+      if (boss.hurt > 0) boss.hurt--;
+      boss.x += boss.vx;
+      if (boss.x < 48 * TILE) { boss.x = 48 * TILE; boss.vx = Math.abs(boss.vx); }
+      if (boss.x > 60 * TILE) { boss.x = 60 * TILE; boss.vx = -Math.abs(boss.vx); }
+
+      boss.jumpCD -= dt;
+      if (boss.jumpCD <= 0 && boss.y >= 5.5 * TILE - 1) {
+        boss.vy = -3.6;
+        boss.jumpCD = 2.0;
+      }
+      boss.vy += 9.5 * dt;
+      boss.y += boss.vy;
+      if (boss.y > 5.5 * TILE) { boss.y = 5.5 * TILE; boss.vy = 0; }
+
+      // Shot hit boss
+      for (const s of shots) {
+        if (s.x > boss.x - 4 && s.x < boss.x + 28 && s.y > boss.y - 4 && s.y < boss.y + 38) {
+          s.life = 0;
+          boss.hp--;
+          boss.hurt = 8;
+          beep(220, 95, 0.12);
+          if (boss.hp <= 0) {
+            boss.alive = false;
+            player.score += 1500;
+            coolTimer = 60;
+            addPopup(boss.x, boss.y - 10, 'MEGA FUD DEFEATED!', '#4ade80');
+            beep(440, 880, 0.35, 'triangle');
+          }
+        }
+      }
+
+      // Player vs Boss
+      if (boss.alive && player.x + 10 > boss.x && player.x < boss.x + 24 && player.y + 12 > boss.y && player.y < boss.y + 36) {
+        if (player.vy > 0 && player.y + player.h < boss.y + 16) {
+          boss.hp -= 2;
+          boss.hurt = 10;
+          player.vy = -3.8;
+          beep(260, 110, 0.14);
+          if (boss.hp <= 0) {
+            boss.alive = false;
+            player.score += 1500;
+            coolTimer = 60;
+            addPopup(boss.x, boss.y - 10, 'MEGA FUD DEFEATED!', '#4ade80');
+          }
+        } else {
+          hurtPlayer(false);
+        }
+      }
+    }
+
+    // Flag Goal Check (Col 63)
+    if (player.x >= 62.5 * TILE) {
+      if (boss && boss.alive) {
+        player.x = 62.4 * TILE;
+        addPopup(player.x - 24, player.y - 12, 'DEFEAT BOSS FIRST!', '#f87171');
+      } else {
+        player.score += 500;
+        beep(523, 1046, 0.3, 'triangle');
+        if (lvlIdx < LEVELS.length - 1) {
+          mode = 'nextlevel';
+          ovTitle.textContent = `WORLD 1-${lvlIdx + 1} CLEAR!`;
+          ovTitle.style.color = '#4ade80';
+          ovSub.innerHTML = `+1 HEART RESTORED! SCORE: ${player.score}<br>NEXT: ${LEVELS[lvlIdx + 1].name}`;
+          startBtn.textContent = 'NEXT WORLD';
+          overlay.style.display = 'flex';
+        } else {
+          mode = 'win';
+          ovTitle.textContent = 'TO THE MOON!';
+          ovTitle.style.color = '#facc15';
+          ovSub.innerHTML = `ALL 3 WORLDS + MEGA FUD KING CLEARED!<br>FINAL SCORE: ${player.score} &bull; CARD BY PAPETO`;
+          startBtn.textContent = 'PLAY AGAIN';
+          overlay.style.display = 'flex';
+        }
+        return;
+      }
+    }
+
+    // Popups
+    for (const p of popups) { p.y -= 14 * dt; p.life -= dt; }
+    popups = popups.filter(p => p.life > 0);
+
+    // Camera Follow
+    const maxCam = grid[0].length * TILE - W;
+    camX = Math.max(0, Math.min(maxCam, player.x - W * 0.35));
+  }
+
+  // --- RENDER ---
+  function render() {
+    const L = LEVELS[lvlIdx];
+    ctx.fillStyle = L.sky;
+    ctx.fillRect(0, 0, W, VIEW_H);
+
+    // Parallax Hills / Stars
+    if (lvlIdx === 0) {
+      ctx.fillStyle = '#16a34a';
+      for (let i = 0; i < 10; i++) {
+        const hx = ((i * 130 - camX * 0.35) % 1300 + 1300) % 1300 - 80;
+        ctx.beginPath(); ctx.arc(hx, VIEW_H - 30, 42, Math.PI, 0); ctx.fill();
+      }
+    } else {
+      ctx.fillStyle = '#fef08a';
+      for (let i = 0; i < 24; i++) {
+        const sx = ((i * 53 - camX * 0.2) % W + W) % W;
+        const sy = (i * 29) % 105;
+        ctx.fillRect(sx, sy, 2, 2);
+      }
+    }
+
+    ctx.save();
+    ctx.translate(-Math.floor(camX), 0);
+
+    // Draw Tiles
+    const startCol = Math.max(0, Math.floor(camX / TILE));
+    const endCol = Math.min(grid[0].length - 1, Math.ceil((camX + W) / TILE));
+
+    for (let r = 0; r < grid.length; r++) {
+      for (let c = startCol; c <= endCol; c++) {
+        const ch = grid[r][c];
+        const x = c * TILE, y = r * TILE;
+        if (ch === '#') {
+          ctx.fillStyle = r === 8 ? L.groundTop : L.groundBody;
+          ctx.fillRect(x, y, TILE, TILE);
+          ctx.fillStyle = 'rgba(0,0,0,0.18)';
+          ctx.fillRect(x, y + TILE - 2, TILE, 2);
+        } else if (ch === 'B') {
+          ctx.fillStyle = '#b45309'; ctx.fillRect(x, y, TILE, TILE);
+          ctx.strokeStyle = '#451a03'; ctx.strokeRect(x + 0.5, y + 0.5, TILE - 1, TILE - 1);
+        } else if (ch === '?') {
+          ctx.fillStyle = '#eab308'; ctx.fillRect(x, y, TILE, TILE);
+          ctx.strokeStyle = '#713f12'; ctx.strokeRect(x + 0.5, y + 0.5, TILE - 1, TILE - 1);
+          ctx.fillStyle = '#422006'; ctx.font = 'bold 11px Courier New'; ctx.fillText('?', x + 5, y + 12);
+        } else if (ch === 'P') {
+          ctx.fillStyle = '#facc15'; ctx.fillRect(x, y, TILE, TILE);
+          ctx.strokeStyle = '#991b1b'; ctx.strokeRect(x + 0.5, y + 0.5, TILE - 1, TILE - 1);
+          ctx.fillStyle = '#991b1b'; ctx.font = 'bold 11px Courier New'; ctx.fillText('P', x + 5, y + 12);
+        } else if (ch === 'U') {
+          ctx.fillStyle = '#52525b'; ctx.fillRect(x, y, TILE, TILE);
+          ctx.strokeStyle = '#27272a'; ctx.strokeRect(x + 0.5, y + 0.5, TILE - 1, TILE - 1);
+        } else if (ch === 'T') {
+          ctx.fillStyle = '#15803d'; ctx.fillRect(x, y, TILE, TILE);
+          ctx.fillStyle = '#22c55e'; ctx.fillRect(x + 2, y, 4, TILE);
+        } else if (ch === 'L') {
+          ctx.fillStyle = '#dc2626'; ctx.fillRect(x, y, TILE, TILE);
+          ctx.fillStyle = '#f97316'; ctx.fillRect(x, y, TILE, 4);
+        } else if (ch === 'F') {
+          // Goal Flagpole + Castle
+          ctx.fillStyle = '#e4e4e7'; ctx.fillRect(x + 6, y - 64, 3, 80);
+          ctx.fillStyle = '#eab308'; ctx.fillRect(x + 9, y - 62, 16, 11);
+          ctx.fillStyle = '#09090b'; ctx.font = 'bold 9px Courier New'; ctx.fillText('Ð', x + 13, y - 53);
+          // Mini Castle
+          ctx.fillStyle = '#78350f'; ctx.fillRect(x + 28, y - 24, 34, 40);
+          ctx.fillStyle = '#09090b'; ctx.fillRect(x + 40, y - 4, 10, 20);
+          ctx.fillStyle = '#facc15'; ctx.font = 'bold 7px Courier New'; ctx.fillText('PAPETO', x + 31, y - 14);
+        }
+      }
+    }
+
+    // Draw Coins
+    for (const c of coins) {
+      if (c.got) continue;
+      ctx.fillStyle = '#facc15';
+      ctx.beginPath(); ctx.arc(c.x + 4, c.y + 4, 5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#854d0e'; ctx.font = 'bold 8px Courier New'; ctx.fillText('Ð', c.x + 1.5, c.y + 7);
+    }
+
+    // Draw Ð-Shots
+    for (const s of shots) {
+      ctx.fillStyle = '#fef08a';
+      ctx.beginPath(); ctx.arc(s.x + 3, s.y + 3, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#ca8a04';
+      ctx.beginPath(); ctx.arc(s.x + 3, s.y + 3, 2, 0, Math.PI * 2); ctx.fill();
+    }
+
+    // Draw Enemies
+    for (const e of enemies) {
+      if (!e.alive) continue;
+      ctx.fillStyle = e.type === 'fud' ? '#b91c1c' : '#e4e4e7';
+      ctx.fillRect(e.x + 1, e.y + 3, 12, 11);
+      // Angry Eyes
+      ctx.fillStyle = '#facc15';
+      ctx.fillRect(e.x + 3, e.y + 6, 2, 2); ctx.fillRect(e.x + 9, e.y + 6, 2, 2);
+      // Feet
+      ctx.fillStyle = '#09090b';
+      ctx.fillRect(e.x + 2, e.y + 14, 4, 2); ctx.fillRect(e.x + 8, e.y + 14, 4, 2);
+    }
+
+    // Draw Mega FUD King Boss
+    if (boss && boss.alive) {
+      ctx.fillStyle = boss.hurt > 0 ? '#ffffff' : '#991b1b';
+      ctx.fillRect(boss.x, boss.y + 6, 28, 32);
+      // Gold Crown
+      ctx.fillStyle = '#facc15';
+      ctx.fillRect(boss.x + 4, boss.y, 20, 6);
+      // Glowing Eyes
+      ctx.fillStyle = '#fef08a';
+      ctx.fillRect(boss.x + 6, boss.y + 12, 4, 4); ctx.fillRect(boss.x + 18, boss.y + 12, 4, 4);
+      // Boss HP Bar
+      ctx.fillStyle = '#09090b'; ctx.fillRect(boss.x - 2, boss.y - 9, 32, 5);
+      ctx.fillStyle = '#ef4444'; ctx.fillRect(boss.x - 1, boss.y - 8, 30 * (boss.hp / boss.maxHp), 3);
+    }
+
+    // Draw Super Shiba Player
+    if (!(player.invuln > 0 && Math.floor(player.invuln * 14) % 2 === 0)) {
+      const px = Math.floor(player.x), py = Math.floor(player.y);
+      // Overalls
+      ctx.fillStyle = '#2563eb'; ctx.fillRect(px + 2, py + 8, 8, 6);
+      // Shiba Head
+      ctx.fillStyle = '#eab308'; ctx.fillRect(px + 1, py + 2, 10, 7);
+      // Red Mario-Doge Cap
+      ctx.fillStyle = '#dc2626'; ctx.fillRect(px + 1, py, 10, 3);
+      if (player.dir > 0) ctx.fillRect(px + 8, py + 2, 5, 2);
+      else ctx.fillRect(px - 1, py + 2, 5, 2);
+      // Eye
+      ctx.fillStyle = '#09090b';
+      ctx.fillRect(player.dir > 0 ? px + 8 : px + 3, py + 4, 2, 2);
+    }
+
+    // Floating Popups
+    ctx.font = 'bold 8px Courier New';
+    for (const p of popups) {
+      ctx.fillStyle = p.color;
+      ctx.fillText(p.text, p.x, p.y);
+    }
+
+    ctx.restore();
+
+    // --- BOTTOM RETRO HUD ---
+    ctx.fillStyle = '#18181b';
+    ctx.fillRect(0, VIEW_H, W, HUD_H);
+    ctx.strokeStyle = '#eab308';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(0.5, VIEW_H + 0.5, W - 1, HUD_H - 1);
+
+    // Shiba Portrait Box
+    const fx = W / 2 - 14, fy = VIEW_H + 3;
+    ctx.fillStyle = '#27272a'; ctx.fillRect(fx, fy, 28, 30);
+    ctx.strokeStyle = '#eab308'; ctx.strokeRect(fx, fy, 28, 30);
+    ctx.fillStyle = '#eab308'; ctx.fillRect(fx + 6, fy + 9, 16, 15);
+    ctx.fillStyle = '#dc2626'; ctx.fillRect(fx + 5, fy + 5, 18, 4); // Red Cap
+    ctx.fillStyle = '#fef9c3'; ctx.fillRect(fx + 9, fy + 16, 10, 7);
+    ctx.fillStyle = '#09090b';
+    if (coolTimer > 0) {
+      ctx.fillRect(fx + 7, fy + 11, 14, 3); // Sunglasses
+    } else {
+      ctx.fillRect(fx + 9, fy + 12, 2, 2); ctx.fillRect(fx + 17, fy + 12, 2, 2);
+    }
+
+    // HUD Stats
+    ctx.font = 'bold 8px Courier New';
+    ctx.fillStyle = '#a1a1aa';
+    ctx.fillText('HEARTS', 10, VIEW_H + 11);
+    ctx.fillText('DOGE Ð', 82, VIEW_H + 11);
+    ctx.fillText('WORLD', 202, VIEW_H + 11);
+    ctx.fillText('CREATOR', 260, VIEW_H + 11);
+
+    ctx.font = 'bold 12px Courier New';
+    ctx.fillStyle = '#ef4444';
+    ctx.fillText('♥'.repeat(player.hp) + '♡'.repeat(player.maxHp - player.hp), 10, VIEW_H + 26);
+    ctx.fillStyle = '#facc15';
+    ctx.fillText(`${player.coins}`, 82, VIEW_H + 26);
+    ctx.fillStyle = '#4ade80';
+    ctx.fillText(`1-${lvlIdx + 1}`, 202, VIEW_H + 26);
+    ctx.font = 'bold 10px Courier New';
+    ctx.fillStyle = '#facc15';
+    ctx.fillText('PAPETO', 260, VIEW_H + 26);
+  }
+
+  function loop(now) {
+    if (mode !== 'play') return;
+    const dt = Math.min(0.05, (now - lastTime) / 1000);
+    lastTime = now;
+    update(dt);
+    render();
+    requestAnimationFrame(loop);
+  }
+
+  loadLevel(0, false);
+  render();
+})();
+</script>
+
+</body></html>
