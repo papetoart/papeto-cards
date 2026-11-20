@@ -3,7 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>SUPERBROS - Mega Stages & Super Weapons | Playable NFT by PAPETO</title>
+<title>SUPERBROS - Playable NFT Arcade by @papeto2</title>
+<meta name="description" content="11 Mega Worlds, Secret Vaults & Super Weapons. Playable NFT Arcade Game by X: @papeto2 & Telegram: @papeto.">
+<meta property="og:title" content="SUPERBROS — Playable NFT Game by @papeto2">
+<meta property="og:description" content="Play as DOGE or PEPE across 11 Mega Worlds and claim your Champion Victory Card! Created by X: @papeto2 & TG: @papeto.">
+<meta property="og:url" content="https://papetoart.github.io/papeto-cards/superbros.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@papeto2">
+<meta name="twitter:title" content="SUPERBROS — Playable NFT Game by @papeto2">
+<meta name="twitter:description" content="Defeat the Omega Titan across 11 Worlds and share your Victory Card! By X: @papeto2 & TG: @papeto.">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
   body {
@@ -29,32 +37,38 @@
     background: #0f172a;
     overflow: hidden;
   }
-  canvas {
+  canvas#game {
     width: 100%;
     height: 100%;
     display: block;
+    cursor: crosshair;
   }
   #sig-badge {
     position: absolute;
     top: 40px;
     right: 10px;
-    background: rgba(15, 23, 42, 0.82);
+    background: rgba(15, 23, 42, 0.85);
     backdrop-filter: blur(6px);
     border: 1.5px solid rgba(250, 204, 21, 0.85);
     border-radius: 20px;
     color: #fde047;
-    font-size: clamp(7px, 1.2vw, 10px);
+    font-size: clamp(7px, 1.15vw, 9.5px);
     font-weight: 900;
     padding: 3px 10px;
-    letter-spacing: 1px;
+    letter-spacing: 0.8px;
     z-index: 4;
     pointer-events: none;
     box-shadow: 0 2px 8px rgba(0,0,0,0.4);
   }
-  #mute-btn {
+  .top-hud-btns {
     position: absolute;
     top: 6px;
     right: 10px;
+    display: flex;
+    gap: 6px;
+    z-index: 15;
+  }
+  .hud-icon-btn {
     background: rgba(15, 23, 42, 0.9);
     border: 1.5px solid #38bdf8;
     color: #fff;
@@ -62,7 +76,6 @@
     font-size: 13px;
     padding: 2px 7px;
     cursor: pointer;
-    z-index: 15;
   }
   #overlay {
     position: absolute;
@@ -90,9 +103,9 @@
     margin-bottom: 1px;
   }
   .byline {
-    font-size: clamp(7.5px, 1.2vw, 11px);
+    font-size: clamp(7.5px, 1.2vw, 10.5px);
     color: #38bdf8;
-    letter-spacing: 1.5px;
+    letter-spacing: 1.2px;
     margin-bottom: 5px;
     font-weight: 900;
     text-transform: uppercase;
@@ -217,21 +230,21 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
   }
   .action-btn {
     background: linear-gradient(180deg, #22c55e, #15803d);
     color: #fff;
     border: 2px solid #dcfce7;
-    padding: 6px 22px;
-    font-size: clamp(11px, 1.8vw, 15px);
+    padding: 6px 18px;
+    font-size: clamp(10px, 1.6vw, 14px);
     font-weight: 900;
     font-family: inherit;
     cursor: pointer;
     box-shadow: 0 4px 0 #14532d, 0 8px 18px rgba(0, 0, 0, 0.5);
     text-transform: uppercase;
     border-radius: 11px;
-    letter-spacing: 1.2px;
+    letter-spacing: 1px;
   }
   .action-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #14532d; }
 
@@ -240,14 +253,80 @@
     border-color: #e0f2fe;
     box-shadow: 0 4px 0 #0c4a6e, 0 8px 18px rgba(0, 0, 0, 0.5);
   }
-  .continue-btn:active { box-shadow: 0 2px 0 #0c4a6e; }
-
   .restart-btn {
     background: linear-gradient(180deg, #f59e0b, #b45309);
     border-color: #fef3c7;
     box-shadow: 0 4px 0 #78350f, 0 8px 18px rgba(0, 0, 0, 0.5);
   }
-  .restart-btn:active { box-shadow: 0 2px 0 #78350f; }
+  .preview-btn {
+    background: linear-gradient(180deg, #a855f7, #6b21a8);
+    border-color: #f3e8ff;
+    box-shadow: 0 4px 0 #3b0764, 0 8px 18px rgba(0, 0, 0, 0.5);
+  }
+
+  /* --- COLLECTIBLE VICTORY NFT CARD MODAL --- */
+  #victory-modal {
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 5, 12, 0.96);
+    backdrop-filter: blur(10px);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    z-index: 30;
+    touch-action: auto;
+  }
+  #nft-card-canvas {
+    width: auto;
+    height: 76%;
+    max-width: 94%;
+    aspect-ratio: 16 / 10;
+    border: 2.5px solid #facc15;
+    border-radius: 14px;
+    box-shadow: 0 0 30px rgba(250, 204, 21, 0.5);
+    margin-bottom: 8px;
+  }
+  .card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  .x-share-btn {
+    background: linear-gradient(180deg, #1e293b, #020617);
+    color: #fff;
+    border: 2px solid #38bdf8;
+    padding: 5px 15px;
+    font-size: clamp(10px, 1.5vw, 13px);
+    font-weight: 900;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 3px 0 #0369a1;
+  }
+  .save-png-btn {
+    background: linear-gradient(180deg, #facc15, #ca8a04);
+    color: #0f172a;
+    border: 2px solid #fef9c3;
+    padding: 5px 15px;
+    font-size: clamp(10px, 1.5vw, 13px);
+    font-weight: 900;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 3px 0 #713f12;
+  }
+  .close-card-btn {
+    background: linear-gradient(180deg, #22c55e, #15803d);
+    color: #fff;
+    border: 2px solid #dcfce7;
+    padding: 5px 15px;
+    font-size: clamp(10px, 1.5vw, 13px);
+    font-weight: 900;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 3px 0 #14532d;
+  }
 
   /* --- MOBILE & DESKTOP ARCADE CONTROLS --- */
   .touch-controls {
@@ -350,12 +429,16 @@
 </head>
 <body>
 <div id="card-frame">
-  <button id="mute-btn" type="button" title="Toggle Sound">🔊</button>
-  <div id="sig-badge">PLAYABLE NFT BY PAPETO</div>
+  <div class="top-hud-btns">
+    <button id="pause-btn" class="hud-icon-btn" type="button" title="Pause (P)">⏸</button>
+    <button id="mute-btn" class="hud-icon-btn" type="button" title="Toggle Sound">🔊</button>
+  </div>
+  <div id="sig-badge">BY X: @PAPETO2 • TG: @PAPETO</div>
   <canvas id="game" width="800" height="500"></canvas>
+
   <div id="overlay">
     <h1>SUPERBROS</h1>
-    <div id="status-line" class="byline">11 MEGA WORLDS &bull; SECRET VAULTS &bull; PLAYABLE NFT BY PAPETO</div>
+    <div id="status-line" class="byline">11 MEGA WORLDS • PLAYABLE NFT BY X: @PAPETO2 &amp; TG: @PAPETO</div>
 
     <div class="hero-section-label">CHOOSE YOUR HERO (2 PLAYERS):</div>
     <div class="hero-row">
@@ -382,8 +465,18 @@
 
     <div class="btn-row">
       <button id="start-btn" class="action-btn" type="button">PLAY GAME</button>
+      <button id="preview-card-btn" class="action-btn preview-btn" type="button">🏆 NFT CARD</button>
       <button id="continue-btn" class="action-btn continue-btn" type="button" style="display:none;">CONTINUE</button>
       <button id="restart-btn" class="action-btn restart-btn" type="button" style="display:none;">START AGAIN</button>
+    </div>
+  </div>
+
+  <div id="victory-modal">
+    <canvas id="nft-card-canvas" width="760" height="475"></canvas>
+    <div class="card-actions">
+      <button id="share-x-btn" class="x-share-btn" type="button">𝕏 SHARE ON X (@papeto2)</button>
+      <button id="save-png-btn" class="save-png-btn" type="button">💾 SAVE PNG CARD</button>
+      <button id="close-card-btn" class="close-card-btn" type="button">PLAY / BACK</button>
     </div>
   </div>
 </div>
@@ -396,18 +489,20 @@
   </div>
   <div class="action-group">
     <div id="btn-wpn" class="abtn">WPN</div>
-    <div id="btn-atk" class="abtn">FIRE</div>
+    <div id="btn-atk" class="abtn" title="Left/Right Click or F">FIRE</div>
     <div id="btn-jump" class="abtn">JUMP</div>
   </div>
 </div>
 
 <script>
 (function() {
+  var cardFrame = document.getElementById('card-frame');
   var canvas = document.getElementById('game');
   var ctx = canvas.getContext('2d');
   var overlay = document.getElementById('overlay');
   var statusLine = document.getElementById('status-line');
   var startBtn = document.getElementById('start-btn');
+  var previewCardBtn = document.getElementById('preview-card-btn');
   var continueBtn = document.getElementById('continue-btn');
   var restartBtn = document.getElementById('restart-btn');
   var nameInput = document.getElementById('player-name-input');
@@ -417,22 +512,41 @@
   var diffNormal = document.getElementById('diff-normal');
   var diffHard = document.getElementById('diff-hard');
   var muteBtn = document.getElementById('mute-btn');
+  var pauseBtn = document.getElementById('pause-btn');
 
+  var victoryModal = document.getElementById('victory-modal');
+  var nftCanvas = document.getElementById('nft-card-canvas');
+  var nctx = nftCanvas.getContext('2d');
+  var shareXBtn = document.getElementById('share-x-btn');
+  var savePngBtn = document.getElementById('save-png-btn');
+  var closeCardBtn = document.getElementById('close-card-btn');
+
+  var GAME_URL = 'https://papetoart.github.io/papeto-cards/superbros.html';
   var W = 800, H = 500;
   var playerName = 'PLAYER 1';
   var selectedHero = 'doge';
   var difficulty = 'normal';
   var currentStage = 1;
   var maxStages = 11;
-  var keys = {}, mode = 'title', frame = 0;
+  var keys = {}, mode = 'title', paused = false, frame = 0;
   var score = 0, coins = 0, camX = 0;
   var stageBannerTimer = 0;
   var stageBannerText = '';
 
-  // Delta Time Fixed-Timestep Engine (60 FPS locked across all screens)
+  // Combo & Screen Shake Polish
+  var comboCount = 0;
+  var comboTimer = 0;
+  var shakeTimer = 0;
+  var shakeIntensity = 0;
+
   var lastTime = 0;
   var accumulator = 0;
   var STEP = 1000 / 60;
+
+  function triggerShake(intensity, duration) {
+    shakeIntensity = Math.max(shakeIntensity, intensity);
+    shakeTimer = Math.max(shakeTimer, duration);
+  }
 
   var STAGE_THEMES = [
     { name: '1. GREEN HILLS', bossName: 'FUD GOBLIN KING', bossStyle: 'meteor', skyTop: '#0284c7', skyMid: '#38bdf8', skyBot: '#bae6fd', hillFar: '#0ea5e9', hillNear: '#16a34a', hillRim: '#4ade80', grassTop: '#4ade80', grassMid: '#22c55e', grassBot: '#15803d', soil: '#78350f', bossBody: '#991b1b', bossRim: '#fca5a5', bossHorn: '#facc15' },
@@ -464,6 +578,14 @@
     muted = !muted;
     muteBtn.textContent = muted ? '🔇' : '🔊';
   };
+
+  function togglePause() {
+    if (mode !== 'play') return;
+    paused = !paused;
+    pauseBtn.textContent = paused ? '▶' : '⏸';
+    if (!paused) lastTime = performance.now();
+  }
+  pauseBtn.onclick = togglePause;
 
   function playTone(freq, endFreq, duration, type, vol) {
     if (muted) return;
@@ -512,7 +634,7 @@
       setTimeout(function() { playTone(784, 1046, 0.12, 'triangle', 0.08); }, 80);
       setTimeout(function() { playTone(1046, 1318, 0.18, 'triangle', 0.09); }, 160);
     },
-    armorClink: function() { playTone(1400, 1100, 0.06, 'triangle', 0.06); },
+    armorClink: function() { playTone(1450, 1150, 0.06, 'triangle', 0.06); },
     hitEnemy: function() { playTone(220, 90, 0.12, 'square', 0.08); },
     hurt: function() { playTone(190, 65, 0.25, 'sawtooth', 0.10); },
     bossRoar: function() { playTone(120, 45, 0.42, 'sawtooth', 0.11); },
@@ -548,26 +670,239 @@
   diffNormal.onclick = function() { setDiff('normal'); };
   diffHard.onclick = function() { setDiff('hard'); };
 
-  function drawRoundRect(x, y, w, h, r) {
-    ctx.beginPath();
-    if (ctx.roundRect) {
-      ctx.roundRect(x, y, w, h, r);
+  function roundRectPath(c, x, y, w, h, r) {
+    c.beginPath();
+    if (c.roundRect) {
+      c.roundRect(x, y, w, h, r);
     } else {
-      ctx.moveTo(x + r, y);
-      ctx.arcTo(x + w, y, x + w, y + h, r);
-      ctx.arcTo(x + w, y + h, x, y + h, r);
-      ctx.arcTo(x, y + h, x, y, r);
-      ctx.arcTo(x, y, x + w, y, r);
-      ctx.closePath();
+      c.moveTo(x + r, y);
+      c.arcTo(x + w, y, x + w, y + h, r);
+      c.arcTo(x + w, y + h, x, y + h, r);
+      c.arcTo(x, y + h, x, y, r);
+      c.arcTo(x, y, x + w, y, r);
+      c.closePath();
     }
   }
+  function drawRoundRect(x, y, w, h, r) { roundRectPath(ctx, x, y, w, h, r); }
 
-  // Base Weapons (BLASTER vs FIRE) + Timed Super Weapons (HYPER BEAM & OMEGA NOVA)
+  // --- COLLECTIBLE VICTORY NFT CARD GENERATOR & X SHARE ---
+  function renderVictoryCard(isPreview) {
+    var val = nameInput.value.trim();
+    if (val) playerName = val.toUpperCase();
+    var dispScore = (!isPreview && score > 0) ? score : 77700;
+    var dispCoins = (!isPreview && coins > 0) ? coins : 88;
+    var dispHearts = (!isPreview && player.maxHp > 0) ? player.maxHp : 6;
+
+    var bg = nctx.createLinearGradient(0, 0, 760, 475);
+    bg.addColorStop(0, '#090d16');
+    bg.addColorStop(0.5, '#1e1b4b');
+    bg.addColorStop(1, '#311042');
+    nctx.fillStyle = bg;
+    nctx.fillRect(0, 0, 760, 475);
+
+    nctx.strokeStyle = 'rgba(250, 204, 21, 0.10)';
+    nctx.lineWidth = 1;
+    for (var gx = 0; gx < 760; gx += 38) {
+      nctx.beginPath(); nctx.moveTo(gx, 0); nctx.lineTo(gx, 475); nctx.stroke();
+    }
+    for (var gy = 0; gy < 475; gy += 38) {
+      nctx.beginPath(); nctx.moveTo(0, gy); nctx.lineTo(760, gy); nctx.stroke();
+    }
+
+    nctx.strokeStyle = '#facc15';
+    nctx.lineWidth = 6;
+    roundRectPath(nctx, 12, 12, 736, 451, 20);
+    nctx.stroke();
+
+    nctx.strokeStyle = '#38bdf8';
+    nctx.lineWidth = 2;
+    roundRectPath(nctx, 22, 22, 716, 431, 14);
+    nctx.stroke();
+
+    var hdrGrad = nctx.createLinearGradient(40, 32, 720, 32);
+    hdrGrad.addColorStop(0, 'rgba(250, 204, 21, 0.15)');
+    hdrGrad.addColorStop(0.5, 'rgba(250, 204, 21, 0.35)');
+    hdrGrad.addColorStop(1, 'rgba(250, 204, 21, 0.15)');
+    nctx.fillStyle = hdrGrad;
+    roundRectPath(nctx, 38, 32, 684, 52, 12);
+    nctx.fill();
+
+    nctx.textAlign = 'center';
+    nctx.font = '900 24px sans-serif';
+    nctx.fillStyle = '#fef08a';
+    nctx.fillText('★ SUPERBROS — CHAMPION VICTORY NFT ★', 380, 62);
+    nctx.font = '900 11px sans-serif';
+    nctx.fillStyle = '#38bdf8';
+    nctx.fillText(isPreview ? 'OFFICIAL COLLECTIBLE CARD PREVIEW • 11 MEGA WORLDS' : 'ALL 11 MEGA WORLDS & OMEGA TITAN CONQUERED!', 380, 78);
+
+    nctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
+    roundRectPath(nctx, 42, 102, 250, 285, 16);
+    nctx.fill();
+    nctx.strokeStyle = selectedHero === 'pepe' ? '#4ade80' : '#facc15';
+    nctx.lineWidth = 3.5;
+    nctx.stroke();
+
+    var glow = nctx.createRadialGradient(167, 235, 10, 167, 235, 110);
+    glow.addColorStop(0, selectedHero === 'pepe' ? 'rgba(74, 222, 128, 0.45)' : 'rgba(250, 204, 21, 0.45)');
+    glow.addColorStop(1, 'rgba(15, 23, 42, 0)');
+    nctx.fillStyle = glow;
+    nctx.fillRect(46, 106, 242, 277);
+
+    var cx = 167, cy = 225;
+    if (selectedHero === 'pepe') {
+      nctx.fillStyle = '#2563eb';
+      roundRectPath(nctx, cx - 54, cy + 42, 108, 65, 18);
+      nctx.fill();
+      nctx.fillStyle = '#4ade80';
+      roundRectPath(nctx, cx - 64, cy - 38, 128, 86, 32);
+      nctx.fill();
+      nctx.strokeStyle = '#14532d';
+      nctx.lineWidth = 4;
+      nctx.stroke();
+      nctx.fillStyle = '#4ade80';
+      nctx.beginPath(); nctx.arc(cx - 28, cy - 42, 26, 0, Math.PI * 2); nctx.arc(cx + 28, cy - 42, 26, 0, Math.PI * 2); nctx.fill(); nctx.stroke();
+      nctx.fillStyle = '#ffffff';
+      nctx.beginPath(); nctx.arc(cx - 28, cy - 42, 18, 0, Math.PI * 2); nctx.arc(cx + 28, cy - 42, 18, 0, Math.PI * 2); nctx.fill();
+      nctx.fillStyle = '#0f172a';
+      nctx.beginPath(); nctx.arc(cx - 24, cy - 42, 9, 0, Math.PI * 2); nctx.arc(cx + 32, cy - 42, 9, 0, Math.PI * 2); nctx.fill();
+      nctx.fillStyle = '#dc2626';
+      roundRectPath(nctx, cx - 34, cy + 12, 82, 20, 10);
+      nctx.fill();
+    } else {
+      nctx.fillStyle = '#2563eb';
+      roundRectPath(nctx, cx - 54, cy + 44, 108, 64, 18);
+      nctx.fill();
+      nctx.fillStyle = '#facc15';
+      nctx.beginPath(); nctx.arc(cx - 26, cy + 68, 8, 0, Math.PI * 2); nctx.arc(cx + 26, cy + 68, 8, 0, Math.PI * 2); nctx.fill();
+      nctx.fillStyle = '#f59e0b';
+      roundRectPath(nctx, cx - 60, cy - 44, 120, 96, 30);
+      nctx.fill();
+      nctx.strokeStyle = '#78350f';
+      nctx.lineWidth = 4;
+      nctx.stroke();
+      nctx.fillStyle = '#fef3c7';
+      roundRectPath(nctx, cx - 10, cy + 2, 62, 36, 14);
+      nctx.fill();
+      nctx.fillStyle = '#0f172a';
+      nctx.beginPath(); nctx.arc(cx + 42, cy + 12, 8, 0, Math.PI * 2); nctx.fill();
+      nctx.beginPath(); nctx.arc(cx - 12, cy - 12, 8, 0, Math.PI * 2); nctx.arc(cx + 26, cy - 12, 8, 0, Math.PI * 2); nctx.fill();
+      nctx.fillStyle = '#dc2626';
+      roundRectPath(nctx, cx - 62, cy - 58, 124, 24, 10);
+      nctx.fill();
+      nctx.fillRect(cx - 15, cy - 42, 88, 12);
+    }
+
+    nctx.font = '900 18px sans-serif';
+    nctx.fillStyle = selectedHero === 'pepe' ? '#4ade80' : '#facc15';
+    nctx.fillText(selectedHero === 'pepe' ? '🐸 PEPE (PLAYER 2)' : '🐶 DOGE (PLAYER 1)', 167, 368);
+
+    nctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
+    roundRectPath(nctx, 312, 102, 406, 285, 16);
+    nctx.fill();
+    nctx.strokeStyle = '#475569';
+    nctx.lineWidth = 2;
+    nctx.stroke();
+
+    var rows = [
+      { label: 'PLAYER NAME', val: playerName, col: '#fef08a' },
+      { label: 'DIFFICULTY', val: difficulty.toUpperCase() + ' MODE', col: '#38bdf8' },
+      { label: 'FINAL SCORE', val: dispScore.toLocaleString(), col: '#4ade80' },
+      { label: 'COINS COLLECTED', val: dispCoins + ' COINS', col: '#facc15' },
+      { label: 'MAX POWER HEARTS', val: '♥'.repeat(Math.min(8, dispHearts)), col: '#f43f5e' }
+    ];
+
+    nctx.textAlign = 'left';
+    for (var r = 0; r < rows.length; r++) {
+      var ry = 144 + r * 52;
+      nctx.font = '800 11px sans-serif';
+      nctx.fillStyle = '#94a3b8';
+      nctx.fillText(rows[r].label, 336, ry);
+
+      nctx.font = '900 22px sans-serif';
+      nctx.fillStyle = rows[r].col;
+      nctx.fillText(rows[r].val, 336, ry + 24);
+
+      if (r < rows.length - 1) {
+        nctx.strokeStyle = 'rgba(148, 163, 184, 0.18)';
+        nctx.lineWidth = 1;
+        nctx.beginPath(); nctx.moveTo(336, ry + 33); nctx.lineTo(694, ry + 33); nctx.stroke();
+      }
+    }
+
+    nctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
+    roundRectPath(nctx, 38, 400, 684, 42, 10);
+    nctx.fill();
+    nctx.strokeStyle = '#facc15';
+    nctx.lineWidth = 1.5;
+    nctx.stroke();
+
+    nctx.textAlign = 'left';
+    nctx.font = '900 13px sans-serif';
+    nctx.fillStyle = '#fde047';
+    nctx.fillText('CREATED BY  X: @papeto2  •  TG: @papeto', 54, 426);
+
+    nctx.textAlign = 'right';
+    nctx.font = '800 11.5px sans-serif';
+    nctx.fillStyle = '#38bdf8';
+    nctx.fillText('papetoart.github.io/papeto-cards/superbros.html', 706, 426);
+    nctx.textAlign = 'left';
+  }
+
+  function openVictoryCardModal(isPreview) {
+    renderVictoryCard(isPreview);
+    victoryModal.style.display = 'flex';
+  }
+
+  previewCardBtn.onclick = function() {
+    initAudio();
+    openVictoryCardModal(true);
+  };
+
+  closeCardBtn.onclick = function() {
+    victoryModal.style.display = 'none';
+  };
+
+  shareXBtn.onclick = function() {
+    var heroTag = selectedHero === 'pepe' ? 'PEPE 🐸' : 'DOGE 🐶';
+    var dispScore = score > 0 ? score.toLocaleString() : '77,700';
+    var tweetText =
+      '🏆 I conquered all 11 Worlds & defeated the OMEGA TITAN in SUPERBROS!\n' +
+      'Hero: ' + heroTag + ' | Score: ' + dispScore + ' | Mode: ' + difficulty.toUpperCase() + '\n' +
+      'Playable NFT Game by @papeto2 (TG: @papeto) 👇\n' +
+      GAME_URL;
+    var intentUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweetText);
+    window.open(intentUrl, '_blank', 'noopener,noreferrer');
+  };
+
+  savePngBtn.onclick = function() {
+    var link = document.createElement('a');
+    link.download = 'SUPERBROS-NFT-CARD-' + playerName.replace(/[^A-Z0-9_-]/gi, '_') + '.png';
+    link.href = nftCanvas.toDataURL('image/png');
+    link.click();
+  };
+
+  // --- MOUSE RIGHT-CLICK TO FIRE & MIDDLE-CLICK TO SWITCH WEAPON ---
+  cardFrame.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
+  cardFrame.addEventListener('mousedown', function(e) {
+    if (mode !== 'play' || paused) return;
+    if (e.button === 2) {
+      e.preventDefault();
+      initAudio();
+      doAttack();
+    } else if (e.button === 1) {
+      e.preventDefault();
+      initAudio();
+      switchWeapon();
+    }
+  });
+
   var baseWeapons = ['BLASTER', 'FIRE'];
   var baseWpnIdx = 0;
   var superWeapon = null;
   var superWeaponTimer = 0;
-  var SUPER_WEAPON_MAX_TIME = 900; // 15 seconds
+  var SUPER_WEAPON_MAX_TIME = 900;
 
   function getActiveWeapon() {
     if (superWeaponTimer > 0 && superWeapon) return superWeapon;
@@ -588,7 +923,6 @@
     safeX: 90, safeY: 340
   };
 
-  // Expanded World Arrays
   var blocks = [];
   var movingPlats = [];
   var crumblePlats = [];
@@ -607,14 +941,12 @@
   var afterimages = [];
   var fireworks = [];
 
-  // Secret Bonus Pipe State
   var inBonusRoom = false;
   var bonusTimer = 0;
   var savedMainState = null;
   var bonusBlocks = [];
   var bonusCoins = [];
 
-  // Mega Stage Dimensions (4,400px approach + 780px Boss Arena!)
   var arenaStartX = 4400;
   var arenaLeftWall = 4400;
   var arenaRightWall = 5180;
@@ -662,6 +994,10 @@
     inBonusRoom = false;
     bonusTimer = 0;
     savedMainState = null;
+    comboCount = 0;
+    comboTimer = 0;
+    shakeTimer = 0;
+    shakeIntensity = 0;
 
     camX = 0;
     afterimages = []; projectiles = []; bossShots = []; meteors = []; bossLaser = null;
@@ -679,9 +1015,7 @@
 
     var shift = ((stNum * 41) % 60) - 30;
 
-    // ==========================================================
-    // ZONE 1 (0 - 1500px): WARMUP, EXPLODING BARRELS & SECRET PIPE
-    // ==========================================================
+    // ZONE 1 (0 - 1500px)
     blocks.push({ x: 260, y: 290, w: 40, h: 40, type: 'brick', bump: 0 });
     blocks.push({ x: 300, y: 290, w: 40, h: 40, type: 'q_box', reward: 'hyper', bump: 0 });
     blocks.push({ x: 340, y: 290, w: 40, h: 40, type: 'brick', bump: 0 });
@@ -692,59 +1026,47 @@
     addCoinArc(540, 270, 5, 34);
     blocks.push({ x: 580, y: 350, w: 56, h: 80, type: 'pipe', bump: 0 });
 
-    // Barrel cluster + Enemy Squad 1
     barrels.push({ x: 780, y: 392, w: 30, h: 38, alive: true });
-    enemies.push({ x: 490, y: 394, w: 34, h: 36, vx: -1.4 * diffMult, alive: true, minX: 430, maxX: 570, kind: 'walker', hp: 1 });
-    enemies.push({ x: 730, y: 394, w: 34, h: 36, vx: 1.5 * diffMult, alive: true, minX: 650, maxX: 910, kind: 'walker', hp: 1 });
-    enemies.push({ x: 850, y: 394, w: 34, h: 36, vx: -1.5 * diffMult, alive: true, minX: 650, maxX: 910, kind: 'walker', hp: 1 });
-    enemies.push({ x: 890, y: 230, w: 36, h: 28, vx: 1.7 * diffMult, alive: true, minX: 760, maxX: 1080, kind: 'flyer', baseY: 230, hp: 1 });
+    enemies.push({ x: 490, y: 394, w: 34, h: 36, vx: -1.4 * diffMult, alive: true, minX: 430, maxX: 570, kind: 'walker', hp: 1, maxHp: 1 });
+    enemies.push({ x: 730, y: 394, w: 34, h: 36, vx: 1.5 * diffMult, alive: true, minX: 650, maxX: 910, kind: 'walker', hp: 1, maxHp: 1 });
+    enemies.push({ x: 850, y: 394, w: 34, h: 36, vx: -1.5 * diffMult, alive: true, minX: 650, maxX: 910, kind: 'walker', hp: 1, maxHp: 1 });
+    enemies.push({ x: 890, y: 230, w: 36, h: 28, vx: 1.7 * diffMult, alive: true, minX: 760, maxX: 1080, kind: 'flyer', baseY: 230, hp: 1, maxHp: 1 });
 
-    // Glowing Secret Warp Pipe at x = 1140!
     blocks.push({ x: 1140, y: 335, w: 60, h: 95, type: 'warp_pipe', used: false, bump: 0 });
     addCoinArc(1260, 255, 4, 36);
     blocks.push({ x: 1320 + shift, y: 280, w: 40, h: 40, type: 'q_box', reward: 'nova', bump: 0 });
     blocks.push({ x: 1360 + shift, y: 280, w: 40, h: 40, type: 'q_box', reward: 'jackpot', bump: 0 });
 
-    // ==========================================================
-    // ZONE 2 (1500 - 3000px): MOVING PLATFORMS, CRUMBLERS, PITS & JUMP PADS
-    // ==========================================================
-    // Pit 1 with Moving Platform Bridge
+    // ZONE 2 (1500 - 3000px)
     pits.push({ x: 1540, w: 260 });
     movingPlats.push({ x: 1570, y: 340, w: 96, h: 18, minX: 1555, maxX: 1700, vx: 1.5 * stageSpeedBoost });
     addCoinArc(1600, 260, 4, 34);
 
-    // Jump Pad (Spring) launching to high reward shelf!
     jumpPads.push({ x: 1870, y: 412, w: 36, h: 18, bounceTimer: 0 });
     blocks.push({ x: 1930, y: 210, w: 40, h: 40, type: 'brick', bump: 0 });
     blocks.push({ x: 1970, y: 210, w: 40, h: 40, type: 'q_box', reward: 'life_up', bump: 0 });
     blocks.push({ x: 2010, y: 210, w: 40, h: 40, type: 'brick', bump: 0 });
     addCoinArc(1920, 145, 5, 32);
 
-    // Mid-stage Armored Knight + Barrel
     barrels.push({ x: 2130, y: 392, w: 30, h: 38, alive: true });
-    enemies.push({ x: 2180, y: 390, w: 38, h: 40, vx: -1.3 * diffMult, alive: true, minX: 2020, maxX: 2360, kind: 'armored', hp: 5 });
-    enemies.push({ x: 2260, y: 220, w: 36, h: 28, vx: 1.8 * diffMult, alive: true, minX: 2060, maxX: 2380, kind: 'flyer', baseY: 220, hp: 1 });
+    enemies.push({ x: 2180, y: 390, w: 38, h: 40, vx: -1.3 * diffMult, alive: true, minX: 2020, maxX: 2360, kind: 'armored', hp: 5, maxHp: 5 });
+    enemies.push({ x: 2260, y: 220, w: 36, h: 28, vx: 1.8 * diffMult, alive: true, minX: 2060, maxX: 2380, kind: 'flyer', baseY: 220, hp: 1, maxHp: 1 });
 
-    // Pit 2 with Crumbling Platforms!
     pits.push({ x: 2420, w: 340 });
     crumblePlats.push({ x: 2455, y: 345, w: 76, h: 16, state: 'solid', timer: 0, respawn: 0 });
     crumblePlats.push({ x: 2565, y: 315, w: 76, h: 16, state: 'solid', timer: 0, respawn: 0 });
     crumblePlats.push({ x: 2675, y: 345, w: 76, h: 16, state: 'solid', timer: 0, respawn: 0 });
     addCoinArc(2500, 235, 6, 36);
 
-    // Mid-way Supply Station
     blocks.push({ x: 2840, y: 285, w: 40, h: 40, type: 'q_box', reward: 'life_up', bump: 0 });
     blocks.push({ x: 2880, y: 285, w: 40, h: 40, type: 'q_box', reward: 'hyper', bump: 0 });
 
-    // ==========================================================
-    // ZONE 3 (3000 - 4350px): HIGH-ACTION GAUNTLET TO BOSS ARENA
-    // ==========================================================
+    // ZONE 3 (3000 - 4350px)
     blocks.push({ x: 3040, y: 340, w: 56, h: 90, type: 'pipe', bump: 0 });
-    enemies.push({ x: 3170, y: 394, w: 34, h: 36, vx: 1.8 * diffMult * stageSpeedBoost, alive: true, minX: 3105, maxX: 3430, kind: 'walker', hp: 2 });
-    enemies.push({ x: 3320, y: 390, w: 38, h: 40, vx: -1.5 * diffMult * stageSpeedBoost, alive: true, minX: 3105, maxX: 3430, kind: 'armored', hp: 5 });
+    enemies.push({ x: 3170, y: 394, w: 34, h: 36, vx: 1.8 * diffMult * stageSpeedBoost, alive: true, minX: 3105, maxX: 3430, kind: 'walker', hp: 2, maxHp: 2 });
+    enemies.push({ x: 3320, y: 390, w: 38, h: 40, vx: -1.5 * diffMult * stageSpeedBoost, alive: true, minX: 3105, maxX: 3430, kind: 'armored', hp: 5, maxHp: 5 });
     barrels.push({ x: 3250, y: 392, w: 30, h: 38, alive: true });
 
-    // Pit 3 with Moving Platform + Jump Pad combo
     pits.push({ x: 3480, w: 300 });
     movingPlats.push({ x: 3510, y: 335, w: 96, h: 18, minX: 3495, maxX: 3675, vx: 1.8 * stageSpeedBoost });
     addCoinArc(3540, 240, 5, 34);
@@ -753,17 +1075,15 @@
     blocks.push({ x: 3920, y: 220, w: 40, h: 40, type: 'q_box', reward: 'shield', bump: 0 });
     blocks.push({ x: 3960, y: 220, w: 40, h: 40, type: 'q_box', reward: 'nova', bump: 0 });
 
-    // Final Pre-Boss Squad + Pre-Boss Supply Box
     barrels.push({ x: 4080, y: 392, w: 30, h: 38, alive: true });
     barrels.push({ x: 4114, y: 392, w: 30, h: 38, alive: true });
-    enemies.push({ x: 4020, y: 394, w: 34, h: 36, vx: 1.9 * diffMult, alive: true, minX: 3890, maxX: 4320, kind: 'walker', hp: 2 });
-    enemies.push({ x: 4210, y: 390, w: 38, h: 40, vx: -1.6 * diffMult, alive: true, minX: 3890, maxX: 4320, kind: 'armored', hp: 5 });
-    enemies.push({ x: 4160, y: 215, w: 36, h: 28, vx: -2.0 * diffMult, alive: true, minX: 3920, maxX: 4330, kind: 'flyer', baseY: 215, hp: 1 });
+    enemies.push({ x: 4020, y: 394, w: 34, h: 36, vx: 1.9 * diffMult, alive: true, minX: 3890, maxX: 4320, kind: 'walker', hp: 2, maxHp: 2 });
+    enemies.push({ x: 4210, y: 390, w: 38, h: 40, vx: -1.6 * diffMult, alive: true, minX: 3890, maxX: 4320, kind: 'armored', hp: 5, maxHp: 5 });
+    enemies.push({ x: 4160, y: 215, w: 36, h: 28, vx: -2.0 * diffMult, alive: true, minX: 3920, maxX: 4330, kind: 'flyer', baseY: 215, hp: 1, maxHp: 1 });
 
     blocks.push({ x: 4270, y: 285, w: 40, h: 40, type: 'q_box', reward: 'life_up', bump: 0 });
     blocks.push({ x: 4310, y: 285, w: 40, h: 40, type: 'q_box', reward: 'hyper', bump: 0 });
 
-    // Stage 11 Mega Titan Arena regenerating '?' boxes
     if (stNum === 11) {
       blocks.push({ x: arenaLeftWall + 170, y: 275, w: 40, h: 40, type: 'q_box', reward: 'hyper', regenerating: true, respawnTimer: 0, bump: 0 });
       blocks.push({ x: arenaRightWall - 210, y: 275, w: 40, h: 40, type: 'q_box', reward: 'nova', regenerating: true, respawnTimer: 0, bump: 0 });
@@ -771,25 +1091,29 @@
 
     bossActive = false;
     var isMega = !!theme.isMegaBoss;
-    var baseBossHp = isMega ? 48 : (12 + stNum * 2.5);
-    var bHp = difficulty === 'easy' ? Math.round(baseBossHp * 0.75) : (difficulty === 'hard' ? Math.round(baseBossHp * 1.25) : Math.round(baseBossHp));
+    var baseBossHp = isMega ? 54 : (15 + stNum * 3.0);
+    var bHp = difficulty === 'easy' ? Math.round(baseBossHp * 0.78) : (difficulty === 'hard' ? Math.round(baseBossHp * 1.25) : Math.round(baseBossHp));
 
-    var bw = isMega ? 128 : 92;
-    var bh = isMega ? 162 : 118;
+    var bw = isMega ? 132 : 96;
+    var bh = isMega ? 164 : 122;
 
     boss = {
       name: theme.bossName,
       style: theme.bossStyle,
       isMega: isMega,
       x: arenaLeftWall + 540, y: 430 - bh, w: bw, h: bh,
-      vx: -(isMega ? 2.4 : (2.0 + stNum * 0.1)) * diffMult,
+      vx: -(isMega ? 2.5 : (2.1 + stNum * 0.1)) * diffMult,
       vy: 0,
       hp: bHp, maxHp: bHp,
       alive: true, hurtTimer: 0,
+      shieldFlash: 0, resistMsgCd: 0,
       telegraphTimer: 0,
-      attackTimer: 85,
-      specialTimer: 180,
-      jumpTimer: 145,
+      chargeTelegraph: 0,
+      chargeTimer: 0,
+      chargeCooldown: 240,
+      attackTimer: 80,
+      specialTimer: 170,
+      jumpTimer: 140,
       summonedMinions: false,
       facing: -1
     };
@@ -802,12 +1126,8 @@
     pipeBlk.used = true;
     sfx.warp();
     inBonusRoom = true;
-    bonusTimer = 600; // 10 seconds
-    savedMainState = {
-      x: pipeBlk.x + 12,
-      y: pipeBlk.y - player.h - 4,
-      camX: camX
-    };
+    bonusTimer = 600;
+    savedMainState = { x: pipeBlk.x + 12, y: pipeBlk.y - player.h - 4, camX: camX };
 
     player.x = 90;
     player.y = 340;
@@ -856,7 +1176,10 @@
     var val = nameInput.value.trim();
     playerName = val ? val.toUpperCase() : 'PLAYER 1';
     loadStage(stageToLoad, false, isContinue);
+    victoryModal.style.display = 'none';
     overlay.style.display = 'none';
+    paused = false;
+    pauseBtn.textContent = '⏸';
     mode = 'play';
     lastTime = 0;
     accumulator = 0;
@@ -869,6 +1192,11 @@
 
   window.addEventListener('keydown', function(e) {
     if (document.activeElement === nameInput) return;
+    if (e.code === 'KeyP' || e.code === 'Escape') {
+      togglePause();
+      return;
+    }
+    if (paused) return;
     keys[e.code] = true;
     if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.code) !== -1) e.preventDefault();
     if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') doJump();
@@ -881,6 +1209,7 @@
   function bindBtn(el, onDown, onUp) {
     el.addEventListener('pointerdown', function(e) {
       e.preventDefault();
+      if (paused) return;
       initAudio();
       onDown();
     });
@@ -905,7 +1234,7 @@
   bindBtn(document.getElementById('btn-jump'), doJump);
 
   function switchWeapon() {
-    if (mode !== 'play') return;
+    if (mode !== 'play' || paused) return;
     baseWpnIdx = (baseWpnIdx + 1) % baseWeapons.length;
     playTone(baseWpnIdx === 1 ? 760 : 620, 920, 0.09, 'triangle', 0.07);
     floatingPopups.push({
@@ -918,7 +1247,7 @@
   }
 
   function doJump() {
-    if (mode !== 'play') return;
+    if (mode !== 'play' || paused) return;
     if (player.grounded) {
       player.vy = player.jumpPower;
       player.grounded = false;
@@ -933,9 +1262,8 @@
     }
   }
 
-  // Down Arrow: Enters Secret Warp Pipe if standing on one, otherwise triggers Electric Dash!
   function doDownAction() {
-    if (mode !== 'play') return;
+    if (mode !== 'play' || paused) return;
     if (!inBonusRoom && player.grounded) {
       for (var i = 0; i < blocks.length; i++) {
         var b = blocks[i];
@@ -961,6 +1289,7 @@
     if (!bar.alive) return;
     bar.alive = false;
     sfx.boom();
+    triggerShake(9, 14);
     spawnParticles(bar.x + 15, bar.y + 19, '#ef4444', 24);
     spawnParticles(bar.x + 15, bar.y + 19, '#facc15', 20);
     floatingPopups.push({ x: bar.x + 15, y: bar.y - 8, text: '💥 BOOM!', color: '#f97316', life: 36 });
@@ -975,7 +1304,6 @@
         damageEnemy(en, 6.0, 0, true);
       }
     }
-    // Chain reaction on nearby barrels!
     for (var b = 0; b < barrels.length; b++) {
       var other = barrels[b];
       if (other.alive && Math.hypot((other.x + 15) - cx, (other.y + 19) - cy) <= radius) {
@@ -986,6 +1314,7 @@
 
   function triggerNovaExplosion(x, y) {
     sfx.omegaNova();
+    triggerShake(7, 10);
     spawnParticles(x, y, '#facc15', 22);
     spawnParticles(x, y, '#38bdf8', 18);
     var radius = isOvercharged() ? 115 : 95;
@@ -1007,13 +1336,13 @@
       var bx = boss.x + boss.w / 2;
       var by = boss.y + boss.h / 2;
       if (Math.hypot(bx - x, by - y) <= radius + 45) {
-        damageBoss(4.8 * mult);
+        damageBoss(4.8 * mult, 'nova');
       }
     }
   }
 
   function doAttack() {
-    if (mode !== 'play' || player.atkCooldown > 0) return;
+    if (mode !== 'play' || paused || player.atkCooldown > 0) return;
     var wpn = getActiveWeapon();
     var mult = isOvercharged() ? 1.25 : 1.0;
 
@@ -1029,7 +1358,6 @@
         dmg: 1.6 * mult,
         life: 65
       });
-
     } else if (wpn === 'FIRE') {
       player.atkCooldown = 15;
       sfx.fire();
@@ -1043,7 +1371,6 @@
         armorPiercing: true,
         life: 95
       });
-
     } else if (wpn === 'HYPER BEAM') {
       player.atkCooldown = 15;
       sfx.hyperBeam();
@@ -1057,13 +1384,12 @@
           y: sy,
           vx: player.facing * Math.cos(angles[a]) * 14,
           vy: Math.sin(angles[a]) * 14,
-          dmg: 1.7 * mult,
+          dmg: 1.8 * mult,
           armorPiercing: true,
           pierce: true,
           life: 60
         });
       }
-
     } else if (wpn === 'OMEGA NOVA') {
       player.atkCooldown = 23;
       sfx.omegaNova();
@@ -1087,7 +1413,7 @@
       superWeaponTimer = SUPER_WEAPON_MAX_TIME;
       score += 500;
       sfx.powerup();
-      spawnParticles(blk.x + 20, blk.y, '#38bdf8', 22);
+      spawnParticles(blk.x + 20, blk.y, '#38bdf8', 24);
       floatingPopups.push({ x: blk.x + 20, y: blk.y - 10, text: '⚡ ' + superWeapon + ' (15s)!', color: '#38bdf8', life: 48 });
       stageBannerText = superWeapon + ' ACTIVATED FOR 15 SECONDS!';
       stageBannerTimer = 85;
@@ -1128,7 +1454,7 @@
   function damageEnemy(en, dmg, knockX, armorPiercing) {
     var actualDmg = dmg;
     if (en.kind === 'armored' && !armorPiercing) {
-      actualDmg = 0.7;
+      actualDmg = 0.65;
       sfx.armorClink();
       spawnParticles(en.x + en.w / 2, en.y + 12, '#cbd5e1', 5);
       floatingPopups.push({ x: en.x + en.w / 2, y: en.y - 8, text: 'ARMOR! USE FIRE', color: '#94a3b8', life: 24 });
@@ -1137,22 +1463,50 @@
     en.x += (knockX || 0);
     if (en.hp <= 0) {
       en.alive = false;
-      score += en.kind === 'armored' ? 450 : 250;
+      comboCount = Math.min(8, comboCount + 1);
+      comboTimer = 210;
+      var basePts = en.kind === 'armored' ? 450 : 250;
+      var earned = basePts * comboCount;
+      score += earned;
       sfx.hitEnemy();
-      spawnParticles(en.x + en.w / 2, en.y + en.h / 2, '#ef4444', 15);
+      spawnParticles(en.x + en.w / 2, en.y + en.h / 2, '#ef4444', 16);
+      if (comboCount >= 2) {
+        floatingPopups.push({ x: en.x + en.w / 2, y: en.y - 12, text: comboCount + 'x COMBO +' + earned, color: '#facc15', life: 34 });
+      }
     } else if (en.kind !== 'armored' || armorPiercing) {
       sfx.hitEnemy();
       spawnParticles(en.x + en.w / 2, en.y + en.h / 2, '#facc15', 6);
     }
   }
 
-  function damageBoss(dmg) {
+  function damageBoss(dmg, sourceType) {
     if (!boss || !boss.alive || boss.hurtTimer > 0) return;
-    boss.hp -= dmg;
-    boss.hurtTimer = 5;
-    score += 150;
-    sfx.hitEnemy();
-    spawnParticles(boss.x + boss.w / 2, boss.y + boss.h / 2, '#facc15', 10);
+
+    // Bosses resist the basic BLASTER heavily — encouraging FIRE, Super Weapons, or Stomps!
+    var finalDmg = dmg;
+    if (sourceType === 'blaster') {
+      finalDmg = dmg * 0.28;
+      boss.shieldFlash = 8;
+      sfx.armorClink();
+      spawnParticles(boss.x + boss.w / 2, boss.y + boss.h / 2, '#38bdf8', 7);
+      if (boss.resistMsgCd <= 0) {
+        boss.resistMsgCd = 48;
+        floatingPopups.push({
+          x: boss.x + boss.w / 2,
+          y: boss.y - 10,
+          text: 'SHIELDED! USE FIRE / SUPER',
+          color: '#38bdf8',
+          life: 36
+        });
+      }
+    } else {
+      boss.hurtTimer = 5;
+      spawnParticles(boss.x + boss.w / 2, boss.y + boss.h / 2, sourceType === 'fire' ? '#f97316' : '#facc15', 11);
+    }
+
+    boss.hp -= finalDmg;
+    score += Math.round(150 * (finalDmg / Math.max(0.5, dmg)));
+    if (sourceType !== 'blaster') sfx.hitEnemy();
 
     if (boss.hp <= 0 && !stageClearing) {
       boss.hp = 0;
@@ -1162,6 +1516,7 @@
       bossLaser = null;
       shockwaves = [];
       stageClearing = true;
+      triggerShake(12, 24);
 
       var heartBonus = player.hp * 500;
       score += (1500 * currentStage) + heartBonus;
@@ -1194,7 +1549,6 @@
   function hurtPlayer() {
     if (player.invuln > 0 || player.dashTimer > 0 || player.shieldTimer > 0 || stageClearing) return;
 
-    // Last Stand mechanic if player built 6+ Max Hearts!
     if (player.hp === 1 && player.maxHp >= 6) {
       player.maxHp--;
       player.hp = 2;
@@ -1207,6 +1561,9 @@
     player.hp--;
     player.invuln = 72;
     player.vy = -7;
+    comboCount = 0;
+    comboTimer = 0;
+    triggerShake(7, 12);
     sfx.hurt();
     spawnParticles(player.x + 17, player.y + 20, '#ef4444', 14);
     if (player.hp <= 0) {
@@ -1245,8 +1602,15 @@
     if (player.shieldTimer > 0) player.shieldTimer--;
     if (player.dashCooldown > 0) player.dashCooldown--;
     if (player.atkCooldown > 0) player.atkCooldown--;
+    if (shakeTimer > 0) {
+      shakeTimer--;
+      if (shakeTimer === 0) shakeIntensity = 0;
+    }
+    if (comboTimer > 0) {
+      comboTimer--;
+      if (comboTimer === 0) comboCount = 0;
+    }
 
-    // Timed Super Weapon Countdown
     if (superWeaponTimer > 0) {
       superWeaponTimer--;
       if (superWeaponTimer === 0) {
@@ -1256,7 +1620,6 @@
       }
     }
 
-    // Secret Bonus Room Timer
     if (inBonusRoom) {
       bonusTimer--;
       if (bonusTimer <= 0) {
@@ -1265,7 +1628,6 @@
       }
     }
 
-    // Update Moving Platforms (Main Stage)
     if (!inBonusRoom) {
       for (var mp = 0; mp < movingPlats.length; mp++) {
         var plat = movingPlats[mp];
@@ -1278,7 +1640,7 @@
           cr.timer--;
           if (cr.timer <= 0) {
             cr.state = 'fallen';
-            cr.respawn = 210; // 3.5s respawn
+            cr.respawn = 210;
             spawnParticles(cr.x + cr.w / 2, cr.y + 8, '#d97706', 10);
           }
         } else if (cr.state === 'fallen') {
@@ -1291,7 +1653,6 @@
       }
     }
 
-    // Movement & Electric Dash
     if (player.dashTimer > 0) {
       player.dashTimer--;
       player.vx = player.facing * 14.0;
@@ -1335,7 +1696,6 @@
     player.y += player.vy;
     player.grounded = false;
 
-    // Ground Collision (respecting Lava/Spike Pits!)
     var pCenter = player.x + player.w / 2;
     if (!isOverPit(pCenter) && player.y + player.h >= 430 && player.y + player.h - player.vy <= 446) {
       player.y = 430 - player.h;
@@ -1348,10 +1708,10 @@
       }
     }
 
-    // Fall into Lava/Spike Pit -> Take 1 damage & bounce back to safe ground!
     if (!inBonusRoom && player.y > 468) {
       player.hp--;
       sfx.hurt();
+      triggerShake(6, 10);
       spawnParticles(player.x + 17, 455, '#f97316', 18);
       if (player.hp <= 0) {
         showGameOver();
@@ -1364,7 +1724,6 @@
       player.invuln = 75;
     }
 
-    // Solid Blocks & '?' Boxes Collision
     for (var i = 0; i < activeBlocks.length; i++) {
       var blk = activeBlocks[i];
       if (blk.bump > 0) blk.bump -= 1.5;
@@ -1396,13 +1755,12 @@
           } else if (blk.type === 'brick') {
             score += 50;
             sfx.hitEnemy();
-            spawnParticles(blk.x + 20, blk.y + 20, '#d97706', 8);
+            spawnParticles(blk.x + 20, blk.y + 8, '#fb923c', 10);
           }
         }
       }
     }
 
-    // Moving Platforms, Crumbling Platforms, Jump Pads & Coins (Main Stage)
     if (!inBonusRoom) {
       for (var mp = 0; mp < movingPlats.length; mp++) {
         var plat = movingPlats[mp];
@@ -1441,7 +1799,6 @@
         }
       }
 
-      // Collect Floating Stage Coins
       for (var sc = 0; sc < stageCoins.length; sc++) {
         var cn = stageCoins[sc];
         if (!cn.collected && Math.hypot((player.x + 17) - cn.x, (player.y + 21) - cn.y) < 28) {
@@ -1453,7 +1810,6 @@
         }
       }
 
-      // Boss Arena Lock
       if (!bossActive && player.x >= arenaStartX + 40) {
         bossActive = true;
         if (boss && boss.isMega) {
@@ -1464,14 +1820,14 @@
           stageBannerTimer = 95;
         } else {
           player.hp = Math.min(player.maxHp, player.hp + 1);
-          stageBannerText = 'WARNING! ' + boss.name + ' APPROACHES!';
-          stageBannerTimer = 85;
+          stageBannerText = 'WARNING! ' + boss.name + ' (USE FIRE OR SUPER WEAPONS!)';
+          stageBannerTimer = 95;
         }
         sfx.bossRoar();
+        triggerShake(6, 14);
         spawnParticles(player.x + 17, player.y + 10, '#4ade80', 18);
       }
 
-      // Enemies Update (including Electric Dash attacks!)
       for (var e = 0; e < enemies.length; e++) {
         var en = enemies[e];
         if (!en.alive) continue;
@@ -1483,7 +1839,6 @@
 
         if (rectIntersect(player, en)) {
           if (player.dashTimer > 0) {
-            // Electric Dash zaps enemies!
             damageEnemy(en, 3.5, player.facing * 8, true);
             spawnParticles(en.x + en.w / 2, en.y + en.h / 2, '#38bdf8', 14);
           } else if (player.shieldTimer > 0) {
@@ -1498,31 +1853,54 @@
         }
       }
 
-      // Boss AI with Unique Attack Styles
       if (bossActive && boss && boss.alive) {
         if (boss.hurtTimer > 0) boss.hurtTimer--;
-        boss.facing = player.x < boss.x + boss.w / 2 ? -1 : 1;
-        var rage = boss.isMega && boss.hp <= boss.maxHp * 0.5;
+        if (boss.shieldFlash > 0) boss.shieldFlash--;
+        if (boss.resistMsgCd > 0) boss.resistMsgCd--;
 
-        // Stage 11 Titan summons reinforcements at 50% HP
+        var rage = boss.hp <= boss.maxHp * 0.5;
+
         if (boss.isMega && rage && !boss.summonedMinions) {
           boss.summonedMinions = true;
           stageBannerText = 'TITAN RAGE! FUD REINFORCEMENTS SUMMONED!';
           stageBannerTimer = 85;
-          enemies.push({ x: arenaLeftWall + 60, y: 394, w: 34, h: 36, vx: 2.2, alive: true, minX: arenaLeftWall + 20, maxX: arenaRightWall - 20, kind: 'walker', hp: 1 });
-          enemies.push({ x: arenaRightWall - 90, y: 215, w: 36, h: 28, vx: -2.4, alive: true, minX: arenaLeftWall + 20, maxX: arenaRightWall - 20, kind: 'flyer', baseY: 215, hp: 1 });
+          enemies.push({ x: arenaLeftWall + 60, y: 394, w: 34, h: 36, vx: 2.2, alive: true, minX: arenaLeftWall + 20, maxX: arenaRightWall - 20, kind: 'walker', hp: 1, maxHp: 1 });
+          enemies.push({ x: arenaRightWall - 90, y: 215, w: 36, h: 28, vx: -2.4, alive: true, minX: arenaLeftWall + 20, maxX: arenaRightWall - 20, kind: 'flyer', baseY: 215, hp: 1, maxHp: 1 });
         }
 
-        boss.x += boss.vx * (rage ? 1.2 : 1.0);
-        if (boss.x <= arenaLeftWall + 14) { boss.x = arenaLeftWall + 14; boss.vx = Math.abs(boss.vx); }
-        if (boss.x + boss.w >= arenaRightWall - 14) { boss.x = arenaRightWall - 14 - boss.w; boss.vx = -Math.abs(boss.vx); }
+        // Boss Bull-Charge Attack Logic
+        if (boss.chargeTelegraph > 0) {
+          boss.chargeTelegraph--;
+          if (boss.chargeTelegraph === 0) {
+            boss.chargeTimer = 28;
+            boss.vx = boss.facing * (rage ? 9.5 : 8.0);
+            sfx.bossRoar();
+          }
+        } else if (boss.chargeTimer > 0) {
+          boss.chargeTimer--;
+          boss.x += boss.vx;
+          if (frame % 2 === 0) spawnParticles(boss.x + boss.w / 2, boss.y + boss.h - 6, '#f97316', 4);
+          if (boss.x <= arenaLeftWall + 14) { boss.x = arenaLeftWall + 14; boss.chargeTimer = 0; boss.vx = 2.4; }
+          if (boss.x + boss.w >= arenaRightWall - 14) { boss.x = arenaRightWall - 14 - boss.w; boss.chargeTimer = 0; boss.vx = -2.4; }
+        } else {
+          boss.facing = player.x < boss.x + boss.w / 2 ? -1 : 1;
+          boss.x += boss.vx * (rage ? 1.25 : 1.0);
+          if (boss.x <= arenaLeftWall + 14) { boss.x = arenaLeftWall + 14; boss.vx = Math.abs(boss.vx); }
+          if (boss.x + boss.w >= arenaRightWall - 14) { boss.x = arenaRightWall - 14 - boss.w; boss.vx = -Math.abs(boss.vx); }
+
+          boss.chargeCooldown--;
+          if (boss.chargeCooldown <= 0 && boss.y + boss.h >= 430) {
+            boss.chargeTelegraph = 26;
+            boss.chargeCooldown = rage ? 175 : 230;
+          }
+        }
 
         var wasAirborne = boss.y + boss.h < 430;
         boss.jumpTimer--;
-        if (boss.jumpTimer <= 0 && !wasAirborne) {
+        if (boss.jumpTimer <= 0 && !wasAirborne && boss.chargeTimer <= 0 && boss.chargeTelegraph <= 0) {
           boss.vy = boss.isMega ? -14.5 : -13.5;
-          boss.vx = boss.facing * (2.6 + currentStage * 0.1);
-          boss.jumpTimer = boss.isMega ? (rage ? 110 : 145) : (difficulty === 'hard' ? 115 : 155);
+          boss.vx = boss.facing * (2.7 + currentStage * 0.1);
+          boss.jumpTimer = boss.isMega ? (rage ? 105 : 140) : (difficulty === 'hard' ? 110 : 148);
           sfx.bossRoar();
         }
         boss.vy += gravity;
@@ -1530,26 +1908,29 @@
         if (boss.y + boss.h >= 430) {
           boss.y = 430 - boss.h;
           boss.vy = 0;
-          if (wasAirborne && (boss.isMega || boss.style === 'spikes' || boss.style === 'forest')) {
-            var wSpd = boss.style === 'spikes' ? 6.0 : 5.2;
-            shockwaves.push({ x: boss.x, y: 414, w: 22, h: 16, vx: -wSpd, life: 130 });
-            shockwaves.push({ x: boss.x + boss.w - 22, y: 414, w: 22, h: 16, vx: wSpd, life: 130 });
-            spawnParticles(boss.x + boss.w / 2, 428, '#38bdf8', 16);
+          if (wasAirborne) {
+            triggerShake(5, 8);
+            if (boss.isMega || boss.style === 'spikes' || boss.style === 'forest' || rage) {
+              var wSpd = boss.style === 'spikes' ? 6.2 : 5.4;
+              shockwaves.push({ x: boss.x, y: 414, w: 22, h: 16, vx: -wSpd, life: 130 });
+              shockwaves.push({ x: boss.x + boss.w - 22, y: 414, w: 22, h: 16, vx: wSpd, life: 130 });
+              spawnParticles(boss.x + boss.w / 2, 428, '#38bdf8', 16);
+            }
           }
         }
 
-        // Primary Ranged Attack
         boss.attackTimer--;
         if (boss.attackTimer === 24) boss.telegraphTimer = 24;
         if (boss.telegraphTimer > 0) boss.telegraphTimer--;
 
         if (boss.attackTimer <= 0) {
-          var baseCd = difficulty === 'hard' ? 75 : (difficulty === 'easy' ? 120 : 95);
-          boss.attackTimer = boss.isMega ? (rage ? 72 : 90) : Math.max(62, baseCd - currentStage * 2);
+          var baseCd = difficulty === 'hard' ? 70 : (difficulty === 'easy' ? 115 : 88);
+          var rageDiv = rage ? 1.25 : 1.0;
+          boss.attackTimer = Math.round((boss.isMega ? (rage ? 68 : 86) : Math.max(56, baseCd - currentStage * 2)) / rageDiv);
           var centerAngle = Math.atan2((player.y + 20) - (boss.y + boss.h * 0.42), (player.x + 17) - (boss.x + boss.w / 2));
-          var spd = (difficulty === 'hard' ? 5.0 : 4.2) + (boss.isMega ? 0.4 : currentStage * 0.1);
+          var spd = (difficulty === 'hard' ? 5.2 : 4.4) + (boss.isMega ? 0.4 : currentStage * 0.1);
 
-          if (boss.isMega || boss.style === 'forest') {
+          if (boss.isMega || boss.style === 'forest' || rage) {
             var fan = [-0.24, 0, 0.24];
             for (var f = 0; f < fan.length; f++) {
               bossShots.push({
@@ -1572,18 +1953,15 @@
           sfx.fire();
         }
 
-        // Signature Special Attack per Boss Style!
         boss.specialTimer--;
         if (boss.specialTimer <= 0) {
-          boss.specialTimer = difficulty === 'hard' ? 160 : 210;
+          boss.specialTimer = difficulty === 'hard' ? 155 : 200;
           if (boss.style === 'meteor') {
-            // Summon 3 sky meteors with ground warning targets
             for (var m = 0; m < 3; m++) {
               var mx = arenaLeftWall + 90 + Math.random() * 600;
-              meteors.push({ x: mx, y: -40 - m * 45, vy: 6.5, targetX: mx });
+              meteors.push({ x: mx, y: -40 - m * 45, vy: 6.6, targetX: mx });
             }
           } else if (boss.style === 'laser' || (boss.isMega && rage)) {
-            // Sweeping Horizontal Laser Beam (40 frames warning line, 28 frames active beam)
             bossLaser = { y: 392, warnTimer: 42, activeTimer: 28 };
             sfx.laser();
           } else if (boss.style === 'spikes') {
@@ -1596,14 +1974,13 @@
           if (player.vy > 0 && player.y + player.h - player.vy <= boss.y + 30) {
             player.vy = -11;
             player.jumpsLeft = 2;
-            damageBoss(3.0);
+            damageBoss(3.0, 'stomp');
           } else {
             hurtPlayer();
           }
         }
       }
     } else {
-      // Collect Secret Vault Coins
       for (var bc = 0; bc < bonusCoins.length; bc++) {
         var bcn = bonusCoins[bc];
         if (!bcn.collected && Math.hypot((player.x + 17) - bcn.x, (player.y + 21) - bcn.y) < 30) {
@@ -1616,7 +1993,6 @@
       }
     }
 
-    // Player Projectiles Update
     for (var f = projectiles.length - 1; f >= 0; f--) {
       var fb = projectiles[f];
       fb.x += fb.vx;
@@ -1636,7 +2012,6 @@
       }
 
       if (!inBonusRoom) {
-        // Hit Exploding Barrels!
         for (var br = 0; br < barrels.length; br++) {
           var bar = barrels[br];
           if (bar.alive && fb.x > bar.x && fb.x < bar.x + bar.w && fb.y > bar.y && fb.y < bar.y + bar.h) {
@@ -1666,7 +2041,7 @@
           if (fb.kind === 'nova') {
             triggerNovaExplosion(fb.x, fb.y);
           } else {
-            damageBoss(fb.dmg);
+            damageBoss(fb.dmg, fb.kind);
           }
           hitWall = true;
         }
@@ -1679,7 +2054,6 @@
       }
     }
 
-    // Boss Projectiles, Meteors, Laser & Shockwaves
     if (!inBonusRoom) {
       for (var bs = bossShots.length - 1; bs >= 0; bs--) {
         var s = bossShots[bs];
@@ -1705,6 +2079,7 @@
         }
         if (mt.y >= 425) {
           sfx.boom();
+          triggerShake(5, 8);
           spawnParticles(mt.x, 425, '#f97316', 14);
           meteors.splice(m, 1);
         }
@@ -1787,6 +2162,7 @@
     continueBtn.style.display = 'none';
     restartBtn.style.display = 'inline-block';
     overlay.style.display = 'flex';
+    openVictoryCardModal(false);
   }
 
   function drawBackground() {
@@ -1895,7 +2271,6 @@
     ctx.fillStyle = grassGrad;
     ctx.fillRect(0, 430, W, 16);
 
-    // Draw Lava / Spike Pits cutting through the ground
     for (var i = 0; i < pits.length; i++) {
       var pit = pits[i];
       var px = Math.round(pit.x - camX);
@@ -1904,7 +2279,6 @@
       ctx.fillStyle = '#090d16';
       ctx.fillRect(px, 430, pit.w, 70);
 
-      // Bubbling Lava / Energy Hazard at bottom of pit
       var wave = Math.sin(frame * 0.15) * 3;
       ctx.fillStyle = '#dc2626';
       ctx.fillRect(px, 466 + wave, pit.w, 34);
@@ -1912,7 +2286,6 @@
       ctx.fillRect(px, 466 + wave, pit.w, 5);
     }
 
-    // Moving Platforms
     for (var mp = 0; mp < movingPlats.length; mp++) {
       var plat = movingPlats[mp];
       var mx = Math.round(plat.x - camX);
@@ -1927,7 +2300,6 @@
       ctx.fillRect(mx + 8, plat.y + 4, plat.w - 16, 4);
     }
 
-    // Crumbling Platforms
     for (var cp = 0; cp < crumblePlats.length; cp++) {
       var cr = crumblePlats[cp];
       if (cr.state === 'fallen') continue;
@@ -1942,7 +2314,6 @@
       ctx.stroke();
     }
 
-    // Jump Pads (Springs)
     for (var jp = 0; jp < jumpPads.length; jp++) {
       var pad = jumpPads[jp];
       var jx = Math.round(pad.x - camX);
@@ -1958,7 +2329,6 @@
       ctx.stroke();
     }
 
-    // Exploding Barrels
     for (var br = 0; br < barrels.length; br++) {
       var bar = barrels[br];
       if (!bar.alive) continue;
@@ -1979,7 +2349,6 @@
       ctx.textAlign = 'left';
     }
 
-    // Stage Coins
     for (var sc = 0; sc < stageCoins.length; sc++) {
       var cn = stageCoins[sc];
       if (cn.collected) continue;
@@ -1996,6 +2365,7 @@
     }
   }
 
+  // --- DETAILED 3D BRICK BLOCKS & ANIMATED GOLDEN '?' MYSTERY BOXES ---
   function drawBlocks() {
     var activeBlocks = inBonusRoom ? bonusBlocks : blocks;
     for (var i = 0; i < activeBlocks.length; i++) {
@@ -2005,40 +2375,113 @@
       if (bx + b.w < -50 || bx > W + 50) continue;
 
       if (b.type === 'brick') {
-        var grad = ctx.createLinearGradient(bx, by, bx, by + b.h);
-        grad.addColorStop(0, '#ea580c');
-        grad.addColorStop(1, '#9a3412');
-        ctx.fillStyle = grad;
-        ctx.fillRect(bx, by, b.w, b.h);
-        ctx.strokeStyle = '#431407';
+        // Rich 3D Masonry Brick Block
+        var baseGrad = ctx.createLinearGradient(bx, by, bx, by + b.h);
+        baseGrad.addColorStop(0, '#d9531e');
+        baseGrad.addColorStop(0.5, '#b43e12');
+        baseGrad.addColorStop(1, '#7c2d12');
+        ctx.fillStyle = baseGrad;
+        drawRoundRect(bx, by, b.w, b.h, 4);
+        ctx.fill();
+
+        // Top & Left 3D Bevel Highlight
+        ctx.fillStyle = '#fdba74';
+        ctx.fillRect(bx + 2, by + 2, b.w - 4, 3);
+        ctx.fillRect(bx + 2, by + 2, 3, b.h - 4);
+
+        // Dark Mortar Grooves (3 Courses)
+        ctx.fillStyle = '#3b1206';
+        ctx.fillRect(bx + 2, by + 13, b.w - 4, 2.5);
+        ctx.fillRect(bx + 2, by + 26, b.w - 4, 2.5);
+        // Staggered Vertical Mortar Joints
+        ctx.fillRect(bx + 19, by + 2, 2.5, 11);
+        ctx.fillRect(bx + 9, by + 15, 2.5, 11);
+        ctx.fillRect(bx + 29, by + 15, 2.5, 11);
+        ctx.fillRect(bx + 19, by + 28, 2.5, 10);
+
+        // Subtle Brick Highlights under mortar
+        ctx.fillStyle = 'rgba(254, 215, 170, 0.35)';
+        ctx.fillRect(bx + 4, by + 16, 13, 1.5);
+        ctx.fillRect(bx + 13, by + 29, 14, 1.5);
+
+        // Outer Crisp Frame
+        ctx.strokeStyle = '#290d04';
         ctx.lineWidth = 2;
-        ctx.strokeRect(bx + 1, by + 1, b.w - 2, b.h - 2);
+        drawRoundRect(bx + 1, by + 1, b.w - 2, b.h - 2, 4);
+        ctx.stroke();
 
       } else if (b.type === 'q_box') {
-        var qGrad = ctx.createLinearGradient(bx, by, bx, by + b.h);
-        qGrad.addColorStop(0, '#fef08a');
-        qGrad.addColorStop(0.5, '#facc15');
-        qGrad.addColorStop(1, '#ca8a04');
+        // Premium Animated Golden Mystery Block
+        var pulse = Math.sin(frame * 0.1 + i) * 0.5 + 0.5;
+        var qGrad = ctx.createLinearGradient(bx, by, bx + b.w, by + b.h);
+        qGrad.addColorStop(0, '#fef9c3');
+        qGrad.addColorStop(0.45, '#facc15');
+        qGrad.addColorStop(1, '#b45309');
         ctx.fillStyle = qGrad;
-        ctx.fillRect(bx, by, b.w, b.h);
-        ctx.strokeStyle = '#713f12';
-        ctx.lineWidth = 2.5;
-        ctx.strokeRect(bx + 1, by + 1, b.w - 2, b.h - 2);
+        drawRoundRect(bx, by, b.w, b.h, 6);
+        ctx.fill();
 
-        ctx.font = '900 22px sans-serif';
+        // 3D Inner Bevel & Recessed Face
+        ctx.fillStyle = '#fef08a';
+        ctx.fillRect(bx + 3, by + 3, b.w - 6, 3);
+        ctx.fillRect(bx + 3, by + 3, 3, b.h - 6);
+        ctx.fillStyle = '#92400e';
+        ctx.fillRect(bx + 3, by + b.h - 6, b.w - 6, 3);
+        ctx.fillRect(bx + b.w - 6, by + 3, 3, b.h - 6);
+
+        // Animated Shimmer Sweep Across Block
+        var sweep = ((frame * 1.4 + i * 25) % 90);
+        if (sweep < 36) {
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.48)';
+          ctx.fillRect(bx + 4 + sweep * 0.7, by + 5, 6, b.h - 10);
+        }
+
+        // 4 Corner Rivets / Bolts
+        ctx.fillStyle = '#78350f';
+        ctx.fillRect(bx + 5, by + 5, 3, 3);
+        ctx.fillRect(bx + b.w - 8, by + 5, 3, 3);
+        ctx.fillRect(bx + 5, by + b.h - 8, 3, 3);
+        ctx.fillRect(bx + b.w - 8, by + b.h - 8, 3, 3);
+
+        // Outer Frame
+        ctx.strokeStyle = '#451a03';
+        ctx.lineWidth = 2.5;
+        drawRoundRect(bx + 1, by + 1, b.w - 2, b.h - 2, 6);
+        ctx.stroke();
+
+        // Bobbing 3D '?' Symbol
+        var qBob = Math.sin(frame * 0.12 + i) * 1.6;
+        ctx.font = '900 23px sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillStyle = '#713f12';
-        ctx.fillText('?', bx + b.w / 2 + 1.5, by + 29.5);
-        ctx.fillStyle = '#ffffff';
-        ctx.fillText('?', bx + b.w / 2, by + 28);
+        ctx.fillStyle = '#78350f';
+        ctx.fillText('?', bx + b.w / 2 + 2, by + 30 + qBob);
+        ctx.fillStyle = pulse > 0.5 ? '#ffffff' : '#fef9c3';
+        ctx.fillText('?', bx + b.w / 2, by + 28 + qBob);
         ctx.textAlign = 'left';
 
       } else if (b.type === 'empty') {
-        ctx.fillStyle = '#475569';
-        ctx.fillRect(bx, by, b.w, b.h);
-        ctx.strokeStyle = '#1e293b';
+        // Forged Iron Used Block with Corner Rivets
+        var eGrad = ctx.createLinearGradient(bx, by, bx, by + b.h);
+        eGrad.addColorStop(0, '#64748b');
+        eGrad.addColorStop(1, '#334155');
+        ctx.fillStyle = eGrad;
+        drawRoundRect(bx, by, b.w, b.h, 5);
+        ctx.fill();
+
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(bx + 5, by + 5, b.w - 10, b.h - 10);
+
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(bx + 5, by + 5, 3, 3);
+        ctx.fillRect(bx + b.w - 8, by + 5, 3, 3);
+        ctx.fillRect(bx + 5, by + b.h - 8, 3, 3);
+        ctx.fillRect(bx + b.w - 8, by + b.h - 8, 3, 3);
+
+        ctx.strokeStyle = '#0f172a';
         ctx.lineWidth = 2.5;
-        ctx.strokeRect(bx + 1, by + 1, b.w - 2, b.h - 2);
+        drawRoundRect(bx + 1, by + 1, b.w - 2, b.h - 2, 5);
+        ctx.stroke();
 
       } else if (b.type === 'pipe' || b.type === 'warp_pipe' || b.type === 'exit_pipe') {
         var isWarp = b.type === 'warp_pipe' && !b.used;
@@ -2093,6 +2536,7 @@
     }
   }
 
+  // --- EXPRESSIVE, DETAILED ENEMY CHARACTER ART ---
   function drawEnemies() {
     if (inBonusRoom) return;
     for (var e = 0; e < enemies.length; e++) {
@@ -2101,62 +2545,192 @@
       var ex = Math.round(en.x - camX);
       var ey = Math.round(en.y);
       if (ex + en.w < -40 || ex > W + 40) continue;
+      var dir = en.vx >= 0 ? 1 : -1;
 
       if (en.kind === 'armored') {
-        // Heavy Armored Knight (Fire Cannon melts it!)
-        ctx.fillStyle = '#334155';
-        drawRoundRect(ex + 2, ey + 6, en.w - 4, en.h - 10, 8);
+        // Heavy Juggernaut Knight with Shoulder Pauldrons, Horned Visor & Tower Shield
+        var step = Math.sin(frame * 0.22 + e) * 2.5;
+        // Heavy Steel Boots
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(ex + 6 + step, ey + en.h - 9, 10, 9);
+        ctx.fillRect(ex + en.w - 16 - step, ey + en.h - 9, 10, 9);
+
+        // Layered Breastplate
+        var armGrad = ctx.createLinearGradient(ex, ey, ex, ey + en.h);
+        armGrad.addColorStop(0, '#94a3b8');
+        armGrad.addColorStop(0.5, '#475569');
+        armGrad.addColorStop(1, '#1e293b');
+        ctx.fillStyle = armGrad;
+        drawRoundRect(ex + 4, ey + 11, en.w - 8, en.h - 18, 6);
         ctx.fill();
-        ctx.strokeStyle = '#94a3b8';
-        ctx.lineWidth = 2.5;
-        ctx.stroke();
-
-        // Steel Helmet Visor
-        ctx.fillStyle = '#64748b';
-        ctx.fillRect(ex + 4, ey, en.w - 8, 14);
-        ctx.fillStyle = '#ef4444';
-        ctx.fillRect(ex + 9, ey + 6, 7, 4);
-        ctx.fillRect(ex + 22, ey + 6, 7, 4);
-
-        // Front Shield Plate
-        ctx.fillStyle = '#cbd5e1';
-        ctx.fillRect(en.vx < 0 ? ex - 2 : ex + en.w - 6, ey + 10, 8, 22);
-
-      } else if (en.kind === 'flyer') {
-        var wing = Math.sin(frame * 0.4) * 7;
-        ctx.fillStyle = '#e2e8f0';
-        ctx.fillRect(ex + 2, ey - 4 + wing, 12, 6);
-        ctx.fillRect(ex + 22, ey - 4 - wing, 12, 6);
-
-        ctx.fillStyle = '#7e22ce';
-        drawRoundRect(ex + 4, ey + 2, 28, 22, 8);
-        ctx.fill();
-        ctx.strokeStyle = '#3b0764';
+        ctx.strokeStyle = '#0f172a';
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        ctx.fillStyle = '#facc15';
-        ctx.fillRect(ex + 9, ey + 9, 5, 5);
-        ctx.fillRect(ex + 22, ey + 9, 5, 5);
-      } else {
-        var bounce = Math.abs(Math.sin(frame * 0.15 + e)) * 3;
-        ctx.fillStyle = en.hp > 1 ? '#4c1d95' : '#991b1b';
+        // Shoulder Pauldrons
+        ctx.fillStyle = '#cbd5e1';
         ctx.beginPath();
-        ctx.arc(ex + en.w / 2, ey + en.h / 2 + 2 - bounce, 16, Math.PI, 0);
-        ctx.lineTo(ex + en.w, ey + en.h - 4);
-        ctx.lineTo(ex, ey + en.h - 4);
+        ctx.arc(ex + 6, ey + 15, 7, Math.PI, 0);
+        ctx.arc(ex + en.w - 6, ey + 15, 7, Math.PI, 0);
+        ctx.fill();
+
+        // Horned Great-Helm
+        ctx.fillStyle = '#64748b';
+        drawRoundRect(ex + 6, ey, en.w - 12, 15, 5);
+        ctx.fill();
+        ctx.strokeStyle = '#0f172a';
+        ctx.stroke();
+
+        // Gold Helm Horns
+        ctx.fillStyle = '#facc15';
+        ctx.beginPath();
+        ctx.moveTo(ex + 7, ey + 5); ctx.lineTo(ex, ey - 5); ctx.lineTo(ex + 12, ey + 2);
+        ctx.moveTo(ex + en.w - 7, ey + 5); ctx.lineTo(ex + en.w, ey - 5); ctx.lineTo(ex + en.w - 12, ey + 2);
+        ctx.fill();
+
+        // Glowing Red Visor Slit
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(ex + 9, ey + 6, en.w - 18, 5);
+        ctx.fillStyle = '#ef4444';
+        ctx.fillRect(ex + 11, ey + 7, 6, 3);
+        ctx.fillRect(ex + en.w - 17, ey + 7, 6, 3);
+
+        // Riveted Tower Shield with Gold Emblem
+        var shX = dir === -1 ? ex - 3 : ex + en.w - 7;
+        ctx.fillStyle = '#e2e8f0';
+        drawRoundRect(shX, ey + 11, 10, 24, 3);
+        ctx.fill();
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.fillStyle = '#facc15';
+        ctx.fillRect(shX + 3, ey + 18, 4, 10);
+
+        // Armor HP Bar
+        if (en.hp < en.maxHp) {
+          ctx.fillStyle = '#0f172a';
+          ctx.fillRect(ex + 4, ey - 10, en.w - 8, 4);
+          ctx.fillStyle = '#38bdf8';
+          ctx.fillRect(ex + 4, ey - 10, (en.w - 8) * Math.max(0, en.hp / en.maxHp), 4);
+        }
+
+      } else if (en.kind === 'flyer') {
+        // Cyber Vampire Bat / Neon Gargoyle with Articulated Wings
+        var flap = Math.sin(frame * 0.42 + e) * 10;
+        ctx.fillStyle = '#a855f7';
+        ctx.strokeStyle = '#3b0764';
+        ctx.lineWidth = 1.8;
+
+        // Left Wing
+        ctx.beginPath();
+        ctx.moveTo(ex + 10, ey + 12);
+        ctx.lineTo(ex - 8, ey - 2 + flap);
+        ctx.lineTo(ex - 2, ey + 15 + flap * 0.5);
+        ctx.lineTo(ex + 5, ey + 13);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // Right Wing
+        ctx.beginPath();
+        ctx.moveTo(ex + en.w - 10, ey + 12);
+        ctx.lineTo(ex + en.w + 8, ey - 2 + flap);
+        ctx.lineTo(ex + en.w + 2, ey + 15 + flap * 0.5);
+        ctx.lineTo(ex + en.w - 5, ey + 13);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // Bat Body & Pointed Ears
+        var batGrad = ctx.createRadialGradient(ex + 18, ey + 12, 2, ex + 18, ey + 14, 15);
+        batGrad.addColorStop(0, '#c084fc');
+        batGrad.addColorStop(1, '#581c87');
+        ctx.fillStyle = batGrad;
+        ctx.beginPath();
+        ctx.arc(ex + en.w / 2, ey + 14, 12, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Pointed Ears
+        ctx.beginPath();
+        ctx.moveTo(ex + 9, ey + 6); ctx.lineTo(ex + 8, ey - 4); ctx.lineTo(ex + 15, ey + 4);
+        ctx.moveTo(ex + en.w - 9, ey + 6); ctx.lineTo(ex + en.w - 8, ey - 4); ctx.lineTo(ex + en.w - 15, ey + 4);
+        ctx.fill();
+
+        // Glowing Yellow Eyes & Fangs
+        ctx.fillStyle = '#fef08a';
+        ctx.fillRect(ex + 12, ey + 10, 4, 4);
+        ctx.fillRect(ex + 20, ey + 10, 4, 4);
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.moveTo(ex + 14, ey + 19); ctx.lineTo(ex + 15.5, ey + 23); ctx.lineTo(ex + 17, ey + 19);
+        ctx.moveTo(ex + 19, ey + 19); ctx.lineTo(ex + 20.5, ey + 23); ctx.lineTo(ex + 22, ey + 19);
+        ctx.fill();
+
+      } else {
+        // Detailed FUD Chomper / Horned Goblin Walker
+        var bounce = Math.abs(Math.sin(frame * 0.2 + e)) * 3;
+        var footSwing = Math.sin(frame * 0.3 + e) * 3.5;
+        var isElite = en.maxHp > 1;
+
+        // Animated Little Boots
+        ctx.fillStyle = '#1e293b';
+        drawRoundRect(ex + 5 + footSwing, ey + en.h - 8, 10, 8, 3);
+        ctx.fill();
+        drawRoundRect(ex + en.w - 15 - footSwing, ey + en.h - 8, 10, 8, 3);
+        ctx.fill();
+
+        // Shaded Dome Body
+        var wGrad = ctx.createRadialGradient(ex + 14, ey + 12 - bounce, 3, ex + 17, ey + 18 - bounce, 19);
+        if (isElite) {
+          wGrad.addColorStop(0, '#9333ea');
+          wGrad.addColorStop(1, '#3b0764');
+        } else {
+          wGrad.addColorStop(0, '#f87171');
+          wGrad.addColorStop(1, '#991b1b');
+        }
+        ctx.fillStyle = wGrad;
+        ctx.beginPath();
+        ctx.arc(ex + en.w / 2, ey + 17 - bounce, 16, Math.PI, 0);
+        ctx.lineTo(ex + en.w - 1, ey + en.h - 6 - bounce * 0.4);
+        ctx.lineTo(ex + 1, ey + en.h - 6 - bounce * 0.4);
         ctx.closePath();
         ctx.fill();
         ctx.strokeStyle = '#1e1b4b';
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        ctx.fillStyle = '#fef08a';
-        ctx.fillRect(ex + 7, ey + 14 - bounce, 6, 6);
-        ctx.fillRect(ex + 21, ey + 14 - bounce, 6, 6);
-        ctx.fillStyle = '#000';
-        ctx.fillRect(ex + 9, ey + 16 - bounce, 3, 3);
-        ctx.fillRect(ex + 22, ey + 16 - bounce, 3, 3);
+        // White Goblin Horns
+        ctx.fillStyle = '#fef9c3';
+        ctx.beginPath();
+        ctx.moveTo(ex + 6, ey + 8 - bounce); ctx.lineTo(ex + 2, ey - 2 - bounce); ctx.lineTo(ex + 12, ey + 4 - bounce);
+        ctx.moveTo(ex + en.w - 6, ey + 8 - bounce); ctx.lineTo(ex + en.w - 2, ey - 2 - bounce); ctx.lineTo(ex + en.w - 12, ey + 4 - bounce);
+        ctx.fill();
+
+        // Angry Eyes & Furrowed Brow
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(ex + 7, ey + 11 - bounce, 7, 7);
+        ctx.fillRect(ex + 20, ey + 11 - bounce, 7, 7);
+        ctx.fillStyle = '#0f172a';
+        var look = dir === 1 ? 3 : 1;
+        ctx.fillRect(ex + 7 + look, ey + 13 - bounce, 3, 4);
+        ctx.fillRect(ex + 20 + look, ey + 13 - bounce, 3, 4);
+
+        // Angry V-Eyebrows
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.moveTo(ex + 6, ey + 9 - bounce); ctx.lineTo(ex + 15, ey + 13 - bounce);
+        ctx.moveTo(ex + 28, ey + 9 - bounce); ctx.lineTo(ex + 19, ey + 13 - bounce);
+        ctx.stroke();
+
+        // Chomping Mouth with Sharp Teeth
+        var chomp = Math.abs(Math.sin(frame * 0.25 + e)) * 2.5;
+        ctx.fillStyle = '#450a0a';
+        ctx.fillRect(ex + 9, ey + 21 - bounce, 16, 5 + chomp);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(ex + 11, ey + 21 - bounce, 3, 2.5);
+        ctx.fillRect(ex + 20, ey + 21 - bounce, 3, 2.5);
       }
     }
   }
@@ -2182,6 +2756,23 @@
     }
 
     var breath = Math.sin(frame * 0.1) * 3;
+    var rage = boss.hp <= boss.maxHp * 0.5;
+
+    // Enrage Crimson/Gold Aura below 50% HP
+    if (rage) {
+      ctx.strokeStyle = frame % 8 < 4 ? 'rgba(239, 68, 68, 0.65)' : 'rgba(250, 204, 21, 0.65)';
+      ctx.lineWidth = 4;
+      drawRoundRect(bx - 4, by + 10, boss.w + 8, boss.h - 12, 22);
+      ctx.stroke();
+    }
+
+    // Blue Energy Shield Flash when deflecting basic BLASTER shots
+    if (boss.shieldFlash > 0) {
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 5;
+      drawRoundRect(bx - 6, by + 8, boss.w + 12, boss.h - 10, 24);
+      ctx.stroke();
+    }
 
     if (boss.isMega) {
       var wingFlap = Math.sin(frame * 0.14) * 14;
@@ -2204,14 +2795,26 @@
     ctx.fillStyle = t.bossBody;
     drawRoundRect(bx + 6, by + 16 + breath, boss.w - 12, boss.h - 24, 18);
     ctx.fill();
-    ctx.strokeStyle = boss.telegraphTimer > 0 ? '#fef08a' : t.bossRim;
-    ctx.lineWidth = boss.telegraphTimer > 0 ? 5 : 3;
+    ctx.strokeStyle = (boss.telegraphTimer > 0 || boss.chargeTelegraph > 0) ? '#fef08a' : t.bossRim;
+    ctx.lineWidth = (boss.telegraphTimer > 0 || boss.chargeTelegraph > 0) ? 5 : 3;
     ctx.stroke();
 
+    // Chest Armor & Glowing Power Core
     ctx.fillStyle = 'rgba(0,0,0,0.45)';
     drawRoundRect(bx + 20, by + 48 + breath, boss.w - 40, boss.h - 76, 12);
     ctx.fill();
 
+    var corePulse = 7 + Math.sin(frame * (rage ? 0.35 : 0.18)) * 2.5;
+    ctx.fillStyle = rage ? '#ef4444' : '#38bdf8';
+    ctx.beginPath();
+    ctx.arc(bx + boss.w / 2, by + boss.h * 0.56 + breath, corePulse, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(bx + boss.w / 2, by + boss.h * 0.56 + breath, corePulse * 0.45, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Horns
     ctx.fillStyle = t.bossHorn;
     ctx.beginPath();
     ctx.moveTo(bx + 18, by + 20 + breath);
@@ -2233,6 +2836,15 @@
     ctx.fillStyle = '#ef4444';
     ctx.fillRect(bx + 27 + eyeShift, eyeY + 2, 6, 7);
     ctx.fillRect(bx + boss.w - 33 + eyeShift, eyeY + 2, 6, 7);
+
+    // Charge Dash Warning '!'
+    if (boss.chargeTelegraph > 0) {
+      ctx.font = '900 22px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#ef4444';
+      ctx.fillText('⚠ CHARGE!', bx + boss.w / 2, by - 14);
+      ctx.textAlign = 'left';
+    }
 
     if (bossActive) {
       var barW = boss.isMega ? 360 : 300;
@@ -2267,7 +2879,6 @@
     var px = Math.round(player.x - camX);
     var py = Math.round(player.y);
 
-    // Visual Auras for Shield, Electric Dash, Super Weapons, or Heart Overcharge!
     if (player.dashTimer > 0) {
       ctx.strokeStyle = '#38bdf8';
       ctx.lineWidth = 4;
@@ -2294,7 +2905,6 @@
       ctx.stroke();
     }
 
-    // Player Name + Low HP Warning
     ctx.font = '900 11px sans-serif';
     ctx.textAlign = 'center';
     var nameW = ctx.measureText(playerName).width + 12;
@@ -2373,7 +2983,6 @@
       ctx.fillRect(player.facing === 1 ? px + 14 : px, py + 2, 20, 3);
     }
 
-    // Distinct Visible Weapon Graphics Held by the Hero!
     var wpn = getActiveWeapon();
     var gx = player.facing === 1 ? px + 22 : px - 12;
     if (wpn === 'BLASTER') {
@@ -2382,7 +2991,6 @@
       ctx.fillStyle = '#38bdf8';
       ctx.fillRect(player.facing === 1 ? gx + 14 : gx, py + 21, 5, 5);
     } else if (wpn === 'FIRE') {
-      // Heavy Orange Flamethrower Cannon + Pilot Flame
       ctx.fillStyle = '#ea580c';
       ctx.fillRect(gx, py + 18, 22, 10);
       ctx.fillStyle = '#fef08a';
@@ -2390,14 +2998,12 @@
       ctx.arc(player.facing === 1 ? gx + 24 : gx - 2, py + 23, 4 + Math.sin(frame * 0.5) * 1.5, 0, Math.PI * 2);
       ctx.fill();
     } else if (wpn === 'HYPER BEAM') {
-      // Twin-barrel Golden Railgun
       ctx.fillStyle = '#facc15';
       ctx.fillRect(gx, py + 17, 24, 5);
       ctx.fillRect(gx, py + 24, 24, 5);
       ctx.fillStyle = '#38bdf8';
       ctx.fillRect(player.facing === 1 ? gx + 20 : gx, py + 17, 5, 12);
     } else if (wpn === 'OMEGA NOVA') {
-      // Orbiting Purple/Gold Nova Orb
       var orbX = player.facing === 1 ? px + 40 : px - 6;
       var orbY = py + 20 + Math.sin(frame * 0.25) * 4;
       ctx.fillStyle = '#a855f7';
@@ -2448,7 +3054,7 @@
     ctx.fillText('COINS:' + coins, 484, 23);
 
     ctx.fillStyle = '#4ade80';
-    ctx.fillText('SCORE:' + score, 558, 23);
+    ctx.fillText('SCORE:' + score + (comboCount >= 2 ? (' (' + comboCount + 'x)') : ''), 558, 23);
 
     if (stageBannerTimer > 0) {
       ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
@@ -2464,9 +3070,29 @@
       ctx.fillText(stageBannerText, W / 2, 108);
       ctx.textAlign = 'left';
     }
+
+    if (paused) {
+      ctx.fillStyle = 'rgba(5, 8, 20, 0.72)';
+      ctx.fillRect(0, 36, W, H - 36);
+      ctx.font = '900 32px sans-serif';
+      ctx.fillStyle = '#facc15';
+      ctx.textAlign = 'center';
+      ctx.fillText('⏸ GAME PAUSED', W / 2, H / 2);
+      ctx.font = '800 13px sans-serif';
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillText('Press P or click ▶ to resume', W / 2, H / 2 + 28);
+      ctx.textAlign = 'left';
+    }
   }
 
   function render() {
+    ctx.save();
+    if (shakeTimer > 0 && !paused) {
+      var sx = (Math.random() - 0.5) * shakeIntensity;
+      var sy = (Math.random() - 0.5) * shakeIntensity;
+      ctx.translate(sx, sy);
+    }
+
     drawBackground();
     drawBlocks();
     drawGroundAndHazards();
@@ -2511,7 +3137,6 @@
         ctx.beginPath(); ctx.arc(s.x - camX, s.y, 3.5, 0, Math.PI * 2); ctx.fill();
       }
 
-      // Falling Meteors + Ground Warning Crosshairs
       for (var m = 0; m < meteors.length; m++) {
         var mt = meteors[m];
         ctx.fillStyle = 'rgba(239, 68, 68, 0.45)';
@@ -2522,7 +3147,6 @@
         ctx.beginPath(); ctx.arc(mt.x - camX, mt.y, 7, 0, Math.PI * 2); ctx.fill();
       }
 
-      // Boss Sweeping Horizontal Laser Beam
       if (bossLaser) {
         var lx = arenaLeftWall - camX;
         if (bossLaser.warnTimer > 0) {
@@ -2571,6 +3195,7 @@
       ctx.fillRect(pt.x - camX, pt.y, 4, 4);
     }
 
+    ctx.restore();
     drawHUD();
   }
 
@@ -2581,10 +3206,12 @@
     lastTime = now;
     if (dt > 100) dt = 100;
 
-    accumulator += dt;
-    while (accumulator >= STEP) {
-      update();
-      accumulator -= STEP;
+    if (!paused) {
+      accumulator += dt;
+      while (accumulator >= STEP) {
+        update();
+        accumulator -= STEP;
+      }
     }
     render();
     requestAnimationFrame(loop);
