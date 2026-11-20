@@ -627,6 +627,7 @@
     loadLevel(wIndex, keepScore);
     mode = 'play';
     lastTime = performance.now();
+    accumulator = 0;
     requestAnimationFrame(loop);
   }
 
@@ -909,6 +910,7 @@
           loadLevel(nextW, true);
           mode = 'play';
           lastTime = performance.now();
+          accumulator = 0;
           requestAnimationFrame(loop);
         }, 1600);
       } else {
@@ -1242,12 +1244,43 @@
     ctx.fillText('LIVES: ' + lives, 480, 24);
   }
 
+  var STEP = 1000 / 60;
+  var FIXED_DT = 1 / 60;
   var lastTime = 0;
+  var accumulator = 0;
+
+  document.addEventListener('visibilitychange', function() {
+    accumulator = 0;
+    lastTime = performance.now();
+  });
+
+  window.addEventListener('blur', function() {
+    accumulator = 0;
+    keys = {};
+  });
+
   function loop(now) {
     if (mode !== 'play') return;
-    var dt = Math.min(0.05, (now - lastTime) / 1000);
+    if (!lastTime) lastTime = now;
+    var frameTime = now - lastTime;
     lastTime = now;
-    update(dt);
+
+    if (frameTime < 0 || frameTime > 250) {
+      accumulator = 0;
+    } else {
+      accumulator += Math.min(frameTime, 100);
+    }
+
+    var steps = 0;
+    while (accumulator >= STEP - 0.5 && steps < 4) {
+      update(FIXED_DT);
+      accumulator -= STEP;
+      steps++;
+    }
+    if (steps === 4 && accumulator >= STEP) {
+      accumulator = 0;
+    }
+
     render();
     requestAnimationFrame(loop);
   }
