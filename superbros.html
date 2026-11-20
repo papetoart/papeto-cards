@@ -75,12 +75,12 @@
     align-items: center;
     text-align: center;
     color: #fff;
-    padding: 8px 14px;
+    padding: 6px 12px;
     z-index: 20;
     touch-action: auto;
   }
   #overlay h1 {
-    font-size: clamp(20px, 4.5vw, 42px);
+    font-size: clamp(18px, 4.2vw, 38px);
     font-weight: 900;
     background: linear-gradient(180deg, #fef08a 0%, #facc15 45%, #ea580c 100%);
     -webkit-background-clip: text;
@@ -90,114 +90,166 @@
     margin-bottom: 1px;
   }
   .byline {
-    font-size: clamp(8px, 1.3vw, 11px);
+    font-size: clamp(7.5px, 1.2vw, 11px);
     color: #38bdf8;
-    letter-spacing: 2px;
-    margin-bottom: 7px;
+    letter-spacing: 1.5px;
+    margin-bottom: 5px;
     font-weight: 900;
     text-transform: uppercase;
   }
+
+  /* 2-Player Selector */
+  .hero-section-label {
+    font-size: clamp(7.5px, 1.2vw, 10px);
+    font-weight: 900;
+    color: #e2e8f0;
+    letter-spacing: 1.5px;
+    margin-bottom: 3px;
+  }
+  .hero-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+  }
+  .hero-card {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(30, 41, 59, 0.95);
+    border: 2.5px solid #64748b;
+    color: #cbd5e1;
+    padding: 4px 12px;
+    border-radius: 11px;
+    font-weight: 900;
+    font-size: clamp(10px, 1.6vw, 13px);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .hero-card .sub {
+    display: block;
+    font-size: clamp(6.5px, 1vw, 8.5px);
+    font-weight: 800;
+    opacity: 0.85;
+  }
+  .hero-card.active-doge {
+    border-color: #facc15;
+    background: rgba(250, 204, 21, 0.24);
+    color: #fef08a;
+    box-shadow: 0 0 14px rgba(250, 204, 21, 0.55);
+    transform: scale(1.04);
+  }
+  .hero-card.active-pepe {
+    border-color: #4ade80;
+    background: rgba(74, 222, 128, 0.24);
+    color: #bbf7d0;
+    box-shadow: 0 0 14px rgba(74, 222, 128, 0.55);
+    transform: scale(1.04);
+  }
+
   .setup-row {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 7px;
-    margin-bottom: 7px;
+    gap: 6px;
+    margin-bottom: 5px;
   }
   .sel-btn {
     background: rgba(30, 41, 59, 0.92);
     border: 2px solid #475569;
     color: #cbd5e1;
-    padding: 4px 11px;
-    border-radius: 9px;
+    padding: 3px 10px;
+    border-radius: 8px;
     font-weight: 900;
-    font-size: clamp(9px, 1.5vw, 12px);
+    font-size: clamp(8px, 1.3vw, 11px);
     cursor: pointer;
     transition: all 0.15s;
   }
-  .sel-btn.active-doge { border-color: #facc15; background: rgba(250, 204, 21, 0.22); color: #fef08a; box-shadow: 0 0 10px rgba(250, 204, 21, 0.4); }
-  .sel-btn.active-pepe { border-color: #4ade80; background: rgba(74, 222, 128, 0.22); color: #bbf7d0; box-shadow: 0 0 10px rgba(74, 222, 128, 0.4); }
   .sel-btn.active-diff { border-color: #38bdf8; background: rgba(56, 189, 248, 0.25); color: #e0f2fe; box-shadow: 0 0 10px rgba(56, 189, 248, 0.45); }
 
-  .stage-picker {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(30, 41, 59, 0.92);
-    border: 2px solid #a855f7;
-    border-radius: 9px;
-    padding: 3px 10px;
-    font-size: clamp(9px, 1.5vw, 12px);
-    font-weight: 900;
-    color: #e9d5ff;
+  /* Blinking Player Name Box */
+  @keyframes arcadeBlink {
+    0%, 100% { opacity: 1; color: #fef08a; text-shadow: 0 0 10px rgba(250, 204, 21, 0.95); }
+    50% { opacity: 0.22; color: #38bdf8; text-shadow: none; }
   }
-  .stage-arrow {
-    background: #6b21a8;
-    border: none;
-    color: #fff;
-    font-weight: 900;
-    padding: 2px 8px;
-    border-radius: 6px;
-    cursor: pointer;
+  @keyframes borderPulse {
+    0%, 100% { border-color: #facc15; box-shadow: 0 0 12px rgba(250, 204, 21, 0.65); }
+    50% { border-color: #38bdf8; box-shadow: 0 0 6px rgba(56, 189, 248, 0.25); }
   }
-
   .name-box {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 7px;
+    margin-bottom: 6px;
     width: 100%;
-    max-width: 230px;
+    max-width: 225px;
   }
   .name-box label {
-    font-size: 9px;
-    font-weight: 800;
-    color: #fde047;
+    font-size: clamp(8px, 1.3vw, 10px);
+    font-weight: 900;
     letter-spacing: 1.5px;
     margin-bottom: 2px;
+    animation: arcadeBlink 1s infinite ease-in-out;
   }
   #player-name-input {
     width: 100%;
-    padding: 5px 10px;
+    padding: 4px 10px;
     border-radius: 9px;
     border: 2px solid #facc15;
     background: rgba(30, 41, 59, 0.96);
     color: #fff;
-    font-size: 13px;
-    font-weight: 800;
+    font-size: clamp(11px, 1.8vw, 13px);
+    font-weight: 900;
     text-align: center;
     outline: none;
     user-select: text;
     -webkit-user-select: text;
     touch-action: auto;
+    animation: borderPulse 1.4s infinite ease-in-out;
   }
   #player-name-input:focus {
-    border-color: #38bdf8;
-    box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+    animation: none;
+    border-color: #4ade80;
+    box-shadow: 0 0 14px rgba(74, 222, 128, 0.75);
   }
-  #overlay p {
-    font-size: clamp(8px, 1.25vw, 10.5px);
-    color: #cbd5e1;
-    margin-bottom: 8px;
-    max-width: 550px;
-    line-height: 1.3;
+
+  .btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
   }
   .action-btn {
     background: linear-gradient(180deg, #22c55e, #15803d);
     color: #fff;
     border: 2px solid #dcfce7;
-    padding: 8px 26px;
-    font-size: clamp(12px, 2vw, 16px);
+    padding: 6px 22px;
+    font-size: clamp(11px, 1.8vw, 15px);
     font-weight: 900;
     font-family: inherit;
     cursor: pointer;
     box-shadow: 0 4px 0 #14532d, 0 8px 18px rgba(0, 0, 0, 0.5);
     text-transform: uppercase;
     border-radius: 11px;
-    letter-spacing: 1.5px;
+    letter-spacing: 1.2px;
   }
   .action-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #14532d; }
+
+  .continue-btn {
+    background: linear-gradient(180deg, #38bdf8, #0284c7);
+    border-color: #e0f2fe;
+    box-shadow: 0 4px 0 #0c4a6e, 0 8px 18px rgba(0, 0, 0, 0.5);
+  }
+  .continue-btn:active { box-shadow: 0 2px 0 #0c4a6e; }
+
+  .restart-btn {
+    background: linear-gradient(180deg, #f59e0b, #b45309);
+    border-color: #fef3c7;
+    box-shadow: 0 4px 0 #78350f, 0 8px 18px rgba(0, 0, 0, 0.5);
+  }
+  .restart-btn:active { box-shadow: 0 2px 0 #78350f; }
 
   /* --- MOBILE & DESKTOP ARCADE CONTROLS --- */
   .touch-controls {
@@ -239,11 +291,11 @@
   }
   .tbtn:active { transform: translateY(3px); background: #facc15; color: #0f172a; }
   #btn-dash {
-    width: 52px;
+    width: 50px;
     height: 52px;
     border-color: #38bdf8;
     color: #7dd3fc;
-    font-size: 11px;
+    font-size: 18px;
     box-shadow: 0 4px 0 #0369a1;
   }
   #btn-dash:active { background: #38bdf8; color: #0f172a; }
@@ -287,7 +339,7 @@
     #card-frame { height: calc(100dvh - 10px); max-height: calc(100dvh - 10px); width: auto; max-width: 96vw; aspect-ratio: 16 / 10; }
     .touch-controls { position: fixed; bottom: 6px; left: 50%; transform: translateX(-50%); width: 96vw; background: transparent; border: none; box-shadow: none; padding: 0 10px; }
     .tbtn { width: 44px; height: 44px; font-size: 16px; opacity: 0.75; }
-    #btn-dash { width: 46px; height: 44px; font-size: 10px; opacity: 0.75; }
+    #btn-dash { width: 44px; height: 44px; font-size: 16px; opacity: 0.75; }
     .abtn { width: 48px; height: 48px; font-size: 10px; opacity: 0.78; }
     #btn-wpn { width: 42px; height: 42px; font-size: 9px; opacity: 0.78; }
   }
@@ -305,16 +357,18 @@
   <canvas id="game" width="800" height="500"></canvas>
   <div id="overlay">
     <h1>SUPERBROS</h1>
-    <div class="byline">11 STAGES &bull; SUPER WEAPONS &bull; PLAYABLE NFT BY PAPETO</div>
+    <div id="status-line" class="byline">11 WORLDS &bull; SUPER WEAPONS &bull; PLAYABLE NFT BY PAPETO</div>
 
-    <div class="setup-row">
-      <button type="button" id="pick-doge" class="sel-btn active-doge">🐶 DOGE</button>
-      <button type="button" id="pick-pepe" class="sel-btn">🐸 PEPE</button>
-      <div class="stage-picker">
-        <button type="button" id="stage-prev" class="stage-arrow">◀</button>
-        <span id="stage-label">STAGE 1 / 11</span>
-        <button type="button" id="stage-next" class="stage-arrow">▶</button>
-      </div>
+    <div class="hero-section-label">CHOOSE YOUR HERO (2 PLAYERS):</div>
+    <div class="hero-row">
+      <button type="button" id="pick-doge" class="hero-card active-doge">
+        <span style="font-size:18px;">🐶</span>
+        <span>DOGE <span class="sub">PLAYER 1</span></span>
+      </button>
+      <button type="button" id="pick-pepe" class="hero-card">
+        <span style="font-size:18px;">🐸</span>
+        <span>PEPE <span class="sub">PLAYER 2</span></span>
+      </button>
     </div>
 
     <div class="setup-row">
@@ -324,12 +378,15 @@
     </div>
 
     <div class="name-box">
-      <label for="player-name-input">ENTER YOUR PLAYER NAME</label>
+      <label for="player-name-input">▶ ENTER YOUR PLAYER NAME ◀</label>
       <input type="text" id="player-name-input" maxlength="14" placeholder="PLAYER 1" value="PLAYER 1">
     </div>
 
-    <p>11 WORLDS + MEGA FINAL BOSS &bull; SUPER WEAPONS: HYPER BEAM &amp; OMEGA NOVA!<br>[◀/▶] Move &bull; [JUMP x2] Double Jump &bull; [DASH] Dash &bull; [ATK] Attack &bull; [WPN] Switch Weapon</p>
-    <button id="start-btn" class="action-btn" type="button">PLAY STAGE 1</button>
+    <div class="btn-row">
+      <button id="start-btn" class="action-btn" type="button">PLAY GAME</button>
+      <button id="continue-btn" class="action-btn continue-btn" type="button" style="display:none;">CONTINUE</button>
+      <button id="restart-btn" class="action-btn restart-btn" type="button" style="display:none;">START AGAIN</button>
+    </div>
   </div>
 </div>
 
@@ -337,11 +394,11 @@
   <div class="dpad">
     <div class="tbtn" data-key="ArrowLeft">◀</div>
     <div class="tbtn" data-key="ArrowRight">▶</div>
-    <div id="btn-dash" class="tbtn">DASH</div>
+    <div id="btn-dash" class="tbtn" title="Dash">▼</div>
   </div>
   <div class="action-group">
     <div id="btn-wpn" class="abtn">WPN</div>
-    <div id="btn-atk" class="abtn">ATK</div>
+    <div id="btn-atk" class="abtn">FIRE</div>
     <div id="btn-jump" class="abtn">JUMP</div>
   </div>
 </div>
@@ -351,16 +408,16 @@
   var canvas = document.getElementById('game');
   var ctx = canvas.getContext('2d');
   var overlay = document.getElementById('overlay');
+  var statusLine = document.getElementById('status-line');
   var startBtn = document.getElementById('start-btn');
+  var continueBtn = document.getElementById('continue-btn');
+  var restartBtn = document.getElementById('restart-btn');
   var nameInput = document.getElementById('player-name-input');
   var pickDoge = document.getElementById('pick-doge');
   var pickPepe = document.getElementById('pick-pepe');
   var diffEasy = document.getElementById('diff-easy');
   var diffNormal = document.getElementById('diff-normal');
   var diffHard = document.getElementById('diff-hard');
-  var stagePrev = document.getElementById('stage-prev');
-  var stageNext = document.getElementById('stage-next');
-  var stageLabel = document.getElementById('stage-label');
   var muteBtn = document.getElementById('mute-btn');
 
   var W = 800, H = 500;
@@ -433,14 +490,13 @@
     jump: function() { playTone(260, 560, 0.14, 'square', 0.06); },
     djump: function() { playTone(420, 840, 0.16, 'square', 0.07); },
     dash: function() { playTone(520, 140, 0.14, 'sawtooth', 0.07); },
-    sword: function() { playTone(700, 180, 0.11, 'sawtooth', 0.08); },
     blaster: function() { playTone(920, 240, 0.10, 'square', 0.06); },
     hyperBeam: function() { playTone(1240, 320, 0.18, 'sawtooth', 0.09); },
     omegaNova: function() { playTone(480, 90, 0.28, 'sawtooth', 0.11); },
     fire: function() { playTone(380, 160, 0.13, 'triangle', 0.08); },
-    coin: function() {
-      playTone(987, 987, 0.07, 'square', 0.06);
-      setTimeout(function() { playTone(1318, 1318, 0.16, 'square', 0.06); }, 65);
+    powerup: function() {
+      playTone(587, 784, 0.09, 'square', 0.07);
+      setTimeout(function() { playTone(987, 1318, 0.16, 'square', 0.08); }, 80);
     },
     heal: function() {
       playTone(523, 659, 0.1, 'triangle', 0.08);
@@ -461,26 +517,13 @@
 
   pickDoge.onclick = function() {
     selectedHero = 'doge';
-    pickDoge.className = 'sel-btn active-doge';
-    pickPepe.className = 'sel-btn';
+    pickDoge.className = 'hero-card active-doge';
+    pickPepe.className = 'hero-card';
   };
   pickPepe.onclick = function() {
     selectedHero = 'pepe';
-    pickPepe.className = 'sel-btn active-pepe';
-    pickDoge.className = 'sel-btn';
-  };
-
-  function updateStagePickerUI() {
-    stageLabel.textContent = 'STAGE ' + currentStage + ' / ' + maxStages;
-    startBtn.textContent = currentStage === 11 ? 'PLAY FINAL STAGE 11' : 'PLAY STAGE ' + currentStage;
-  }
-  stagePrev.onclick = function() {
-    currentStage = currentStage > 1 ? currentStage - 1 : maxStages;
-    updateStagePickerUI();
-  };
-  stageNext.onclick = function() {
-    currentStage = currentStage < maxStages ? currentStage + 1 : 1;
-    updateStagePickerUI();
+    pickPepe.className = 'hero-card active-pepe';
+    pickDoge.className = 'hero-card';
   };
 
   function setDiff(d) {
@@ -507,7 +550,8 @@
     }
   }
 
-  var weapons = ['SWORD', 'BLASTER', 'FIRE', 'HYPER BEAM', 'OMEGA NOVA'];
+  // Ranged & Super Weapons Only (No Sword)
+  var weapons = ['BLASTER', 'FIRE', 'HYPER BEAM', 'OMEGA NOVA'];
   var weaponIdx = 0;
 
   var gravity = 0.58;
@@ -515,9 +559,8 @@
     x: 90, y: 340, w: 34, h: 42,
     vx: 0, vy: 0, speed: 5.0, jumpPower: -12.5,
     grounded: false, jumpsLeft: 2, facing: 1,
-    hp: 4, maxHp: 4, invuln: 0,
-    dashTimer: 0, dashCooldown: 0,
-    slashTimer: 0, atkCooldown: 0
+    hp: 4, maxHp: 4, invuln: 0, shieldTimer: 0,
+    dashTimer: 0, dashCooldown: 0, atkCooldown: 0
   };
 
   var blocks = [];
@@ -526,7 +569,7 @@
   var bossShots = [];
   var shockwaves = [];
   var particles = [];
-  var floatingCoins = [];
+  var floatingPopups = [];
   var afterimages = [];
 
   var arenaStartX = 1950;
@@ -536,59 +579,62 @@
   var boss = null;
   var stageClearing = false;
 
-  function loadStage(stNum, keepStats) {
+  function loadStage(stNum, keepStats, isContinue) {
     currentStage = stNum;
     var theme = STAGE_THEMES[stNum - 1];
     var diffMult = difficulty === 'easy' ? 0.8 : (difficulty === 'hard' ? 1.25 : 1.0);
     var stageSpeedBoost = 1 + (stNum - 1) * 0.035;
 
     player.maxHp = difficulty === 'easy' ? 6 : (difficulty === 'hard' ? 3 : 4);
-    if (!keepStats) {
+    if (isContinue) {
+      player.hp = player.maxHp;
+      score = 0;
+    } else if (!keepStats) {
       player.hp = player.maxHp;
       score = 0;
       coins = 0;
-      weaponIdx = stNum === 11 ? 3 : 0;
+      weaponIdx = 0; // Starts with BLASTER
     } else {
       player.hp = Math.min(player.maxHp, player.hp + 2);
-      if (stNum === 11 && weaponIdx < 3) weaponIdx = 3;
+      if (stNum === 11 && weaponIdx < 2) weaponIdx = 2; // Ensure Super Weapon on Stage 11
     }
 
     player.x = 80; player.y = 340; player.vx = 0; player.vy = 0;
-    player.jumpsLeft = 2; player.invuln = 0;
-    player.dashTimer = 0; player.dashCooldown = 0;
-    player.slashTimer = 0; player.atkCooldown = 0;
+    player.jumpsLeft = 2; player.invuln = 0; player.shieldTimer = 0;
+    player.dashTimer = 0; player.dashCooldown = 0; player.atkCooldown = 0;
 
     camX = 0;
-    afterimages = []; projectiles = []; bossShots = []; shockwaves = []; particles = []; floatingCoins = [];
+    afterimages = []; projectiles = []; bossShots = []; shockwaves = []; particles = []; floatingPopups = [];
     stageClearing = false;
 
     blocks = [];
     var shift = ((stNum * 37) % 60) - 30;
 
+    // Every '?' block holds an awesome power-up reward!
     blocks.push({ x: 240 + shift, y: 290, w: 40, h: 40, type: 'brick', bump: 0 });
-    blocks.push({ x: 280 + shift, y: 290, w: 40, h: 40, type: 'q_coin', bump: 0 });
+    blocks.push({ x: 280 + shift, y: 290, w: 40, h: 40, type: 'q_box', reward: 'weapon', bump: 0 });
     blocks.push({ x: 320 + shift, y: 290, w: 40, h: 40, type: 'brick', bump: 0 });
-    blocks.push({ x: 360 + shift, y: 290, w: 40, h: 40, type: 'q_heal', bump: 0 });
+    blocks.push({ x: 360 + shift, y: 290, w: 40, h: 40, type: 'q_box', reward: 'heal', bump: 0 });
     blocks.push({ x: 400 + shift, y: 290, w: 40, h: 40, type: 'brick', bump: 0 });
-    blocks.push({ x: 320 + shift, y: 170, w: 40, h: 40, type: 'q_super', bump: 0 });
+    blocks.push({ x: 320 + shift, y: 170, w: 40, h: 40, type: 'q_box', reward: 'shield', bump: 0 });
 
     var p1H = 75 + (stNum % 3) * 15;
     var p2H = 95 + ((stNum + 1) % 3) * 15;
     blocks.push({ x: 540, y: 430 - p1H, w: 56, h: p1H, type: 'pipe', bump: 0 });
     blocks.push({ x: 750, y: 430 - p2H, w: 56, h: p2H, type: 'pipe', bump: 0 });
 
-    blocks.push({ x: 930 - shift, y: 280, w: 40, h: 40, type: 'q_coin', bump: 0 });
+    blocks.push({ x: 930 - shift, y: 280, w: 40, h: 40, type: 'q_box', reward: 'weapon', bump: 0 });
     blocks.push({ x: 970 - shift, y: 280, w: 40, h: 40, type: 'brick', bump: 0 });
-    blocks.push({ x: 1010 - shift, y: 280, w: 40, h: 40, type: 'q_coin', bump: 0 });
+    blocks.push({ x: 1010 - shift, y: 280, w: 40, h: 40, type: 'q_box', reward: 'jackpot', bump: 0 });
 
     blocks.push({ x: 1140, y: 195, w: 40, h: 40, type: 'brick', bump: 0 });
-    blocks.push({ x: 1180, y: 195, w: 40, h: 40, type: 'q_heal', bump: 0 });
+    blocks.push({ x: 1180, y: 195, w: 40, h: 40, type: 'q_box', reward: 'heal', bump: 0 });
     blocks.push({ x: 1220, y: 195, w: 40, h: 40, type: 'brick', bump: 0 });
 
     blocks.push({ x: 1430, y: 335, w: 56, h: 95, type: 'pipe', bump: 0 });
-    blocks.push({ x: 1620, y: 285, w: 40, h: 40, type: 'q_super', bump: 0 });
-    blocks.push({ x: 1660, y: 285, w: 40, h: 40, type: 'q_heal', bump: 0 });
-    blocks.push({ x: 1700, y: 285, w: 40, h: 40, type: 'q_coin', bump: 0 });
+    blocks.push({ x: 1620, y: 285, w: 40, h: 40, type: 'q_box', reward: 'shield', bump: 0 });
+    blocks.push({ x: 1660, y: 285, w: 40, h: 40, type: 'q_box', reward: 'weapon', bump: 0 });
+    blocks.push({ x: 1700, y: 285, w: 40, h: 40, type: 'q_box', reward: 'heal', bump: 0 });
 
     enemies = [
       { x: 460, y: 394, w: 34, h: 36, vx: -1.4 * diffMult * stageSpeedBoost, alive: true, minX: 370, maxX: 530, kind: 'walker', hp: 1 },
@@ -631,24 +677,28 @@
     stageBannerTimer = 120;
   }
 
-  startBtn.onclick = function() {
+  function launchGame(stageToLoad, isContinue) {
     initAudio();
     var val = nameInput.value.trim();
     playerName = val ? val.toUpperCase() : 'PLAYER 1';
-    loadStage(currentStage, false);
+    loadStage(stageToLoad, false, isContinue);
     overlay.style.display = 'none';
     mode = 'play';
     lastTime = 0;
     accumulator = 0;
     requestAnimationFrame(loop);
-  };
+  }
+
+  startBtn.onclick = function() { launchGame(1, false); };
+  continueBtn.onclick = function() { launchGame(currentStage, true); };
+  restartBtn.onclick = function() { launchGame(1, false); };
 
   window.addEventListener('keydown', function(e) {
     if (document.activeElement === nameInput) return;
     keys[e.code] = true;
     if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.code) !== -1) e.preventDefault();
     if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') doJump();
-    if (e.code === 'ShiftLeft' || e.code === 'ShiftRight' || e.code === 'KeyE') doDash();
+    if (e.code === 'ArrowDown' || e.code === 'KeyS' || e.code === 'ShiftLeft' || e.code === 'ShiftRight' || e.code === 'KeyE') doDash();
     if (e.code === 'KeyF' || e.code === 'KeyZ' || e.code === 'KeyX') doAttack();
     if (e.code === 'KeyQ' || e.code === 'KeyC') switchWeapon();
   });
@@ -683,7 +733,7 @@
   function switchWeapon() {
     if (mode !== 'play') return;
     weaponIdx = (weaponIdx + 1) % weapons.length;
-    var isSuper = weaponIdx >= 3;
+    var isSuper = weaponIdx >= 2;
     playTone(isSuper ? 880 : 660, isSuper ? 1320 : 880, 0.09, 'triangle', 0.07);
   }
 
@@ -738,35 +788,7 @@
     if (mode !== 'play' || player.atkCooldown > 0) return;
     var wpn = weapons[weaponIdx];
 
-    if (wpn === 'SWORD') {
-      player.slashTimer = 12;
-      player.atkCooldown = 15;
-      sfx.sword();
-      var slashBox = {
-        x: player.facing === 1 ? player.x + player.w - 4 : player.x - 56,
-        y: player.y - 8,
-        w: 60,
-        h: player.h + 16
-      };
-      for (var e = 0; e < enemies.length; e++) {
-        var en = enemies[e];
-        if (en.alive && rectIntersect(slashBox, en)) {
-          damageEnemy(en, 3.0, player.facing * 5);
-        }
-      }
-      if (bossActive && boss && boss.alive && rectIntersect(slashBox, boss)) {
-        damageBoss(3.0);
-      }
-      for (var bs = bossShots.length - 1; bs >= 0; bs--) {
-        var s = bossShots[bs];
-        if (s.x > slashBox.x && s.x < slashBox.x + slashBox.w && s.y > slashBox.y && s.y < slashBox.y + slashBox.h) {
-          spawnParticles(s.x, s.y, '#38bdf8', 8);
-          bossShots.splice(bs, 1);
-          score += 50;
-        }
-      }
-
-    } else if (wpn === 'BLASTER') {
+    if (wpn === 'BLASTER') {
       player.atkCooldown = 12;
       sfx.blaster();
       projectiles.push({
@@ -775,20 +797,20 @@
         y: player.y + 18,
         vx: player.facing * 12,
         vy: 0,
-        dmg: 1.5,
+        dmg: 1.6,
         life: 65
       });
 
     } else if (wpn === 'FIRE') {
-      player.atkCooldown = 17;
+      player.atkCooldown = 16;
       sfx.fire();
       projectiles.push({
         kind: 'fire',
         x: player.facing === 1 ? player.x + player.w : player.x - 10,
         y: player.y + 18,
-        vx: player.facing * 8.4,
+        vx: player.facing * 8.6,
         vy: 2,
-        dmg: 2.2,
+        dmg: 2.3,
         life: 95
       });
 
@@ -823,6 +845,44 @@
         dmg: 1.0,
         life: 75
       });
+    }
+  }
+
+  function grantMysteryBoxReward(blk) {
+    var r = blk.reward;
+    if (r === 'weapon') {
+      if (weaponIdx < weapons.length - 1) {
+        weaponIdx++;
+      } else {
+        score += 1000;
+      }
+      score += 500;
+      sfx.powerup();
+      spawnParticles(blk.x + 20, blk.y, '#38bdf8', 20);
+      floatingPopups.push({ x: blk.x + 20, y: blk.y - 10, text: '⚡ ' + weapons[weaponIdx], color: '#38bdf8', life: 42 });
+      stageBannerText = 'WEAPON UPGRADE: ' + weapons[weaponIdx] + '!';
+      stageBannerTimer = 85;
+    } else if (r === 'shield') {
+      player.shieldTimer = 420; // 7 seconds of Invincible Golden Shield!
+      score += 600;
+      sfx.powerup();
+      spawnParticles(blk.x + 20, blk.y, '#facc15', 22);
+      floatingPopups.push({ x: blk.x + 20, y: blk.y - 10, text: '★ SHIELD!', color: '#facc15', life: 42 });
+      stageBannerText = 'STAR SHIELD ACTIVE (7 SEC INVINCIBLE)!';
+      stageBannerTimer = 85;
+    } else if (r === 'heal') {
+      player.hp = Math.min(player.maxHp, player.hp + 2);
+      score += 400;
+      sfx.heal();
+      spawnParticles(blk.x + 20, blk.y, '#f43f5e', 18);
+      floatingPopups.push({ x: blk.x + 20, y: blk.y - 10, text: '♥ +2 HEAL', color: '#f43f5e', life: 42 });
+    } else {
+      coins += 5;
+      player.hp = Math.min(player.maxHp, player.hp + 1);
+      score += 1000;
+      sfx.powerup();
+      spawnParticles(blk.x + 20, blk.y, '#4ade80', 20);
+      floatingPopups.push({ x: blk.x + 20, y: blk.y - 10, text: '+5 COINS & ♥', color: '#4ade80', life: 42 });
     }
   }
 
@@ -864,25 +924,25 @@
         stageBannerText = 'STAGE ' + currentStage + ' CLEAR! NEXT: STAGE ' + (currentStage + 1);
         stageBannerTimer = 130;
         setTimeout(function() {
-          if (mode === 'play') loadStage(currentStage + 1, true);
+          if (mode === 'play') loadStage(currentStage + 1, true, false);
         }, 2100);
       } else {
         setTimeout(function() {
-          endGame('MEGA TITAN DEFEATED! ALL 11 STAGES CLEARED BY ' + playerName + '!');
+          showVictory('MEGA TITAN DEFEATED! ALL 11 STAGES CLEARED BY ' + playerName + '!');
         }, 1400);
       }
     }
   }
 
   function hurtPlayer() {
-    if (player.invuln > 0 || player.dashTimer > 0 || stageClearing) return;
+    if (player.invuln > 0 || player.dashTimer > 0 || player.shieldTimer > 0 || stageClearing) return;
     player.hp--;
     player.invuln = 72;
     player.vy = -7;
     sfx.hurt();
     spawnParticles(player.x + 17, player.y + 20, '#ef4444', 14);
     if (player.hp <= 0) {
-      endGame('GAME OVER ON STAGE ' + currentStage + '!');
+      showGameOver();
     }
   }
 
@@ -906,8 +966,8 @@
     frame++;
     if (stageBannerTimer > 0) stageBannerTimer--;
     if (player.invuln > 0) player.invuln--;
+    if (player.shieldTimer > 0) player.shieldTimer--;
     if (player.dashCooldown > 0) player.dashCooldown--;
-    if (player.slashTimer > 0) player.slashTimer--;
     if (player.atkCooldown > 0) player.atkCooldown--;
 
     if (player.dashTimer > 0) {
@@ -968,26 +1028,9 @@
           player.y = blk.y + blk.h;
           player.vy = 1.5;
           blk.bump = 9;
-          if (blk.type === 'q_coin') {
+          if (blk.type === 'q_box') {
             blk.type = 'empty';
-            coins++; score += 200;
-            sfx.coin();
-            floatingCoins.push({ x: blk.x + 20, y: blk.y - 10, vy: -7, life: 26 });
-            spawnParticles(blk.x + 20, blk.y, '#facc15', 10);
-          } else if (blk.type === 'q_heal') {
-            blk.type = 'empty';
-            player.hp = Math.min(player.maxHp, player.hp + 1);
-            score += 400;
-            sfx.heal();
-            spawnParticles(blk.x + 20, blk.y, '#f43f5e', 16);
-          } else if (blk.type === 'q_super') {
-            blk.type = 'empty';
-            if (weaponIdx < 3) weaponIdx = 3;
-            score += 600;
-            sfx.heal();
-            spawnParticles(blk.x + 20, blk.y, '#38bdf8', 20);
-            stageBannerText = 'SUPER WEAPON EQUIPPED: ' + weapons[weaponIdx] + '!';
-            stageBannerTimer = 85;
+            grantMysteryBoxReward(blk);
           } else if (blk.type === 'brick') {
             score += 50;
             sfx.hitEnemy();
@@ -1001,7 +1044,7 @@
       bossActive = true;
       if (boss && boss.isMega) {
         player.hp = player.maxHp;
-        if (weaponIdx < 3) weaponIdx = 3;
+        if (weaponIdx < 2) weaponIdx = 2;
       } else {
         player.hp = Math.min(player.maxHp, player.hp + 1);
       }
@@ -1019,7 +1062,9 @@
       }
 
       if (rectIntersect(player, en)) {
-        if (player.vy > 0 && player.y + player.h - player.vy <= en.y + 16) {
+        if (player.shieldTimer > 0) {
+          damageEnemy(en, 5, 0);
+        } else if (player.vy > 0 && player.y + player.h - player.vy <= en.y + 16) {
           player.vy = -9.8;
           player.jumpsLeft = 2;
           damageEnemy(en, 3.0, 0);
@@ -1185,11 +1230,10 @@
       particles[p].life--;
       if (particles[p].life <= 0) particles.splice(p, 1);
     }
-    for (var c = floatingCoins.length - 1; c >= 0; c--) {
-      floatingCoins[c].y += floatingCoins[c].vy;
-      floatingCoins[c].vy += 0.4;
-      floatingCoins[c].life--;
-      if (floatingCoins[c].life <= 0) floatingCoins.splice(c, 1);
+    for (var fp = floatingPopups.length - 1; fp >= 0; fp--) {
+      floatingPopups[fp].y -= 1.2;
+      floatingPopups[fp].life--;
+      if (floatingPopups[fp].life <= 0) floatingPopups.splice(fp, 1);
     }
 
     if (bossActive) {
@@ -1200,12 +1244,22 @@
     }
   }
 
-  function endGame(msg) {
+  function showGameOver() {
     mode = 'over';
-    overlay.querySelector('h1').textContent = 'SUPERBROS';
-    overlay.querySelector('.byline').textContent = msg + ' | SCORE: ' + score;
-    updateStagePickerUI();
-    startBtn.textContent = 'PLAY AGAIN';
+    statusLine.textContent = 'GAME OVER ON STAGE ' + currentStage + ' / 11 | SCORE: ' + score;
+    startBtn.style.display = 'none';
+    continueBtn.style.display = 'inline-block';
+    continueBtn.textContent = 'CONTINUE (STAGE ' + currentStage + ')';
+    restartBtn.style.display = 'inline-block';
+    overlay.style.display = 'flex';
+  }
+
+  function showVictory(msg) {
+    mode = 'over';
+    statusLine.textContent = msg + ' | FINAL SCORE: ' + score;
+    startBtn.style.display = 'none';
+    continueBtn.style.display = 'none';
+    restartBtn.style.display = 'inline-block';
     overlay.style.display = 'flex';
   }
 
@@ -1324,43 +1378,30 @@
         ctx.fillStyle = 'rgba(255,255,255,0.28)';
         ctx.fillRect(bx + 2, by + 2, b.w - 4, 4);
 
-      } else if (b.type === 'q_coin' || b.type === 'q_heal' || b.type === 'q_super') {
-        var isHeal = b.type === 'q_heal';
-        var isSuper = b.type === 'q_super';
+      } else if (b.type === 'q_box') {
         var qGrad = ctx.createLinearGradient(bx, by, bx, by + b.h);
-        if (isHeal) {
-          qGrad.addColorStop(0, '#fda4af');
-          qGrad.addColorStop(0.5, '#f43f5e');
-          qGrad.addColorStop(1, '#be123c');
-        } else if (isSuper) {
-          qGrad.addColorStop(0, '#bae6fd');
-          qGrad.addColorStop(0.5, '#38bdf8');
-          qGrad.addColorStop(1, '#0284c7');
-        } else {
-          qGrad.addColorStop(0, '#fef08a');
-          qGrad.addColorStop(0.5, '#facc15');
-          qGrad.addColorStop(1, '#ca8a04');
-        }
+        qGrad.addColorStop(0, '#fef08a');
+        qGrad.addColorStop(0.5, '#facc15');
+        qGrad.addColorStop(1, '#ca8a04');
         ctx.fillStyle = qGrad;
         ctx.fillRect(bx, by, b.w, b.h);
 
-        ctx.strokeStyle = isHeal ? '#881337' : (isSuper ? '#0c4a6e' : '#713f12');
+        ctx.strokeStyle = '#713f12';
         ctx.lineWidth = 2.5;
         ctx.strokeRect(bx + 1, by + 1, b.w - 2, b.h - 2);
 
-        ctx.fillStyle = isHeal ? '#881337' : (isSuper ? '#0c4a6e' : '#713f12');
+        ctx.fillStyle = '#713f12';
         ctx.fillRect(bx + 4, by + 4, 3, 3);
         ctx.fillRect(bx + b.w - 7, by + 4, 3, 3);
         ctx.fillRect(bx + 4, by + b.h - 7, 3, 3);
         ctx.fillRect(bx + b.w - 7, by + b.h - 7, 3, 3);
 
-        var sym = isHeal ? '♥' : (isSuper ? '⚡' : '?');
-        ctx.font = '900 20px sans-serif';
+        ctx.font = '900 22px sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillStyle = isHeal ? '#881337' : (isSuper ? '#0c4a6e' : '#713f12');
-        ctx.fillText(sym, bx + b.w / 2 + 1.5, by + 28.5);
+        ctx.fillStyle = '#713f12';
+        ctx.fillText('?', bx + b.w / 2 + 1.5, by + 29.5);
         ctx.fillStyle = '#ffffff';
-        ctx.fillText(sym, bx + b.w / 2, by + 27);
+        ctx.fillText('?', bx + b.w / 2, by + 28);
         ctx.textAlign = 'left';
 
       } else if (b.type === 'empty') {
@@ -1579,8 +1620,15 @@
     var px = Math.round(player.x - camX);
     var py = Math.round(player.y);
 
-    if (weaponIdx >= 3) {
-      ctx.strokeStyle = weaponIdx === 3 ? 'rgba(56, 189, 248, 0.65)' : 'rgba(250, 204, 21, 0.75)';
+    // Star Shield or Super Weapon Aura
+    if (player.shieldTimer > 0) {
+      ctx.strokeStyle = frame % 6 < 3 ? '#facc15' : '#ffffff';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(px + player.w / 2, py + player.h / 2, 29 + Math.sin(frame * 0.35) * 3, 0, Math.PI * 2);
+      ctx.stroke();
+    } else if (weaponIdx >= 2) {
+      ctx.strokeStyle = weaponIdx === 2 ? 'rgba(56, 189, 248, 0.65)' : 'rgba(250, 204, 21, 0.75)';
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.arc(px + player.w / 2, py + player.h / 2, 26 + Math.sin(frame * 0.25) * 3, 0, Math.PI * 2);
@@ -1671,36 +1719,13 @@
       ctx.fillRect(player.facing === 1 ? px + 14 : px, py + 2, 20, 3);
     }
 
+    // Blaster / Super Blaster Visual
     var wpn = weapons[weaponIdx];
-    if (wpn === 'SWORD') {
-      ctx.save();
-      ctx.translate(px + player.w / 2, py + 24);
-      if (player.facing === -1) ctx.scale(-1, 1);
-      var swing = player.slashTimer > 0 ? (12 - player.slashTimer) * 0.18 : -0.35;
-      ctx.rotate(swing);
-      ctx.fillStyle = '#94a3b8';
-      ctx.fillRect(8, -3, 26, 5);
-      ctx.fillStyle = '#38bdf8';
-      ctx.fillRect(10, -2, 24, 3);
-      ctx.fillStyle = '#facc15';
-      ctx.fillRect(6, -6, 4, 11);
-      ctx.restore();
-
-      if (player.slashTimer > 0) {
-        ctx.strokeStyle = 'rgba(56, 189, 248, 0.88)';
-        ctx.lineWidth = 5;
-        ctx.beginPath();
-        if (player.facing === 1) ctx.arc(px + 26, py + 22, 34, -0.9, 0.9);
-        else ctx.arc(px + 8, py + 22, 34, Math.PI - 0.9, Math.PI + 0.9);
-        ctx.stroke();
-      }
-    } else if (wpn === 'BLASTER' || wpn === 'HYPER BEAM') {
-      ctx.fillStyle = wpn === 'HYPER BEAM' ? '#facc15' : '#334155';
-      var gx = player.facing === 1 ? px + 24 : px - 8;
-      ctx.fillRect(gx, py + 19, 18, 8);
-      ctx.fillStyle = '#38bdf8';
-      ctx.fillRect(player.facing === 1 ? gx + 14 : gx, py + 20, 4, 6);
-    }
+    ctx.fillStyle = wpn === 'HYPER BEAM' || wpn === 'OMEGA NOVA' ? '#facc15' : '#334155';
+    var gx = player.facing === 1 ? px + 24 : px - 8;
+    ctx.fillRect(gx, py + 19, 18, 8);
+    ctx.fillStyle = wpn === 'FIRE' ? '#f97316' : '#38bdf8';
+    ctx.fillRect(player.facing === 1 ? gx + 14 : gx, py + 20, 4, 6);
   }
 
   function drawHUD() {
@@ -1723,7 +1748,7 @@
     ctx.fillStyle = '#e9d5ff';
     ctx.fillText('STG ' + currentStage + '/11', 238, 23);
 
-    var isSuper = weaponIdx >= 3;
+    var isSuper = weaponIdx >= 2;
     ctx.fillStyle = isSuper ? '#38bdf8' : '#c084fc';
     ctx.fillText((isSuper ? '⚡' : 'WPN:') + weapons[weaponIdx], 315, 23);
 
@@ -1806,13 +1831,15 @@
       ctx.fill();
     }
 
-    for (var c = 0; c < floatingCoins.length; c++) {
-      var fc = floatingCoins[c];
-      ctx.fillStyle = '#facc15';
-      ctx.beginPath(); ctx.ellipse(fc.x - camX, fc.y, 7, 10, 0, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = '#854d0e';
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
+    for (var fp = 0; fp < floatingPopups.length; fp++) {
+      var pop = floatingPopups[fp];
+      ctx.font = '900 13px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#0f172a';
+      ctx.fillText(pop.text, pop.x - camX + 1, pop.y + 1);
+      ctx.fillStyle = pop.color;
+      ctx.fillText(pop.text, pop.x - camX, pop.y);
+      ctx.textAlign = 'left';
     }
 
     for (var p = 0; p < particles.length; p++) {
