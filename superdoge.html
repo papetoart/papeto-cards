@@ -643,7 +643,7 @@
   window.addEventListener('keydown', function(e) {
     keys[e.code] = true;
     if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.code) !== -1) e.preventDefault();
-    if (e.code === 'KeyF' || e.code === 'KeyX' || e.code === 'ShiftLeft' || e.code === 'ControlLeft') shootFireball();
+    if (e.code === 'Space' || e.code === 'KeyF' || e.code === 'KeyX' || e.code === 'ShiftLeft' || e.code === 'ControlLeft') shootFireball();
   });
   window.addEventListener('keyup', function(e) { keys[e.code] = false; });
 
@@ -666,10 +666,10 @@
   fireBtn.addEventListener('mousedown', function(e) { e.preventDefault(); initAudio(); shootFireball(); });
 
   var jumpBtn = document.getElementById('btn-jump');
-  jumpBtn.addEventListener('touchstart', function(e) { e.preventDefault(); initAudio(); keys['Space'] = true; }, { passive: false });
-  jumpBtn.addEventListener('touchend', function(e) { e.preventDefault(); keys['Space'] = false; }, { passive: false });
-  jumpBtn.addEventListener('mousedown', function(e) { e.preventDefault(); initAudio(); keys['Space'] = true; });
-  jumpBtn.addEventListener('mouseup', function() { keys['Space'] = false; });
+  jumpBtn.addEventListener('touchstart', function(e) { e.preventDefault(); initAudio(); keys['TouchJump'] = true; }, { passive: false });
+  jumpBtn.addEventListener('touchend', function(e) { e.preventDefault(); keys['TouchJump'] = false; }, { passive: false });
+  jumpBtn.addEventListener('mousedown', function(e) { e.preventDefault(); initAudio(); keys['TouchJump'] = true; });
+  jumpBtn.addEventListener('mouseup', function() { keys['TouchJump'] = false; });
 
   function loseLife() {
     tone(220, 70, 0.35, 'sawtooth');
@@ -705,7 +705,7 @@
     else if (keys['ArrowRight'] || keys['KeyD']) { player.vx = moveAcc; player.facing = 1; }
     else { player.vx *= 0.72; if (Math.abs(player.vx) < 0.15) player.vx = 0; }
 
-    if ((keys['Space'] || keys['ArrowUp'] || keys['KeyW']) && player.onGround) {
+    if ((keys['ArrowUp'] || keys['KeyW'] || keys['TouchJump']) && player.onGround) {
       player.vy = -11.4;
       player.onGround = false;
       tone(340, 680, 0.14, 'triangle');
