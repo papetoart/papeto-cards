@@ -236,8 +236,8 @@
     background: linear-gradient(180deg, #22c55e, #15803d);
     color: #fff;
     border: 2px solid #dcfce7;
-    padding: 6px 18px;
-    font-size: clamp(10px, 1.6vw, 14px);
+    padding: 6px 22px;
+    font-size: clamp(11px, 1.7vw, 15px);
     font-weight: 900;
     font-family: inherit;
     cursor: pointer;
@@ -258,13 +258,8 @@
     border-color: #fef3c7;
     box-shadow: 0 4px 0 #78350f, 0 8px 18px rgba(0, 0, 0, 0.5);
   }
-  .preview-btn {
-    background: linear-gradient(180deg, #a855f7, #6b21a8);
-    border-color: #f3e8ff;
-    box-shadow: 0 4px 0 #3b0764, 0 8px 18px rgba(0, 0, 0, 0.5);
-  }
 
-  /* --- COLLECTIBLE VICTORY NFT CARD MODAL --- */
+  /* --- COLLECTIBLE VICTORY NFT CARD MODAL (WINNERS ONLY) --- */
   #victory-modal {
     position: absolute;
     inset: 0;
@@ -465,7 +460,6 @@
 
     <div class="btn-row">
       <button id="start-btn" class="action-btn" type="button">PLAY GAME</button>
-      <button id="preview-card-btn" class="action-btn preview-btn" type="button">🏆 NFT CARD</button>
       <button id="continue-btn" class="action-btn continue-btn" type="button" style="display:none;">CONTINUE</button>
       <button id="restart-btn" class="action-btn restart-btn" type="button" style="display:none;">START AGAIN</button>
     </div>
@@ -489,7 +483,7 @@
   </div>
   <div class="action-group">
     <div id="btn-wpn" class="abtn">WPN</div>
-    <div id="btn-atk" class="abtn" title="Left/Right Click or F">FIRE</div>
+    <div id="btn-atk" class="abtn" title="Mouse Click or F">FIRE</div>
     <div id="btn-jump" class="abtn">JUMP</div>
   </div>
 </div>
@@ -502,7 +496,6 @@
   var overlay = document.getElementById('overlay');
   var statusLine = document.getElementById('status-line');
   var startBtn = document.getElementById('start-btn');
-  var previewCardBtn = document.getElementById('preview-card-btn');
   var continueBtn = document.getElementById('continue-btn');
   var restartBtn = document.getElementById('restart-btn');
   var nameInput = document.getElementById('player-name-input');
@@ -529,11 +522,11 @@
   var currentStage = 1;
   var maxStages = 11;
   var keys = {}, mode = 'title', paused = false, frame = 0;
+  var mouseFiring = false;
   var score = 0, coins = 0, camX = 0;
   var stageBannerTimer = 0;
   var stageBannerText = '';
 
-  // Combo & Screen Shake Polish
   var comboCount = 0;
   var comboTimer = 0;
   var shakeTimer = 0;
@@ -582,6 +575,7 @@
   function togglePause() {
     if (mode !== 'play') return;
     paused = !paused;
+    mouseFiring = false;
     pauseBtn.textContent = paused ? '▶' : '⏸';
     if (!paused) lastTime = performance.now();
   }
@@ -685,13 +679,13 @@
   }
   function drawRoundRect(x, y, w, h, r) { roundRectPath(ctx, x, y, w, h, r); }
 
-  // --- COLLECTIBLE VICTORY NFT CARD GENERATOR & X SHARE ---
-  function renderVictoryCard(isPreview) {
+  // --- COLLECTIBLE VICTORY NFT CARD GENERATOR & X SHARE (WINNERS ONLY) ---
+  function renderVictoryCard() {
     var val = nameInput.value.trim();
     if (val) playerName = val.toUpperCase();
-    var dispScore = (!isPreview && score > 0) ? score : 77700;
-    var dispCoins = (!isPreview && coins > 0) ? coins : 88;
-    var dispHearts = (!isPreview && player.maxHp > 0) ? player.maxHp : 6;
+    var dispScore = score;
+    var dispCoins = coins;
+    var dispHearts = player.maxHp;
 
     var bg = nctx.createLinearGradient(0, 0, 760, 475);
     bg.addColorStop(0, '#090d16');
@@ -733,7 +727,7 @@
     nctx.fillText('★ SUPERBROS — CHAMPION VICTORY NFT ★', 380, 62);
     nctx.font = '900 11px sans-serif';
     nctx.fillStyle = '#38bdf8';
-    nctx.fillText(isPreview ? 'OFFICIAL COLLECTIBLE CARD PREVIEW • 11 MEGA WORLDS' : 'ALL 11 MEGA WORLDS & OMEGA TITAN CONQUERED!', 380, 78);
+    nctx.fillText('ALL 11 MEGA WORLDS & OMEGA TITAN CONQUERED!', 380, 78);
 
     nctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
     roundRectPath(nctx, 42, 102, 250, 285, 16);
@@ -848,15 +842,10 @@
     nctx.textAlign = 'left';
   }
 
-  function openVictoryCardModal(isPreview) {
-    renderVictoryCard(isPreview);
+  function openVictoryCardModal() {
+    renderVictoryCard();
     victoryModal.style.display = 'flex';
   }
-
-  previewCardBtn.onclick = function() {
-    initAudio();
-    openVictoryCardModal(true);
-  };
 
   closeCardBtn.onclick = function() {
     victoryModal.style.display = 'none';
@@ -864,10 +853,9 @@
 
   shareXBtn.onclick = function() {
     var heroTag = selectedHero === 'pepe' ? 'PEPE 🐸' : 'DOGE 🐶';
-    var dispScore = score > 0 ? score.toLocaleString() : '77,700';
     var tweetText =
       '🏆 I conquered all 11 Worlds & defeated the OMEGA TITAN in SUPERBROS!\n' +
-      'Hero: ' + heroTag + ' | Score: ' + dispScore + ' | Mode: ' + difficulty.toUpperCase() + '\n' +
+      'Hero: ' + heroTag + ' | Score: ' + score.toLocaleString() + ' | Mode: ' + difficulty.toUpperCase() + '\n' +
       'Playable NFT Game by @papeto2 (TG: @papeto) 👇\n' +
       GAME_URL;
     var intentUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweetText);
@@ -881,21 +869,25 @@
     link.click();
   };
 
-  // --- MOUSE RIGHT-CLICK TO FIRE & MIDDLE-CLICK TO SWITCH WEAPON ---
+  // --- MOUSE CONTROLS: LEFT/RIGHT CLICK TO FIRE (HOLD FOR AUTO-FIRE), MIDDLE CLICK TO SWITCH WEAPON ---
   cardFrame.addEventListener('contextmenu', function(e) {
     e.preventDefault();
   });
-  cardFrame.addEventListener('mousedown', function(e) {
+  canvas.addEventListener('mousedown', function(e) {
     if (mode !== 'play' || paused) return;
-    if (e.button === 2) {
+    if (e.button === 0 || e.button === 2) {
       e.preventDefault();
       initAudio();
+      mouseFiring = true;
       doAttack();
     } else if (e.button === 1) {
       e.preventDefault();
       initAudio();
       switchWeapon();
     }
+  });
+  window.addEventListener('mouseup', function() {
+    mouseFiring = false;
   });
 
   var baseWeapons = ['BLASTER', 'FIRE'];
@@ -994,6 +986,7 @@
     inBonusRoom = false;
     bonusTimer = 0;
     savedMainState = null;
+    mouseFiring = false;
     comboCount = 0;
     comboTimer = 0;
     shakeTimer = 0;
@@ -1482,7 +1475,6 @@
   function damageBoss(dmg, sourceType) {
     if (!boss || !boss.alive || boss.hurtTimer > 0) return;
 
-    // Bosses resist the basic BLASTER heavily — encouraging FIRE, Super Weapons, or Stomps!
     var finalDmg = dmg;
     if (sourceType === 'blaster') {
       finalDmg = dmg * 0.28;
@@ -1609,6 +1601,11 @@
     if (comboTimer > 0) {
       comboTimer--;
       if (comboTimer === 0) comboCount = 0;
+    }
+
+    // Continuous firing while holding mouse button or fire keys
+    if ((mouseFiring || keys['KeyF'] || keys['KeyZ'] || keys['KeyX']) && player.atkCooldown <= 0) {
+      doAttack();
     }
 
     if (superWeaponTimer > 0) {
@@ -1868,7 +1865,6 @@
           enemies.push({ x: arenaRightWall - 90, y: 215, w: 36, h: 28, vx: -2.4, alive: true, minX: arenaLeftWall + 20, maxX: arenaRightWall - 20, kind: 'flyer', baseY: 215, hp: 1, maxHp: 1 });
         }
 
-        // Boss Bull-Charge Attack Logic
         if (boss.chargeTelegraph > 0) {
           boss.chargeTelegraph--;
           if (boss.chargeTelegraph === 0) {
@@ -2147,6 +2143,7 @@
 
   function showGameOver() {
     mode = 'over';
+    mouseFiring = false;
     statusLine.textContent = 'GAME OVER ON STAGE ' + currentStage + ' / 11 | SCORE: ' + score;
     startBtn.style.display = 'none';
     continueBtn.style.display = 'inline-block';
@@ -2157,12 +2154,13 @@
 
   function showVictory(msg) {
     mode = 'over';
+    mouseFiring = false;
     statusLine.textContent = msg + ' | FINAL SCORE: ' + score;
     startBtn.style.display = 'none';
     continueBtn.style.display = 'none';
     restartBtn.style.display = 'inline-block';
     overlay.style.display = 'flex';
-    openVictoryCardModal(false);
+    openVictoryCardModal();
   }
 
   function drawBackground() {
@@ -2365,7 +2363,6 @@
     }
   }
 
-  // --- DETAILED 3D BRICK BLOCKS & ANIMATED GOLDEN '?' MYSTERY BOXES ---
   function drawBlocks() {
     var activeBlocks = inBonusRoom ? bonusBlocks : blocks;
     for (var i = 0; i < activeBlocks.length; i++) {
@@ -2375,7 +2372,6 @@
       if (bx + b.w < -50 || bx > W + 50) continue;
 
       if (b.type === 'brick') {
-        // Rich 3D Masonry Brick Block
         var baseGrad = ctx.createLinearGradient(bx, by, bx, by + b.h);
         baseGrad.addColorStop(0, '#d9531e');
         baseGrad.addColorStop(0.5, '#b43e12');
@@ -2384,34 +2380,28 @@
         drawRoundRect(bx, by, b.w, b.h, 4);
         ctx.fill();
 
-        // Top & Left 3D Bevel Highlight
         ctx.fillStyle = '#fdba74';
         ctx.fillRect(bx + 2, by + 2, b.w - 4, 3);
         ctx.fillRect(bx + 2, by + 2, 3, b.h - 4);
 
-        // Dark Mortar Grooves (3 Courses)
         ctx.fillStyle = '#3b1206';
         ctx.fillRect(bx + 2, by + 13, b.w - 4, 2.5);
         ctx.fillRect(bx + 2, by + 26, b.w - 4, 2.5);
-        // Staggered Vertical Mortar Joints
         ctx.fillRect(bx + 19, by + 2, 2.5, 11);
         ctx.fillRect(bx + 9, by + 15, 2.5, 11);
         ctx.fillRect(bx + 29, by + 15, 2.5, 11);
         ctx.fillRect(bx + 19, by + 28, 2.5, 10);
 
-        // Subtle Brick Highlights under mortar
         ctx.fillStyle = 'rgba(254, 215, 170, 0.35)';
         ctx.fillRect(bx + 4, by + 16, 13, 1.5);
         ctx.fillRect(bx + 13, by + 29, 14, 1.5);
 
-        // Outer Crisp Frame
         ctx.strokeStyle = '#290d04';
         ctx.lineWidth = 2;
         drawRoundRect(bx + 1, by + 1, b.w - 2, b.h - 2, 4);
         ctx.stroke();
 
       } else if (b.type === 'q_box') {
-        // Premium Animated Golden Mystery Block
         var pulse = Math.sin(frame * 0.1 + i) * 0.5 + 0.5;
         var qGrad = ctx.createLinearGradient(bx, by, bx + b.w, by + b.h);
         qGrad.addColorStop(0, '#fef9c3');
@@ -2421,7 +2411,6 @@
         drawRoundRect(bx, by, b.w, b.h, 6);
         ctx.fill();
 
-        // 3D Inner Bevel & Recessed Face
         ctx.fillStyle = '#fef08a';
         ctx.fillRect(bx + 3, by + 3, b.w - 6, 3);
         ctx.fillRect(bx + 3, by + 3, 3, b.h - 6);
@@ -2429,27 +2418,23 @@
         ctx.fillRect(bx + 3, by + b.h - 6, b.w - 6, 3);
         ctx.fillRect(bx + b.w - 6, by + 3, 3, b.h - 6);
 
-        // Animated Shimmer Sweep Across Block
         var sweep = ((frame * 1.4 + i * 25) % 90);
         if (sweep < 36) {
           ctx.fillStyle = 'rgba(255, 255, 255, 0.48)';
           ctx.fillRect(bx + 4 + sweep * 0.7, by + 5, 6, b.h - 10);
         }
 
-        // 4 Corner Rivets / Bolts
         ctx.fillStyle = '#78350f';
         ctx.fillRect(bx + 5, by + 5, 3, 3);
         ctx.fillRect(bx + b.w - 8, by + 5, 3, 3);
         ctx.fillRect(bx + 5, by + b.h - 8, 3, 3);
         ctx.fillRect(bx + b.w - 8, by + b.h - 8, 3, 3);
 
-        // Outer Frame
         ctx.strokeStyle = '#451a03';
         ctx.lineWidth = 2.5;
         drawRoundRect(bx + 1, by + 1, b.w - 2, b.h - 2, 6);
         ctx.stroke();
 
-        // Bobbing 3D '?' Symbol
         var qBob = Math.sin(frame * 0.12 + i) * 1.6;
         ctx.font = '900 23px sans-serif';
         ctx.textAlign = 'center';
@@ -2460,7 +2445,6 @@
         ctx.textAlign = 'left';
 
       } else if (b.type === 'empty') {
-        // Forged Iron Used Block with Corner Rivets
         var eGrad = ctx.createLinearGradient(bx, by, bx, by + b.h);
         eGrad.addColorStop(0, '#64748b');
         eGrad.addColorStop(1, '#334155');
@@ -2536,7 +2520,6 @@
     }
   }
 
-  // --- EXPRESSIVE, DETAILED ENEMY CHARACTER ART ---
   function drawEnemies() {
     if (inBonusRoom) return;
     for (var e = 0; e < enemies.length; e++) {
@@ -2548,14 +2531,11 @@
       var dir = en.vx >= 0 ? 1 : -1;
 
       if (en.kind === 'armored') {
-        // Heavy Juggernaut Knight with Shoulder Pauldrons, Horned Visor & Tower Shield
         var step = Math.sin(frame * 0.22 + e) * 2.5;
-        // Heavy Steel Boots
         ctx.fillStyle = '#1e293b';
         ctx.fillRect(ex + 6 + step, ey + en.h - 9, 10, 9);
         ctx.fillRect(ex + en.w - 16 - step, ey + en.h - 9, 10, 9);
 
-        // Layered Breastplate
         var armGrad = ctx.createLinearGradient(ex, ey, ex, ey + en.h);
         armGrad.addColorStop(0, '#94a3b8');
         armGrad.addColorStop(0.5, '#475569');
@@ -2567,35 +2547,30 @@
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Shoulder Pauldrons
         ctx.fillStyle = '#cbd5e1';
         ctx.beginPath();
         ctx.arc(ex + 6, ey + 15, 7, Math.PI, 0);
         ctx.arc(ex + en.w - 6, ey + 15, 7, Math.PI, 0);
         ctx.fill();
 
-        // Horned Great-Helm
         ctx.fillStyle = '#64748b';
         drawRoundRect(ex + 6, ey, en.w - 12, 15, 5);
         ctx.fill();
         ctx.strokeStyle = '#0f172a';
         ctx.stroke();
 
-        // Gold Helm Horns
         ctx.fillStyle = '#facc15';
         ctx.beginPath();
         ctx.moveTo(ex + 7, ey + 5); ctx.lineTo(ex, ey - 5); ctx.lineTo(ex + 12, ey + 2);
         ctx.moveTo(ex + en.w - 7, ey + 5); ctx.lineTo(ex + en.w, ey - 5); ctx.lineTo(ex + en.w - 12, ey + 2);
         ctx.fill();
 
-        // Glowing Red Visor Slit
         ctx.fillStyle = '#0f172a';
         ctx.fillRect(ex + 9, ey + 6, en.w - 18, 5);
         ctx.fillStyle = '#ef4444';
         ctx.fillRect(ex + 11, ey + 7, 6, 3);
         ctx.fillRect(ex + en.w - 17, ey + 7, 6, 3);
 
-        // Riveted Tower Shield with Gold Emblem
         var shX = dir === -1 ? ex - 3 : ex + en.w - 7;
         ctx.fillStyle = '#e2e8f0';
         drawRoundRect(shX, ey + 11, 10, 24, 3);
@@ -2606,7 +2581,6 @@
         ctx.fillStyle = '#facc15';
         ctx.fillRect(shX + 3, ey + 18, 4, 10);
 
-        // Armor HP Bar
         if (en.hp < en.maxHp) {
           ctx.fillStyle = '#0f172a';
           ctx.fillRect(ex + 4, ey - 10, en.w - 8, 4);
@@ -2615,13 +2589,11 @@
         }
 
       } else if (en.kind === 'flyer') {
-        // Cyber Vampire Bat / Neon Gargoyle with Articulated Wings
         var flap = Math.sin(frame * 0.42 + e) * 10;
         ctx.fillStyle = '#a855f7';
         ctx.strokeStyle = '#3b0764';
         ctx.lineWidth = 1.8;
 
-        // Left Wing
         ctx.beginPath();
         ctx.moveTo(ex + 10, ey + 12);
         ctx.lineTo(ex - 8, ey - 2 + flap);
@@ -2631,7 +2603,6 @@
         ctx.fill();
         ctx.stroke();
 
-        // Right Wing
         ctx.beginPath();
         ctx.moveTo(ex + en.w - 10, ey + 12);
         ctx.lineTo(ex + en.w + 8, ey - 2 + flap);
@@ -2641,7 +2612,6 @@
         ctx.fill();
         ctx.stroke();
 
-        // Bat Body & Pointed Ears
         var batGrad = ctx.createRadialGradient(ex + 18, ey + 12, 2, ex + 18, ey + 14, 15);
         batGrad.addColorStop(0, '#c084fc');
         batGrad.addColorStop(1, '#581c87');
@@ -2651,13 +2621,11 @@
         ctx.fill();
         ctx.stroke();
 
-        // Pointed Ears
         ctx.beginPath();
         ctx.moveTo(ex + 9, ey + 6); ctx.lineTo(ex + 8, ey - 4); ctx.lineTo(ex + 15, ey + 4);
         ctx.moveTo(ex + en.w - 9, ey + 6); ctx.lineTo(ex + en.w - 8, ey - 4); ctx.lineTo(ex + en.w - 15, ey + 4);
         ctx.fill();
 
-        // Glowing Yellow Eyes & Fangs
         ctx.fillStyle = '#fef08a';
         ctx.fillRect(ex + 12, ey + 10, 4, 4);
         ctx.fillRect(ex + 20, ey + 10, 4, 4);
@@ -2668,19 +2636,16 @@
         ctx.fill();
 
       } else {
-        // Detailed FUD Chomper / Horned Goblin Walker
         var bounce = Math.abs(Math.sin(frame * 0.2 + e)) * 3;
         var footSwing = Math.sin(frame * 0.3 + e) * 3.5;
         var isElite = en.maxHp > 1;
 
-        // Animated Little Boots
         ctx.fillStyle = '#1e293b';
         drawRoundRect(ex + 5 + footSwing, ey + en.h - 8, 10, 8, 3);
         ctx.fill();
         drawRoundRect(ex + en.w - 15 - footSwing, ey + en.h - 8, 10, 8, 3);
         ctx.fill();
 
-        // Shaded Dome Body
         var wGrad = ctx.createRadialGradient(ex + 14, ey + 12 - bounce, 3, ex + 17, ey + 18 - bounce, 19);
         if (isElite) {
           wGrad.addColorStop(0, '#9333ea');
@@ -2700,14 +2665,12 @@
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // White Goblin Horns
         ctx.fillStyle = '#fef9c3';
         ctx.beginPath();
         ctx.moveTo(ex + 6, ey + 8 - bounce); ctx.lineTo(ex + 2, ey - 2 - bounce); ctx.lineTo(ex + 12, ey + 4 - bounce);
         ctx.moveTo(ex + en.w - 6, ey + 8 - bounce); ctx.lineTo(ex + en.w - 2, ey - 2 - bounce); ctx.lineTo(ex + en.w - 12, ey + 4 - bounce);
         ctx.fill();
 
-        // Angry Eyes & Furrowed Brow
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(ex + 7, ey + 11 - bounce, 7, 7);
         ctx.fillRect(ex + 20, ey + 11 - bounce, 7, 7);
@@ -2716,7 +2679,6 @@
         ctx.fillRect(ex + 7 + look, ey + 13 - bounce, 3, 4);
         ctx.fillRect(ex + 20 + look, ey + 13 - bounce, 3, 4);
 
-        // Angry V-Eyebrows
         ctx.strokeStyle = '#0f172a';
         ctx.lineWidth = 2.2;
         ctx.beginPath();
@@ -2724,7 +2686,6 @@
         ctx.moveTo(ex + 28, ey + 9 - bounce); ctx.lineTo(ex + 19, ey + 13 - bounce);
         ctx.stroke();
 
-        // Chomping Mouth with Sharp Teeth
         var chomp = Math.abs(Math.sin(frame * 0.25 + e)) * 2.5;
         ctx.fillStyle = '#450a0a';
         ctx.fillRect(ex + 9, ey + 21 - bounce, 16, 5 + chomp);
@@ -2758,7 +2719,6 @@
     var breath = Math.sin(frame * 0.1) * 3;
     var rage = boss.hp <= boss.maxHp * 0.5;
 
-    // Enrage Crimson/Gold Aura below 50% HP
     if (rage) {
       ctx.strokeStyle = frame % 8 < 4 ? 'rgba(239, 68, 68, 0.65)' : 'rgba(250, 204, 21, 0.65)';
       ctx.lineWidth = 4;
@@ -2766,7 +2726,6 @@
       ctx.stroke();
     }
 
-    // Blue Energy Shield Flash when deflecting basic BLASTER shots
     if (boss.shieldFlash > 0) {
       ctx.strokeStyle = '#38bdf8';
       ctx.lineWidth = 5;
@@ -2799,7 +2758,6 @@
     ctx.lineWidth = (boss.telegraphTimer > 0 || boss.chargeTelegraph > 0) ? 5 : 3;
     ctx.stroke();
 
-    // Chest Armor & Glowing Power Core
     ctx.fillStyle = 'rgba(0,0,0,0.45)';
     drawRoundRect(bx + 20, by + 48 + breath, boss.w - 40, boss.h - 76, 12);
     ctx.fill();
@@ -2814,7 +2772,6 @@
     ctx.arc(bx + boss.w / 2, by + boss.h * 0.56 + breath, corePulse * 0.45, 0, Math.PI * 2);
     ctx.fill();
 
-    // Horns
     ctx.fillStyle = t.bossHorn;
     ctx.beginPath();
     ctx.moveTo(bx + 18, by + 20 + breath);
@@ -2837,7 +2794,6 @@
     ctx.fillRect(bx + 27 + eyeShift, eyeY + 2, 6, 7);
     ctx.fillRect(bx + boss.w - 33 + eyeShift, eyeY + 2, 6, 7);
 
-    // Charge Dash Warning '!'
     if (boss.chargeTelegraph > 0) {
       ctx.font = '900 22px sans-serif';
       ctx.textAlign = 'center';
