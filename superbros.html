@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>SUPERBROS - 11 Stages & Super Weapons | Playable NFT by PAPETO</title>
+<title>SUPERBROS - Mega Stages & Super Weapons | Playable NFT by PAPETO</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
   body {
@@ -98,7 +98,6 @@
     text-transform: uppercase;
   }
 
-  /* 2-Player Selector */
   .hero-section-label {
     font-size: clamp(7.5px, 1.2vw, 10px);
     font-weight: 900;
@@ -169,7 +168,6 @@
   }
   .sel-btn.active-diff { border-color: #38bdf8; background: rgba(56, 189, 248, 0.25); color: #e0f2fe; box-shadow: 0 0 10px rgba(56, 189, 248, 0.45); }
 
-  /* Blinking Player Name Box */
   @keyframes arcadeBlink {
     0%, 100% { opacity: 1; color: #fef08a; text-shadow: 0 0 10px rgba(250, 204, 21, 0.95); }
     50% { opacity: 0.22; color: #38bdf8; text-shadow: none; }
@@ -357,7 +355,7 @@
   <canvas id="game" width="800" height="500"></canvas>
   <div id="overlay">
     <h1>SUPERBROS</h1>
-    <div id="status-line" class="byline">11 WORLDS &bull; SUPER WEAPONS &bull; PLAYABLE NFT BY PAPETO</div>
+    <div id="status-line" class="byline">11 MEGA WORLDS &bull; SECRET VAULTS &bull; PLAYABLE NFT BY PAPETO</div>
 
     <div class="hero-section-label">CHOOSE YOUR HERO (2 PLAYERS):</div>
     <div class="hero-row">
@@ -394,7 +392,7 @@
   <div class="dpad">
     <div class="tbtn" data-key="ArrowLeft">◀</div>
     <div class="tbtn" data-key="ArrowRight">▶</div>
-    <div id="btn-dash" class="tbtn" title="Dash">▼</div>
+    <div id="btn-dash" class="tbtn" title="Electric Dash / Enter Secret Pipe">▼</div>
   </div>
   <div class="action-group">
     <div id="btn-wpn" class="abtn">WPN</div>
@@ -431,23 +429,23 @@
   var stageBannerTimer = 0;
   var stageBannerText = '';
 
-  // Delta Time Fixed-Timestep Engine (60 FPS locked across 60Hz / 90Hz / 120Hz / 144Hz screens)
+  // Delta Time Fixed-Timestep Engine (60 FPS locked across all screens)
   var lastTime = 0;
   var accumulator = 0;
   var STEP = 1000 / 60;
 
   var STAGE_THEMES = [
-    { name: '1. GREEN HILLS', bossName: 'FUD GOBLIN KING', skyTop: '#0284c7', skyMid: '#38bdf8', skyBot: '#bae6fd', hillFar: '#0ea5e9', hillNear: '#16a34a', hillRim: '#4ade80', grassTop: '#4ade80', grassMid: '#22c55e', grassBot: '#15803d', soil: '#78350f', bossBody: '#991b1b', bossRim: '#fca5a5', bossHorn: '#facc15' },
-    { name: '2. SUNSET CANYON', bossName: 'SANDSTORM GOLEM', skyTop: '#9a3412', skyMid: '#f97316', skyBot: '#fed7aa', hillFar: '#c2410c', hillNear: '#d97706', hillRim: '#fbbf24', grassTop: '#fbbf24', grassMid: '#d97706', grassBot: '#92400e', soil: '#451a03', bossBody: '#b45309', bossRim: '#fde68a', bossHorn: '#ef4444' },
-    { name: '3. MYSTIC FOREST', bossName: 'SHADOW TREANT', skyTop: '#064e3b', skyMid: '#047857', skyBot: '#6ee7b7', hillFar: '#065f46', hillNear: '#15803d', hillRim: '#86efac', grassTop: '#34d399', grassMid: '#059669', grassBot: '#064e3b', soil: '#3f2e21', bossBody: '#14532d', bossRim: '#86efac', bossHorn: '#facc15' },
-    { name: '4. FROZEN PEAKS', bossName: 'FROST YETI LORD', skyTop: '#1e3a8a', skyMid: '#60a5fa', skyBot: '#e0f2fe', hillFar: '#3b82f6', hillNear: '#93c5fd', hillRim: '#ffffff', grassTop: '#ffffff', grassMid: '#bae6fd', grassBot: '#38bdf8', soil: '#1e293b', bossBody: '#1d4ed8', bossRim: '#bfdbfe', bossHorn: '#38bdf8' },
-    { name: '5. LAVA CAVERN', bossName: 'MAGMA DEMON', skyTop: '#180404', skyMid: '#7f1d1d', skyBot: '#ea580c', hillFar: '#450a0a', hillNear: '#991b1b', hillRim: '#f97316', grassTop: '#f97316', grassMid: '#dc2626', grassBot: '#7f1d1d', soil: '#1c1917', bossBody: '#7f1d1d', bossRim: '#fdba74', bossHorn: '#fef08a' },
-    { name: '6. CYBER NEON CITY', bossName: 'MECHA FUD BOT', skyTop: '#090d16', skyMid: '#311042', skyBot: '#701a75', hillFar: '#4c1d95', hillNear: '#6d28d9', hillRim: '#e879f9', grassTop: '#e879f9', grassMid: '#a855f7', grassBot: '#581c87', soil: '#0f172a', bossBody: '#4c1d95', bossRim: '#f0abfc', bossHorn: '#38bdf8' },
-    { name: '7. SKY CITADEL', bossName: 'STORM GRIFFIN', skyTop: '#0369a1', skyMid: '#7dd3fc', skyBot: '#fef9c3', hillFar: '#bae6fd', hillNear: '#fde047', hillRim: '#ffffff', grassTop: '#fef08a', grassMid: '#eab308', grassBot: '#a16207', soil: '#713f12', bossBody: '#ca8a04', bossRim: '#fef9c3', bossHorn: '#ef4444' },
-    { name: '8. TOXIC SWAMP', bossName: 'VENOM HYDRA', skyTop: '#1a1025', skyMid: '#3b0764', skyBot: '#4d7c0f', hillFar: '#365314', hillNear: '#4d7c0f', hillRim: '#a3e635', grassTop: '#a3e635', grassMid: '#65a30d', grassBot: '#365314', soil: '#1e1b18', bossBody: '#3f6212', bossRim: '#bef264', bossHorn: '#c084fc' },
-    { name: '9. LUNAR BASE', bossName: 'ASTRO OVERLORD', skyTop: '#020617', skyMid: '#0f172a', skyBot: '#1e293b', hillFar: '#334155', hillNear: '#475569', hillRim: '#94a3b8', grassTop: '#cbd5e1', grassMid: '#94a3b8', grassBot: '#475569', soil: '#1e293b', bossBody: '#334155', bossRim: '#38bdf8', bossHorn: '#facc15' },
-    { name: '10. GOLDEN THRONE', bossName: 'EMPEROR FUD', skyTop: '#450a0a', skyMid: '#991b1b', skyBot: '#facc15', hillFar: '#7f1d1d', hillNear: '#b45309', hillRim: '#fef08a', grassTop: '#fef08a', grassMid: '#facc15', grassBot: '#b45309', soil: '#451a03', bossBody: '#18181b', bossRim: '#facc15', bossHorn: '#ef4444' },
-    { name: '11. OMEGA COSMOS', bossName: 'OMEGA MEGA-FUD TITAN', skyTop: '#030014', skyMid: '#1e1b4b', skyBot: '#4c1d95', hillFar: '#312e81', hillNear: '#581c87', hillRim: '#38bdf8', grassTop: '#38bdf8', grassMid: '#6366f1', grassBot: '#312e81', soil: '#090d16', bossBody: '#09090b', bossRim: '#38bdf8', bossHorn: '#facc15', isMegaBoss: true }
+    { name: '1. GREEN HILLS', bossName: 'FUD GOBLIN KING', bossStyle: 'meteor', skyTop: '#0284c7', skyMid: '#38bdf8', skyBot: '#bae6fd', hillFar: '#0ea5e9', hillNear: '#16a34a', hillRim: '#4ade80', grassTop: '#4ade80', grassMid: '#22c55e', grassBot: '#15803d', soil: '#78350f', bossBody: '#991b1b', bossRim: '#fca5a5', bossHorn: '#facc15' },
+    { name: '2. SUNSET CANYON', bossName: 'SANDSTORM GOLEM', bossStyle: 'spikes', skyTop: '#9a3412', skyMid: '#f97316', skyBot: '#fed7aa', hillFar: '#c2410c', hillNear: '#d97706', hillRim: '#fbbf24', grassTop: '#fbbf24', grassMid: '#d97706', grassBot: '#92400e', soil: '#451a03', bossBody: '#b45309', bossRim: '#fde68a', bossHorn: '#ef4444' },
+    { name: '3. MYSTIC FOREST', bossName: 'SHADOW TREANT', bossStyle: 'forest', skyTop: '#064e3b', skyMid: '#047857', skyBot: '#6ee7b7', hillFar: '#065f46', hillNear: '#15803d', hillRim: '#86efac', grassTop: '#34d399', grassMid: '#059669', grassBot: '#064e3b', soil: '#3f2e21', bossBody: '#14532d', bossRim: '#86efac', bossHorn: '#facc15' },
+    { name: '4. FROZEN PEAKS', bossName: 'FROST YETI LORD', bossStyle: 'spikes', skyTop: '#1e3a8a', skyMid: '#60a5fa', skyBot: '#e0f2fe', hillFar: '#3b82f6', hillNear: '#93c5fd', hillRim: '#ffffff', grassTop: '#ffffff', grassMid: '#bae6fd', grassBot: '#38bdf8', soil: '#1e293b', bossBody: '#1d4ed8', bossRim: '#bfdbfe', bossHorn: '#38bdf8' },
+    { name: '5. LAVA CAVERN', bossName: 'MAGMA DEMON', bossStyle: 'meteor', skyTop: '#180404', skyMid: '#7f1d1d', skyBot: '#ea580c', hillFar: '#450a0a', hillNear: '#991b1b', hillRim: '#f97316', grassTop: '#f97316', grassMid: '#dc2626', grassBot: '#7f1d1d', soil: '#1c1917', bossBody: '#7f1d1d', bossRim: '#fdba74', bossHorn: '#fef08a' },
+    { name: '6. CYBER NEON CITY', bossName: 'MECHA FUD BOT', bossStyle: 'laser', skyTop: '#090d16', skyMid: '#311042', skyBot: '#701a75', hillFar: '#4c1d95', hillNear: '#6d28d9', hillRim: '#e879f9', grassTop: '#e879f9', grassMid: '#a855f7', grassBot: '#581c87', soil: '#0f172a', bossBody: '#4c1d95', bossRim: '#f0abfc', bossHorn: '#38bdf8' },
+    { name: '7. SKY CITADEL', bossName: 'STORM GRIFFIN', bossStyle: 'laser', skyTop: '#0369a1', skyMid: '#7dd3fc', skyBot: '#fef9c3', hillFar: '#bae6fd', hillNear: '#fde047', hillRim: '#ffffff', grassTop: '#fef08a', grassMid: '#eab308', grassBot: '#a16207', soil: '#713f12', bossBody: '#ca8a04', bossRim: '#fef9c3', bossHorn: '#ef4444' },
+    { name: '8. TOXIC SWAMP', bossName: 'VENOM HYDRA', bossStyle: 'spikes', skyTop: '#1a1025', skyMid: '#3b0764', skyBot: '#4d7c0f', hillFar: '#365314', hillNear: '#4d7c0f', hillRim: '#a3e635', grassTop: '#a3e635', grassMid: '#65a30d', grassBot: '#365314', soil: '#1e1b18', bossBody: '#3f6212', bossRim: '#bef264', bossHorn: '#c084fc' },
+    { name: '9. LUNAR BASE', bossName: 'ASTRO OVERLORD', bossStyle: 'laser', skyTop: '#020617', skyMid: '#0f172a', skyBot: '#1e293b', hillFar: '#334155', hillNear: '#475569', hillRim: '#94a3b8', grassTop: '#cbd5e1', grassMid: '#94a3b8', grassBot: '#475569', soil: '#1e293b', bossBody: '#334155', bossRim: '#38bdf8', bossHorn: '#facc15' },
+    { name: '10. GOLDEN THRONE', bossName: 'EMPEROR FUD', bossStyle: 'meteor', skyTop: '#450a0a', skyMid: '#991b1b', skyBot: '#facc15', hillFar: '#7f1d1d', hillNear: '#b45309', hillRim: '#fef08a', grassTop: '#fef08a', grassMid: '#facc15', grassBot: '#b45309', soil: '#451a03', bossBody: '#18181b', bossRim: '#facc15', bossHorn: '#ef4444' },
+    { name: '11. OMEGA COSMOS', bossName: 'OMEGA MEGA-FUD TITAN', bossStyle: 'titan', skyTop: '#030014', skyMid: '#1e1b4b', skyBot: '#4c1d95', hillFar: '#312e81', hillNear: '#581c87', hillRim: '#38bdf8', grassTop: '#38bdf8', grassMid: '#6366f1', grassBot: '#312e81', soil: '#090d16', bossBody: '#09090b', bossRim: '#38bdf8', bossHorn: '#facc15', isMegaBoss: true }
   ];
 
   // --- 8-BIT WEB AUDIO SYNTHESIZER ---
@@ -489,22 +487,36 @@
   var sfx = {
     jump: function() { playTone(260, 560, 0.14, 'square', 0.06); },
     djump: function() { playTone(420, 840, 0.16, 'square', 0.07); },
-    dash: function() { playTone(520, 140, 0.14, 'sawtooth', 0.07); },
+    spring: function() { playTone(320, 1150, 0.24, 'triangle', 0.09); },
+    dash: function() { playTone(680, 180, 0.15, 'sawtooth', 0.08); },
+    warp: function() {
+      playTone(660, 220, 0.12, 'square', 0.08);
+      setTimeout(function() { playTone(550, 180, 0.12, 'square', 0.08); }, 100);
+      setTimeout(function() { playTone(440, 140, 0.15, 'square', 0.08); }, 200);
+    },
     blaster: function() { playTone(920, 240, 0.10, 'square', 0.06); },
     hyperBeam: function() { playTone(1240, 320, 0.18, 'sawtooth', 0.09); },
     omegaNova: function() { playTone(480, 90, 0.28, 'sawtooth', 0.11); },
     fire: function() { playTone(380, 160, 0.13, 'triangle', 0.08); },
+    boom: function() { playTone(150, 35, 0.35, 'sawtooth', 0.12); },
+    coin: function() {
+      playTone(987, 987, 0.06, 'square', 0.05);
+      setTimeout(function() { playTone(1318, 1318, 0.12, 'square', 0.05); }, 55);
+    },
     powerup: function() {
       playTone(587, 784, 0.09, 'square', 0.07);
       setTimeout(function() { playTone(987, 1318, 0.16, 'square', 0.08); }, 80);
     },
-    heal: function() {
+    lifeUp: function() {
       playTone(523, 659, 0.1, 'triangle', 0.08);
-      setTimeout(function() { playTone(784, 1046, 0.18, 'triangle', 0.08); }, 90);
+      setTimeout(function() { playTone(784, 1046, 0.12, 'triangle', 0.08); }, 80);
+      setTimeout(function() { playTone(1046, 1318, 0.18, 'triangle', 0.09); }, 160);
     },
+    armorClink: function() { playTone(1400, 1100, 0.06, 'triangle', 0.06); },
     hitEnemy: function() { playTone(220, 90, 0.12, 'square', 0.08); },
     hurt: function() { playTone(190, 65, 0.25, 'sawtooth', 0.10); },
     bossRoar: function() { playTone(120, 45, 0.42, 'sawtooth', 0.11); },
+    laser: function() { playTone(1100, 260, 0.26, 'sawtooth', 0.10); },
     win: function() {
       var notes = [523, 659, 784, 1046, 1318];
       for (var i = 0; i < notes.length; i++) {
@@ -550,131 +562,293 @@
     }
   }
 
-  // Ranged & Super Weapons Only (No Sword)
-  var weapons = ['BLASTER', 'FIRE', 'HYPER BEAM', 'OMEGA NOVA'];
-  var weaponIdx = 0;
+  // Base Weapons (BLASTER vs FIRE) + Timed Super Weapons (HYPER BEAM & OMEGA NOVA)
+  var baseWeapons = ['BLASTER', 'FIRE'];
+  var baseWpnIdx = 0;
+  var superWeapon = null;
+  var superWeaponTimer = 0;
+  var SUPER_WEAPON_MAX_TIME = 900; // 15 seconds
+
+  function getActiveWeapon() {
+    if (superWeaponTimer > 0 && superWeapon) return superWeapon;
+    return baseWeapons[baseWpnIdx];
+  }
+
+  function isOvercharged() {
+    return player.maxHp >= 5 && player.hp >= 4;
+  }
 
   var gravity = 0.58;
   var player = {
     x: 90, y: 340, w: 34, h: 42,
-    vx: 0, vy: 0, speed: 5.0, jumpPower: -12.5,
+    vx: 0, vy: 0, speed: 5.1, jumpPower: -12.6,
     grounded: false, jumpsLeft: 2, facing: 1,
     hp: 4, maxHp: 4, invuln: 0, shieldTimer: 0,
-    dashTimer: 0, dashCooldown: 0, atkCooldown: 0
+    dashTimer: 0, dashCooldown: 0, atkCooldown: 0,
+    safeX: 90, safeY: 340
   };
 
+  // Expanded World Arrays
   var blocks = [];
+  var movingPlats = [];
+  var crumblePlats = [];
+  var jumpPads = [];
+  var pits = [];
+  var barrels = [];
+  var stageCoins = [];
   var enemies = [];
   var projectiles = [];
   var bossShots = [];
+  var meteors = [];
+  var bossLaser = null;
   var shockwaves = [];
   var particles = [];
   var floatingPopups = [];
   var afterimages = [];
+  var fireworks = [];
 
-  var arenaStartX = 1950;
-  var arenaLeftWall = 1950;
-  var arenaRightWall = 2730;
+  // Secret Bonus Pipe State
+  var inBonusRoom = false;
+  var bonusTimer = 0;
+  var savedMainState = null;
+  var bonusBlocks = [];
+  var bonusCoins = [];
+
+  // Mega Stage Dimensions (4,400px approach + 780px Boss Arena!)
+  var arenaStartX = 4400;
+  var arenaLeftWall = 4400;
+  var arenaRightWall = 5180;
   var bossActive = false;
   var boss = null;
   var stageClearing = false;
+
+  function addCoinArc(startX, peakY, count, spacing) {
+    for (var i = 0; i < count; i++) {
+      var t = count > 1 ? (i / (count - 1)) - 0.5 : 0;
+      var cy = peakY + (t * t) * 70;
+      stageCoins.push({ x: startX + i * spacing, y: cy, collected: false });
+    }
+  }
 
   function loadStage(stNum, keepStats, isContinue) {
     currentStage = stNum;
     var theme = STAGE_THEMES[stNum - 1];
     var diffMult = difficulty === 'easy' ? 0.8 : (difficulty === 'hard' ? 1.25 : 1.0);
-    var stageSpeedBoost = 1 + (stNum - 1) * 0.035;
+    var stageSpeedBoost = 1 + (stNum - 1) * 0.03;
 
-    player.maxHp = difficulty === 'easy' ? 6 : (difficulty === 'hard' ? 3 : 4);
+    var startMaxHp = difficulty === 'easy' ? 6 : (difficulty === 'hard' ? 3 : 4);
     if (isContinue) {
       player.hp = player.maxHp;
       score = 0;
+      superWeapon = null;
+      superWeaponTimer = 0;
     } else if (!keepStats) {
+      player.maxHp = startMaxHp;
       player.hp = player.maxHp;
       score = 0;
       coins = 0;
-      weaponIdx = 0; // Starts with BLASTER
+      baseWpnIdx = 0;
+      superWeapon = null;
+      superWeaponTimer = 0;
     } else {
       player.hp = Math.min(player.maxHp, player.hp + 2);
-      if (stNum === 11 && weaponIdx < 2) weaponIdx = 2; // Ensure Super Weapon on Stage 11
     }
 
     player.x = 80; player.y = 340; player.vx = 0; player.vy = 0;
+    player.safeX = 80; player.safeY = 340;
     player.jumpsLeft = 2; player.invuln = 0; player.shieldTimer = 0;
     player.dashTimer = 0; player.dashCooldown = 0; player.atkCooldown = 0;
 
+    inBonusRoom = false;
+    bonusTimer = 0;
+    savedMainState = null;
+
     camX = 0;
-    afterimages = []; projectiles = []; bossShots = []; shockwaves = []; particles = []; floatingPopups = [];
+    afterimages = []; projectiles = []; bossShots = []; meteors = []; bossLaser = null;
+    shockwaves = []; particles = []; floatingPopups = []; fireworks = [];
     stageClearing = false;
 
     blocks = [];
-    var shift = ((stNum * 37) % 60) - 30;
+    movingPlats = [];
+    crumblePlats = [];
+    jumpPads = [];
+    pits = [];
+    barrels = [];
+    stageCoins = [];
+    enemies = [];
 
-    // Every '?' block holds an awesome power-up reward!
-    blocks.push({ x: 240 + shift, y: 290, w: 40, h: 40, type: 'brick', bump: 0 });
-    blocks.push({ x: 280 + shift, y: 290, w: 40, h: 40, type: 'q_box', reward: 'weapon', bump: 0 });
-    blocks.push({ x: 320 + shift, y: 290, w: 40, h: 40, type: 'brick', bump: 0 });
-    blocks.push({ x: 360 + shift, y: 290, w: 40, h: 40, type: 'q_box', reward: 'heal', bump: 0 });
-    blocks.push({ x: 400 + shift, y: 290, w: 40, h: 40, type: 'brick', bump: 0 });
-    blocks.push({ x: 320 + shift, y: 170, w: 40, h: 40, type: 'q_box', reward: 'shield', bump: 0 });
+    var shift = ((stNum * 41) % 60) - 30;
 
-    var p1H = 75 + (stNum % 3) * 15;
-    var p2H = 95 + ((stNum + 1) % 3) * 15;
-    blocks.push({ x: 540, y: 430 - p1H, w: 56, h: p1H, type: 'pipe', bump: 0 });
-    blocks.push({ x: 750, y: 430 - p2H, w: 56, h: p2H, type: 'pipe', bump: 0 });
+    // ==========================================================
+    // ZONE 1 (0 - 1500px): WARMUP, EXPLODING BARRELS & SECRET PIPE
+    // ==========================================================
+    blocks.push({ x: 260, y: 290, w: 40, h: 40, type: 'brick', bump: 0 });
+    blocks.push({ x: 300, y: 290, w: 40, h: 40, type: 'q_box', reward: 'hyper', bump: 0 });
+    blocks.push({ x: 340, y: 290, w: 40, h: 40, type: 'brick', bump: 0 });
+    blocks.push({ x: 380, y: 290, w: 40, h: 40, type: 'q_box', reward: 'life_up', bump: 0 });
+    blocks.push({ x: 420, y: 290, w: 40, h: 40, type: 'brick', bump: 0 });
+    blocks.push({ x: 340, y: 170, w: 40, h: 40, type: 'q_box', reward: 'shield', bump: 0 });
 
-    blocks.push({ x: 930 - shift, y: 280, w: 40, h: 40, type: 'q_box', reward: 'weapon', bump: 0 });
-    blocks.push({ x: 970 - shift, y: 280, w: 40, h: 40, type: 'brick', bump: 0 });
-    blocks.push({ x: 1010 - shift, y: 280, w: 40, h: 40, type: 'q_box', reward: 'jackpot', bump: 0 });
+    addCoinArc(540, 270, 5, 34);
+    blocks.push({ x: 580, y: 350, w: 56, h: 80, type: 'pipe', bump: 0 });
 
-    blocks.push({ x: 1140, y: 195, w: 40, h: 40, type: 'brick', bump: 0 });
-    blocks.push({ x: 1180, y: 195, w: 40, h: 40, type: 'q_box', reward: 'heal', bump: 0 });
-    blocks.push({ x: 1220, y: 195, w: 40, h: 40, type: 'brick', bump: 0 });
+    // Barrel cluster + Enemy Squad 1
+    barrels.push({ x: 780, y: 392, w: 30, h: 38, alive: true });
+    enemies.push({ x: 490, y: 394, w: 34, h: 36, vx: -1.4 * diffMult, alive: true, minX: 430, maxX: 570, kind: 'walker', hp: 1 });
+    enemies.push({ x: 730, y: 394, w: 34, h: 36, vx: 1.5 * diffMult, alive: true, minX: 650, maxX: 910, kind: 'walker', hp: 1 });
+    enemies.push({ x: 850, y: 394, w: 34, h: 36, vx: -1.5 * diffMult, alive: true, minX: 650, maxX: 910, kind: 'walker', hp: 1 });
+    enemies.push({ x: 890, y: 230, w: 36, h: 28, vx: 1.7 * diffMult, alive: true, minX: 760, maxX: 1080, kind: 'flyer', baseY: 230, hp: 1 });
 
-    blocks.push({ x: 1430, y: 335, w: 56, h: 95, type: 'pipe', bump: 0 });
-    blocks.push({ x: 1620, y: 285, w: 40, h: 40, type: 'q_box', reward: 'shield', bump: 0 });
-    blocks.push({ x: 1660, y: 285, w: 40, h: 40, type: 'q_box', reward: 'weapon', bump: 0 });
-    blocks.push({ x: 1700, y: 285, w: 40, h: 40, type: 'q_box', reward: 'heal', bump: 0 });
+    // Glowing Secret Warp Pipe at x = 1140!
+    blocks.push({ x: 1140, y: 335, w: 60, h: 95, type: 'warp_pipe', used: false, bump: 0 });
+    addCoinArc(1260, 255, 4, 36);
+    blocks.push({ x: 1320 + shift, y: 280, w: 40, h: 40, type: 'q_box', reward: 'nova', bump: 0 });
+    blocks.push({ x: 1360 + shift, y: 280, w: 40, h: 40, type: 'q_box', reward: 'jackpot', bump: 0 });
 
-    enemies = [
-      { x: 460, y: 394, w: 34, h: 36, vx: -1.4 * diffMult * stageSpeedBoost, alive: true, minX: 370, maxX: 530, kind: 'walker', hp: 1 },
-      { x: 660, y: 394, w: 34, h: 36, vx: 1.5 * diffMult * stageSpeedBoost, alive: true, minX: 605, maxX: 740, kind: 'walker', hp: 1 },
-      { x: 860, y: 235, w: 36, h: 28, vx: 1.7 * diffMult * stageSpeedBoost, alive: true, minX: 780, maxX: 1080, kind: 'flyer', baseY: 235, hp: 1 },
-      { x: 1080, y: 394, w: 34, h: 36, vx: -1.7 * diffMult * stageSpeedBoost, alive: true, minX: 830, maxX: 1410, kind: 'walker', hp: stNum >= 6 ? 2 : 1 },
-      { x: 1320, y: 205, w: 36, h: 28, vx: -1.9 * diffMult * stageSpeedBoost, alive: true, minX: 1120, maxX: 1450, kind: 'flyer', baseY: 205, hp: 1 },
-      { x: 1580, y: 394, w: 34, h: 36, vx: -1.8 * diffMult * stageSpeedBoost, alive: true, minX: 1495, maxX: 1860, kind: 'walker', hp: stNum >= 5 ? 2 : 1 }
-    ];
-    if (stNum >= 4) {
-      enemies.push({ x: 1240, y: 394, w: 34, h: 36, vx: 1.9 * diffMult * stageSpeedBoost, alive: true, minX: 900, maxX: 1410, kind: 'walker', hp: 1 });
-    }
-    if (stNum >= 7) {
-      enemies.push({ x: 1720, y: 215, w: 36, h: 28, vx: -2.1 * diffMult * stageSpeedBoost, alive: true, minX: 1520, maxX: 1870, kind: 'flyer', baseY: 215, hp: 1 });
+    // ==========================================================
+    // ZONE 2 (1500 - 3000px): MOVING PLATFORMS, CRUMBLERS, PITS & JUMP PADS
+    // ==========================================================
+    // Pit 1 with Moving Platform Bridge
+    pits.push({ x: 1540, w: 260 });
+    movingPlats.push({ x: 1570, y: 340, w: 96, h: 18, minX: 1555, maxX: 1700, vx: 1.5 * stageSpeedBoost });
+    addCoinArc(1600, 260, 4, 34);
+
+    // Jump Pad (Spring) launching to high reward shelf!
+    jumpPads.push({ x: 1870, y: 412, w: 36, h: 18, bounceTimer: 0 });
+    blocks.push({ x: 1930, y: 210, w: 40, h: 40, type: 'brick', bump: 0 });
+    blocks.push({ x: 1970, y: 210, w: 40, h: 40, type: 'q_box', reward: 'life_up', bump: 0 });
+    blocks.push({ x: 2010, y: 210, w: 40, h: 40, type: 'brick', bump: 0 });
+    addCoinArc(1920, 145, 5, 32);
+
+    // Mid-stage Armored Knight + Barrel
+    barrels.push({ x: 2130, y: 392, w: 30, h: 38, alive: true });
+    enemies.push({ x: 2180, y: 390, w: 38, h: 40, vx: -1.3 * diffMult, alive: true, minX: 2020, maxX: 2360, kind: 'armored', hp: 5 });
+    enemies.push({ x: 2260, y: 220, w: 36, h: 28, vx: 1.8 * diffMult, alive: true, minX: 2060, maxX: 2380, kind: 'flyer', baseY: 220, hp: 1 });
+
+    // Pit 2 with Crumbling Platforms!
+    pits.push({ x: 2420, w: 340 });
+    crumblePlats.push({ x: 2455, y: 345, w: 76, h: 16, state: 'solid', timer: 0, respawn: 0 });
+    crumblePlats.push({ x: 2565, y: 315, w: 76, h: 16, state: 'solid', timer: 0, respawn: 0 });
+    crumblePlats.push({ x: 2675, y: 345, w: 76, h: 16, state: 'solid', timer: 0, respawn: 0 });
+    addCoinArc(2500, 235, 6, 36);
+
+    // Mid-way Supply Station
+    blocks.push({ x: 2840, y: 285, w: 40, h: 40, type: 'q_box', reward: 'life_up', bump: 0 });
+    blocks.push({ x: 2880, y: 285, w: 40, h: 40, type: 'q_box', reward: 'hyper', bump: 0 });
+
+    // ==========================================================
+    // ZONE 3 (3000 - 4350px): HIGH-ACTION GAUNTLET TO BOSS ARENA
+    // ==========================================================
+    blocks.push({ x: 3040, y: 340, w: 56, h: 90, type: 'pipe', bump: 0 });
+    enemies.push({ x: 3170, y: 394, w: 34, h: 36, vx: 1.8 * diffMult * stageSpeedBoost, alive: true, minX: 3105, maxX: 3430, kind: 'walker', hp: 2 });
+    enemies.push({ x: 3320, y: 390, w: 38, h: 40, vx: -1.5 * diffMult * stageSpeedBoost, alive: true, minX: 3105, maxX: 3430, kind: 'armored', hp: 5 });
+    barrels.push({ x: 3250, y: 392, w: 30, h: 38, alive: true });
+
+    // Pit 3 with Moving Platform + Jump Pad combo
+    pits.push({ x: 3480, w: 300 });
+    movingPlats.push({ x: 3510, y: 335, w: 96, h: 18, minX: 3495, maxX: 3675, vx: 1.8 * stageSpeedBoost });
+    addCoinArc(3540, 240, 5, 34);
+
+    jumpPads.push({ x: 3830, y: 412, w: 36, h: 18, bounceTimer: 0 });
+    blocks.push({ x: 3920, y: 220, w: 40, h: 40, type: 'q_box', reward: 'shield', bump: 0 });
+    blocks.push({ x: 3960, y: 220, w: 40, h: 40, type: 'q_box', reward: 'nova', bump: 0 });
+
+    // Final Pre-Boss Squad + Pre-Boss Supply Box
+    barrels.push({ x: 4080, y: 392, w: 30, h: 38, alive: true });
+    barrels.push({ x: 4114, y: 392, w: 30, h: 38, alive: true });
+    enemies.push({ x: 4020, y: 394, w: 34, h: 36, vx: 1.9 * diffMult, alive: true, minX: 3890, maxX: 4320, kind: 'walker', hp: 2 });
+    enemies.push({ x: 4210, y: 390, w: 38, h: 40, vx: -1.6 * diffMult, alive: true, minX: 3890, maxX: 4320, kind: 'armored', hp: 5 });
+    enemies.push({ x: 4160, y: 215, w: 36, h: 28, vx: -2.0 * diffMult, alive: true, minX: 3920, maxX: 4330, kind: 'flyer', baseY: 215, hp: 1 });
+
+    blocks.push({ x: 4270, y: 285, w: 40, h: 40, type: 'q_box', reward: 'life_up', bump: 0 });
+    blocks.push({ x: 4310, y: 285, w: 40, h: 40, type: 'q_box', reward: 'hyper', bump: 0 });
+
+    // Stage 11 Mega Titan Arena regenerating '?' boxes
+    if (stNum === 11) {
+      blocks.push({ x: arenaLeftWall + 170, y: 275, w: 40, h: 40, type: 'q_box', reward: 'hyper', regenerating: true, respawnTimer: 0, bump: 0 });
+      blocks.push({ x: arenaRightWall - 210, y: 275, w: 40, h: 40, type: 'q_box', reward: 'nova', regenerating: true, respawnTimer: 0, bump: 0 });
     }
 
     bossActive = false;
     var isMega = !!theme.isMegaBoss;
-    var baseBossHp = isMega ? 42 : (8 + stNum * 2);
-    var bHp = difficulty === 'easy' ? Math.round(baseBossHp * 0.75) : (difficulty === 'hard' ? Math.round(baseBossHp * 1.25) : baseBossHp);
+    var baseBossHp = isMega ? 48 : (12 + stNum * 2.5);
+    var bHp = difficulty === 'easy' ? Math.round(baseBossHp * 0.75) : (difficulty === 'hard' ? Math.round(baseBossHp * 1.25) : Math.round(baseBossHp));
 
-    var bw = isMega ? 128 : 88;
-    var bh = isMega ? 162 : 115;
+    var bw = isMega ? 128 : 92;
+    var bh = isMega ? 162 : 118;
 
     boss = {
       name: theme.bossName,
+      style: theme.bossStyle,
       isMega: isMega,
-      x: 2490, y: 430 - bh, w: bw, h: bh,
+      x: arenaLeftWall + 540, y: 430 - bh, w: bw, h: bh,
       vx: -(isMega ? 2.4 : (2.0 + stNum * 0.1)) * diffMult,
       vy: 0,
       hp: bHp, maxHp: bHp,
       alive: true, hurtTimer: 0,
       telegraphTimer: 0,
       attackTimer: 85,
+      specialTimer: 180,
       jumpTimer: 145,
+      summonedMinions: false,
       facing: -1
     };
 
-    stageBannerText = isMega ? 'FINAL STAGE 11: MEGA TITAN & SUPER WEAPONS!' : ('STAGE ' + stNum + ': ' + theme.name);
+    stageBannerText = isMega ? 'FINAL STAGE 11: OMEGA MEGA-FUD TITAN!' : ('STAGE ' + stNum + ': ' + theme.name);
     stageBannerTimer = 120;
+  }
+
+  function enterSecretBonusRoom(pipeBlk) {
+    pipeBlk.used = true;
+    sfx.warp();
+    inBonusRoom = true;
+    bonusTimer = 600; // 10 seconds
+    savedMainState = {
+      x: pipeBlk.x + 12,
+      y: pipeBlk.y - player.h - 4,
+      camX: camX
+    };
+
+    player.x = 90;
+    player.y = 340;
+    player.vx = 0;
+    player.vy = 0;
+    camX = 0;
+    projectiles = [];
+    particles = [];
+
+    bonusBlocks = [
+      { x: 260, y: 280, w: 40, h: 40, type: 'q_box', reward: 'life_up', bump: 0 },
+      { x: 340, y: 280, w: 40, h: 40, type: 'q_box', reward: 'hyper', bump: 0 },
+      { x: 420, y: 280, w: 40, h: 40, type: 'q_box', reward: 'nova', bump: 0 },
+      { x: 500, y: 280, w: 40, h: 40, type: 'q_box', reward: 'shield', bump: 0 },
+      { x: 670, y: 340, w: 60, h: 90, type: 'exit_pipe', bump: 0 }
+    ];
+    bonusCoins = [];
+    for (var row = 0; row < 2; row++) {
+      for (var col = 0; col < 10; col++) {
+        bonusCoins.push({ x: 180 + col * 44, y: 170 + row * 45, collected: false });
+      }
+    }
+
+    stageBannerText = '★ SECRET BONUS VAULT! (10 SECONDS) ★';
+    stageBannerTimer = 95;
+  }
+
+  function exitSecretBonusRoom() {
+    sfx.warp();
+    inBonusRoom = false;
+    if (savedMainState) {
+      player.x = savedMainState.x;
+      player.y = savedMainState.y;
+      camX = savedMainState.camX;
+    }
+    player.vx = 0;
+    player.vy = -6;
+    player.invuln = 60;
+    projectiles = [];
+    stageBannerText = 'RETURNED TO STAGE ' + currentStage + '!';
+    stageBannerTimer = 70;
   }
 
   function launchGame(stageToLoad, isContinue) {
@@ -698,7 +872,7 @@
     keys[e.code] = true;
     if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.code) !== -1) e.preventDefault();
     if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') doJump();
-    if (e.code === 'ArrowDown' || e.code === 'KeyS' || e.code === 'ShiftLeft' || e.code === 'ShiftRight' || e.code === 'KeyE') doDash();
+    if (e.code === 'ArrowDown' || e.code === 'KeyS' || e.code === 'ShiftLeft' || e.code === 'ShiftRight' || e.code === 'KeyE') doDownAction();
     if (e.code === 'KeyF' || e.code === 'KeyZ' || e.code === 'KeyX') doAttack();
     if (e.code === 'KeyQ' || e.code === 'KeyC') switchWeapon();
   });
@@ -725,16 +899,22 @@
     })(tbtns[b]);
   }
 
-  bindBtn(document.getElementById('btn-dash'), doDash);
+  bindBtn(document.getElementById('btn-dash'), doDownAction);
   bindBtn(document.getElementById('btn-wpn'), switchWeapon);
   bindBtn(document.getElementById('btn-atk'), doAttack);
   bindBtn(document.getElementById('btn-jump'), doJump);
 
   function switchWeapon() {
     if (mode !== 'play') return;
-    weaponIdx = (weaponIdx + 1) % weapons.length;
-    var isSuper = weaponIdx >= 2;
-    playTone(isSuper ? 880 : 660, isSuper ? 1320 : 880, 0.09, 'triangle', 0.07);
+    baseWpnIdx = (baseWpnIdx + 1) % baseWeapons.length;
+    playTone(baseWpnIdx === 1 ? 760 : 620, 920, 0.09, 'triangle', 0.07);
+    floatingPopups.push({
+      x: player.x + 17,
+      y: player.y - 28,
+      text: baseWpnIdx === 1 ? '🔥 FIRE CANNON' : '⚡ BLASTER',
+      color: baseWpnIdx === 1 ? '#f97316' : '#38bdf8',
+      life: 32
+    });
   }
 
   function doJump() {
@@ -753,14 +933,54 @@
     }
   }
 
-  function doDash() {
+  // Down Arrow: Enters Secret Warp Pipe if standing on one, otherwise triggers Electric Dash!
+  function doDownAction() {
     if (mode !== 'play') return;
+    if (!inBonusRoom && player.grounded) {
+      for (var i = 0; i < blocks.length; i++) {
+        var b = blocks[i];
+        if (b.type === 'warp_pipe' && !b.used) {
+          var pCenter = player.x + player.w / 2;
+          if (pCenter >= b.x && pCenter <= b.x + b.w && Math.abs((player.y + player.h) - b.y) <= 6) {
+            enterSecretBonusRoom(b);
+            return;
+          }
+        }
+      }
+    }
     if (player.dashCooldown <= 0 && player.dashTimer <= 0) {
-      player.dashTimer = 12;
-      player.dashCooldown = 32;
+      player.dashTimer = 13;
+      player.dashCooldown = 30;
       player.vy = 0;
       sfx.dash();
-      spawnParticles(player.x + player.w / 2, player.y + player.h / 2, '#38bdf8', 10);
+      spawnParticles(player.x + player.w / 2, player.y + player.h / 2, '#38bdf8', 12);
+    }
+  }
+
+  function detonateBarrel(bar) {
+    if (!bar.alive) return;
+    bar.alive = false;
+    sfx.boom();
+    spawnParticles(bar.x + 15, bar.y + 19, '#ef4444', 24);
+    spawnParticles(bar.x + 15, bar.y + 19, '#facc15', 20);
+    floatingPopups.push({ x: bar.x + 15, y: bar.y - 8, text: '💥 BOOM!', color: '#f97316', life: 36 });
+
+    var radius = 130;
+    var cx = bar.x + 15;
+    var cy = bar.y + 19;
+
+    for (var e = 0; e < enemies.length; e++) {
+      var en = enemies[e];
+      if (en.alive && Math.hypot((en.x + en.w / 2) - cx, (en.y + en.h / 2) - cy) <= radius) {
+        damageEnemy(en, 6.0, 0, true);
+      }
+    }
+    // Chain reaction on nearby barrels!
+    for (var b = 0; b < barrels.length; b++) {
+      var other = barrels[b];
+      if (other.alive && Math.hypot((other.x + 15) - cx, (other.y + 19) - cy) <= radius) {
+        detonateBarrel(other);
+      }
     }
   }
 
@@ -768,56 +988,66 @@
     sfx.omegaNova();
     spawnParticles(x, y, '#facc15', 22);
     spawnParticles(x, y, '#38bdf8', 18);
-    var radius = 95;
+    var radius = isOvercharged() ? 115 : 95;
+    var mult = isOvercharged() ? 1.25 : 1.0;
+
     for (var e = 0; e < enemies.length; e++) {
       var en = enemies[e];
       if (en.alive && Math.hypot((en.x + en.w / 2) - x, (en.y + en.h / 2) - y) <= radius) {
-        damageEnemy(en, 5, 0);
+        damageEnemy(en, 5.5 * mult, 0, true);
+      }
+    }
+    for (var b = 0; b < barrels.length; b++) {
+      var bar = barrels[b];
+      if (bar.alive && Math.hypot((bar.x + 15) - x, (bar.y + 19) - y) <= radius) {
+        detonateBarrel(bar);
       }
     }
     if (bossActive && boss && boss.alive) {
       var bx = boss.x + boss.w / 2;
       var by = boss.y + boss.h / 2;
       if (Math.hypot(bx - x, by - y) <= radius + 45) {
-        damageBoss(4.5);
+        damageBoss(4.8 * mult);
       }
     }
   }
 
   function doAttack() {
     if (mode !== 'play' || player.atkCooldown > 0) return;
-    var wpn = weapons[weaponIdx];
+    var wpn = getActiveWeapon();
+    var mult = isOvercharged() ? 1.25 : 1.0;
 
     if (wpn === 'BLASTER') {
-      player.atkCooldown = 12;
+      player.atkCooldown = 11;
       sfx.blaster();
       projectiles.push({
         kind: 'blaster',
         x: player.facing === 1 ? player.x + player.w + 4 : player.x - 14,
         y: player.y + 18,
-        vx: player.facing * 12,
+        vx: player.facing * 12.5,
         vy: 0,
-        dmg: 1.6,
+        dmg: 1.6 * mult,
         life: 65
       });
 
     } else if (wpn === 'FIRE') {
-      player.atkCooldown = 16;
+      player.atkCooldown = 15;
       sfx.fire();
       projectiles.push({
         kind: 'fire',
-        x: player.facing === 1 ? player.x + player.w : player.x - 10,
+        x: player.facing === 1 ? player.x + player.w + 4 : player.x - 10,
         y: player.y + 18,
-        vx: player.facing * 8.6,
-        vy: 2,
-        dmg: 2.3,
+        vx: player.facing * 9.0,
+        vy: 1.8,
+        dmg: 3.0 * mult,
+        armorPiercing: true,
         life: 95
       });
 
     } else if (wpn === 'HYPER BEAM') {
-      player.atkCooldown = 16;
+      player.atkCooldown = 15;
       sfx.hyperBeam();
-      var angles = [-0.14, 0, 0.14];
+      var angles = [-0.13, 0, 0.13];
       var sx = player.facing === 1 ? player.x + player.w + 6 : player.x - 18;
       var sy = player.y + 18;
       for (var a = 0; a < angles.length; a++) {
@@ -825,24 +1055,26 @@
           kind: 'hyper',
           x: sx,
           y: sy,
-          vx: player.facing * Math.cos(angles[a]) * 13.5,
-          vy: Math.sin(angles[a]) * 13.5,
-          dmg: 1.5,
+          vx: player.facing * Math.cos(angles[a]) * 14,
+          vy: Math.sin(angles[a]) * 14,
+          dmg: 1.7 * mult,
+          armorPiercing: true,
           pierce: true,
           life: 60
         });
       }
 
     } else if (wpn === 'OMEGA NOVA') {
-      player.atkCooldown = 24;
+      player.atkCooldown = 23;
       sfx.omegaNova();
       projectiles.push({
         kind: 'nova',
         x: player.facing === 1 ? player.x + player.w + 8 : player.x - 16,
         y: player.y + 16,
-        vx: player.facing * 9.5,
+        vx: player.facing * 9.8,
         vy: 0,
-        dmg: 1.0,
+        dmg: 1.2 * mult,
+        armorPiercing: true,
         life: 75
       });
     }
@@ -850,51 +1082,65 @@
 
   function grantMysteryBoxReward(blk) {
     var r = blk.reward;
-    if (r === 'weapon') {
-      if (weaponIdx < weapons.length - 1) {
-        weaponIdx++;
-      } else {
-        score += 1000;
-      }
+    if (r === 'hyper' || r === 'nova') {
+      superWeapon = r === 'hyper' ? 'HYPER BEAM' : 'OMEGA NOVA';
+      superWeaponTimer = SUPER_WEAPON_MAX_TIME;
       score += 500;
       sfx.powerup();
-      spawnParticles(blk.x + 20, blk.y, '#38bdf8', 20);
-      floatingPopups.push({ x: blk.x + 20, y: blk.y - 10, text: '⚡ ' + weapons[weaponIdx], color: '#38bdf8', life: 42 });
-      stageBannerText = 'WEAPON UPGRADE: ' + weapons[weaponIdx] + '!';
+      spawnParticles(blk.x + 20, blk.y, '#38bdf8', 22);
+      floatingPopups.push({ x: blk.x + 20, y: blk.y - 10, text: '⚡ ' + superWeapon + ' (15s)!', color: '#38bdf8', life: 48 });
+      stageBannerText = superWeapon + ' ACTIVATED FOR 15 SECONDS!';
       stageBannerTimer = 85;
+    } else if (r === 'life_up') {
+      if (player.maxHp < 8) {
+        player.maxHp++;
+        player.hp = Math.min(player.maxHp, player.hp + 2);
+        var msg = player.maxHp === 5 ? '♥ +1 MAX LIFE (OVERCHARGE UNLOCKED!)' : '♥ +1 MAX LIFE!';
+        floatingPopups.push({ x: blk.x + 20, y: blk.y - 10, text: msg, color: '#f43f5e', life: 52 });
+        stageBannerText = 'MAX LIVES: ' + player.maxHp + (player.maxHp >= 5 ? ' (OVERCHARGE POWER ACTIVE!)' : '');
+        stageBannerTimer = 85;
+      } else {
+        player.hp = player.maxHp;
+        floatingPopups.push({ x: blk.x + 20, y: blk.y - 10, text: '♥ FULL HEAL!', color: '#f43f5e', life: 48 });
+      }
+      score += 500;
+      sfx.lifeUp();
+      spawnParticles(blk.x + 20, blk.y, '#f43f5e', 20);
     } else if (r === 'shield') {
-      player.shieldTimer = 420; // 7 seconds of Invincible Golden Shield!
+      player.shieldTimer = 420;
       score += 600;
       sfx.powerup();
       spawnParticles(blk.x + 20, blk.y, '#facc15', 22);
-      floatingPopups.push({ x: blk.x + 20, y: blk.y - 10, text: '★ SHIELD!', color: '#facc15', life: 42 });
+      floatingPopups.push({ x: blk.x + 20, y: blk.y - 10, text: '★ SHIELD (7s)!', color: '#facc15', life: 48 });
       stageBannerText = 'STAR SHIELD ACTIVE (7 SEC INVINCIBLE)!';
       stageBannerTimer = 85;
-    } else if (r === 'heal') {
-      player.hp = Math.min(player.maxHp, player.hp + 2);
-      score += 400;
-      sfx.heal();
-      spawnParticles(blk.x + 20, blk.y, '#f43f5e', 18);
-      floatingPopups.push({ x: blk.x + 20, y: blk.y - 10, text: '♥ +2 HEAL', color: '#f43f5e', life: 42 });
     } else {
       coins += 5;
+      if (player.maxHp < 8) player.maxHp++;
       player.hp = Math.min(player.maxHp, player.hp + 1);
       score += 1000;
-      sfx.powerup();
-      spawnParticles(blk.x + 20, blk.y, '#4ade80', 20);
-      floatingPopups.push({ x: blk.x + 20, y: blk.y - 10, text: '+5 COINS & ♥', color: '#4ade80', life: 42 });
+      sfx.lifeUp();
+      spawnParticles(blk.x + 20, blk.y, '#4ade80', 22);
+      floatingPopups.push({ x: blk.x + 20, y: blk.y - 10, text: '+5 COINS & ♥ MAX UP!', color: '#4ade80', life: 48 });
     }
   }
 
-  function damageEnemy(en, dmg, knockX) {
-    en.hp -= dmg;
+  function damageEnemy(en, dmg, knockX, armorPiercing) {
+    var actualDmg = dmg;
+    if (en.kind === 'armored' && !armorPiercing) {
+      actualDmg = 0.7;
+      sfx.armorClink();
+      spawnParticles(en.x + en.w / 2, en.y + 12, '#cbd5e1', 5);
+      floatingPopups.push({ x: en.x + en.w / 2, y: en.y - 8, text: 'ARMOR! USE FIRE', color: '#94a3b8', life: 24 });
+    }
+    en.hp -= actualDmg;
     en.x += (knockX || 0);
     if (en.hp <= 0) {
       en.alive = false;
-      score += 250;
+      score += en.kind === 'armored' ? 450 : 250;
       sfx.hitEnemy();
-      spawnParticles(en.x + en.w / 2, en.y + en.h / 2, '#ef4444', 14);
-    } else {
+      spawnParticles(en.x + en.w / 2, en.y + en.h / 2, '#ef4444', 15);
+    } else if (en.kind !== 'armored' || armorPiercing) {
       sfx.hitEnemy();
       spawnParticles(en.x + en.w / 2, en.y + en.h / 2, '#facc15', 6);
     }
@@ -912,30 +1158,52 @@
       boss.hp = 0;
       boss.alive = false;
       bossShots = [];
+      meteors = [];
+      bossLaser = null;
       shockwaves = [];
       stageClearing = true;
-      score += 1500 * currentStage;
+
+      var heartBonus = player.hp * 500;
+      score += (1500 * currentStage) + heartBonus;
       sfx.win();
-      for (var k = 0; k < 8; k++) {
+
+      for (var k = 0; k < 10; k++) {
         spawnParticles(boss.x + Math.random() * boss.w, boss.y + Math.random() * boss.h, k % 2 === 0 ? '#facc15' : '#38bdf8', 20);
+        fireworks.push({
+          x: arenaLeftWall + 120 + Math.random() * 540,
+          y: 90 + Math.random() * 140,
+          color: k % 3 === 0 ? '#facc15' : (k % 3 === 1 ? '#38bdf8' : '#4ade80'),
+          timer: k * 14
+        });
       }
 
       if (currentStage < maxStages) {
-        stageBannerText = 'STAGE ' + currentStage + ' CLEAR! NEXT: STAGE ' + (currentStage + 1);
-        stageBannerTimer = 130;
+        stageBannerText = 'STAGE ' + currentStage + ' CLEAR! HEART BONUS: +' + heartBonus;
+        stageBannerTimer = 140;
         setTimeout(function() {
           if (mode === 'play') loadStage(currentStage + 1, true, false);
-        }, 2100);
+        }, 2400);
       } else {
         setTimeout(function() {
           showVictory('MEGA TITAN DEFEATED! ALL 11 STAGES CLEARED BY ' + playerName + '!');
-        }, 1400);
+        }, 1800);
       }
     }
   }
 
   function hurtPlayer() {
     if (player.invuln > 0 || player.dashTimer > 0 || player.shieldTimer > 0 || stageClearing) return;
+
+    // Last Stand mechanic if player built 6+ Max Hearts!
+    if (player.hp === 1 && player.maxHp >= 6) {
+      player.maxHp--;
+      player.hp = 2;
+      player.invuln = 90;
+      triggerNovaExplosion(player.x + 17, player.y + 20);
+      floatingPopups.push({ x: player.x + 17, y: player.y - 16, text: '★ LAST STAND SAVE!', color: '#facc15', life: 55 });
+      return;
+    }
+
     player.hp--;
     player.invuln = 72;
     player.vy = -7;
@@ -962,6 +1230,14 @@
     return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
   }
 
+  function isOverPit(xCenter) {
+    if (inBonusRoom) return false;
+    for (var i = 0; i < pits.length; i++) {
+      if (xCenter > pits[i].x + 10 && xCenter < pits[i].x + pits[i].w - 10) return true;
+    }
+    return false;
+  }
+
   function update() {
     frame++;
     if (stageBannerTimer > 0) stageBannerTimer--;
@@ -970,9 +1246,55 @@
     if (player.dashCooldown > 0) player.dashCooldown--;
     if (player.atkCooldown > 0) player.atkCooldown--;
 
+    // Timed Super Weapon Countdown
+    if (superWeaponTimer > 0) {
+      superWeaponTimer--;
+      if (superWeaponTimer === 0) {
+        superWeapon = null;
+        stageBannerText = 'SUPER WEAPON EXPIRED! BACK TO ' + baseWeapons[baseWpnIdx];
+        stageBannerTimer = 75;
+      }
+    }
+
+    // Secret Bonus Room Timer
+    if (inBonusRoom) {
+      bonusTimer--;
+      if (bonusTimer <= 0) {
+        exitSecretBonusRoom();
+        return;
+      }
+    }
+
+    // Update Moving Platforms (Main Stage)
+    if (!inBonusRoom) {
+      for (var mp = 0; mp < movingPlats.length; mp++) {
+        var plat = movingPlats[mp];
+        plat.x += plat.vx;
+        if (plat.x <= plat.minX || plat.x + plat.w >= plat.maxX) plat.vx *= -1;
+      }
+      for (var cp = 0; cp < crumblePlats.length; cp++) {
+        var cr = crumblePlats[cp];
+        if (cr.state === 'shaking') {
+          cr.timer--;
+          if (cr.timer <= 0) {
+            cr.state = 'fallen';
+            cr.respawn = 210; // 3.5s respawn
+            spawnParticles(cr.x + cr.w / 2, cr.y + 8, '#d97706', 10);
+          }
+        } else if (cr.state === 'fallen') {
+          cr.respawn--;
+          if (cr.respawn <= 0) cr.state = 'solid';
+        }
+      }
+      for (var jp = 0; jp < jumpPads.length; jp++) {
+        if (jumpPads[jp].bounceTimer > 0) jumpPads[jp].bounceTimer--;
+      }
+    }
+
+    // Movement & Electric Dash
     if (player.dashTimer > 0) {
       player.dashTimer--;
-      player.vx = player.facing * 13.5;
+      player.vx = player.facing * 14.0;
       player.vy = 0;
       if (frame % 2 === 0) {
         afterimages.push({ x: player.x, y: player.y, facing: player.facing, life: 12 });
@@ -992,14 +1314,19 @@
     }
 
     player.x += player.vx;
-    var minBound = bossActive ? arenaLeftWall + 6 : 10;
-    var maxBound = arenaRightWall - player.w - 6;
+    var minBound = inBonusRoom ? 20 : (bossActive ? arenaLeftWall + 6 : 10);
+    var maxBound = inBonusRoom ? 745 : (arenaRightWall - player.w - 6);
     if (player.x < minBound) player.x = minBound;
     if (player.x > maxBound) player.x = maxBound;
 
-    for (var i = 0; i < blocks.length; i++) {
-      var blk = blocks[i];
+    var activeBlocks = inBonusRoom ? bonusBlocks : blocks;
+    for (var i = 0; i < activeBlocks.length; i++) {
+      var blk = activeBlocks[i];
       if (rectIntersect(player, blk)) {
+        if (blk.type === 'exit_pipe') {
+          exitSecretBonusRoom();
+          return;
+        }
         if (player.vx > 0) player.x = blk.x - player.w;
         else if (player.vx < 0) player.x = blk.x + blk.w;
       }
@@ -1008,17 +1335,51 @@
     player.y += player.vy;
     player.grounded = false;
 
-    if (player.y + player.h >= 430) {
+    // Ground Collision (respecting Lava/Spike Pits!)
+    var pCenter = player.x + player.w / 2;
+    if (!isOverPit(pCenter) && player.y + player.h >= 430 && player.y + player.h - player.vy <= 446) {
       player.y = 430 - player.h;
       player.vy = 0;
       player.grounded = true;
       player.jumpsLeft = 2;
+      if (!inBonusRoom) {
+        player.safeX = player.x;
+        player.safeY = player.y;
+      }
     }
 
-    for (var i = 0; i < blocks.length; i++) {
-      var blk = blocks[i];
+    // Fall into Lava/Spike Pit -> Take 1 damage & bounce back to safe ground!
+    if (!inBonusRoom && player.y > 468) {
+      player.hp--;
+      sfx.hurt();
+      spawnParticles(player.x + 17, 455, '#f97316', 18);
+      if (player.hp <= 0) {
+        showGameOver();
+        return;
+      }
+      player.x = player.safeX;
+      player.y = player.safeY - 12;
+      player.vx = 0;
+      player.vy = 0;
+      player.invuln = 75;
+    }
+
+    // Solid Blocks & '?' Boxes Collision
+    for (var i = 0; i < activeBlocks.length; i++) {
+      var blk = activeBlocks[i];
       if (blk.bump > 0) blk.bump -= 1.5;
+      if (blk.type === 'empty' && blk.regenerating && blk.respawnTimer > 0) {
+        blk.respawnTimer--;
+        if (blk.respawnTimer <= 0) {
+          blk.type = 'q_box';
+          spawnParticles(blk.x + 20, blk.y + 20, '#facc15', 10);
+        }
+      }
       if (rectIntersect(player, blk)) {
+        if (blk.type === 'exit_pipe') {
+          exitSecretBonusRoom();
+          return;
+        }
         if (player.vy > 0) {
           player.y = blk.y - player.h;
           player.vy = 0;
@@ -1030,6 +1391,7 @@
           blk.bump = 9;
           if (blk.type === 'q_box') {
             blk.type = 'empty';
+            if (blk.regenerating) blk.respawnTimer = 600;
             grantMysteryBoxReward(blk);
           } else if (blk.type === 'brick') {
             score += 50;
@@ -1040,115 +1402,221 @@
       }
     }
 
-    if (!bossActive && player.x >= arenaStartX + 40) {
-      bossActive = true;
-      if (boss && boss.isMega) {
-        player.hp = player.maxHp;
-        if (weaponIdx < 2) weaponIdx = 2;
-      } else {
-        player.hp = Math.min(player.maxHp, player.hp + 1);
-      }
-      sfx.bossRoar();
-      spawnParticles(player.x + 17, player.y + 10, '#4ade80', 18);
-    }
-
-    for (var e = 0; e < enemies.length; e++) {
-      var en = enemies[e];
-      if (!en.alive) continue;
-      en.x += en.vx;
-      if (en.x <= en.minX || en.x + en.w >= en.maxX) en.vx *= -1;
-      if (en.kind === 'flyer') {
-        en.y = en.baseY + Math.sin(frame * 0.08 + e) * 24;
-      }
-
-      if (rectIntersect(player, en)) {
-        if (player.shieldTimer > 0) {
-          damageEnemy(en, 5, 0);
-        } else if (player.vy > 0 && player.y + player.h - player.vy <= en.y + 16) {
-          player.vy = -9.8;
+    // Moving Platforms, Crumbling Platforms, Jump Pads & Coins (Main Stage)
+    if (!inBonusRoom) {
+      for (var mp = 0; mp < movingPlats.length; mp++) {
+        var plat = movingPlats[mp];
+        if (player.vy >= 0 && player.x + player.w > plat.x + 4 && player.x < plat.x + plat.w - 4 &&
+            player.y + player.h >= plat.y && player.y + player.h - player.vy <= plat.y + 14) {
+          player.y = plat.y - player.h;
+          player.vy = 0;
+          player.grounded = true;
           player.jumpsLeft = 2;
-          damageEnemy(en, 3.0, 0);
+          player.x += plat.vx;
+        }
+      }
+      for (var cp = 0; cp < crumblePlats.length; cp++) {
+        var cr = crumblePlats[cp];
+        if (cr.state !== 'fallen' && player.vy >= 0 && player.x + player.w > cr.x + 4 && player.x < cr.x + cr.w - 4 &&
+            player.y + player.h >= cr.y && player.y + player.h - player.vy <= cr.y + 14) {
+          player.y = cr.y - player.h;
+          player.vy = 0;
+          player.grounded = true;
+          player.jumpsLeft = 2;
+          if (cr.state === 'solid') {
+            cr.state = 'shaking';
+            cr.timer = 38;
+          }
+        }
+      }
+      for (var jp = 0; jp < jumpPads.length; jp++) {
+        var pad = jumpPads[jp];
+        if (rectIntersect(player, pad) && player.vy >= 0) {
+          player.vy = -18.5;
+          player.grounded = false;
+          player.jumpsLeft = 2;
+          pad.bounceTimer = 15;
+          sfx.spring();
+          spawnParticles(pad.x + 18, pad.y, '#4ade80', 14);
+        }
+      }
+
+      // Collect Floating Stage Coins
+      for (var sc = 0; sc < stageCoins.length; sc++) {
+        var cn = stageCoins[sc];
+        if (!cn.collected && Math.hypot((player.x + 17) - cn.x, (player.y + 21) - cn.y) < 28) {
+          cn.collected = true;
+          coins++;
+          score += 100;
+          sfx.coin();
+          spawnParticles(cn.x, cn.y, '#facc15', 6);
+        }
+      }
+
+      // Boss Arena Lock
+      if (!bossActive && player.x >= arenaStartX + 40) {
+        bossActive = true;
+        if (boss && boss.isMega) {
+          player.hp = player.maxHp;
+          superWeapon = 'HYPER BEAM';
+          superWeaponTimer = SUPER_WEAPON_MAX_TIME;
+          stageBannerText = 'HYPER BEAM ACTIVATED (15s) - HIT ? BOXES TO RELOAD!';
+          stageBannerTimer = 95;
         } else {
-          hurtPlayer();
+          player.hp = Math.min(player.maxHp, player.hp + 1);
+          stageBannerText = 'WARNING! ' + boss.name + ' APPROACHES!';
+          stageBannerTimer = 85;
         }
-      }
-    }
-
-    if (bossActive && boss && boss.alive) {
-      if (boss.hurtTimer > 0) boss.hurtTimer--;
-      boss.facing = player.x < boss.x + boss.w / 2 ? -1 : 1;
-      var rage = boss.isMega && boss.hp <= boss.maxHp * 0.5;
-
-      boss.x += boss.vx * (rage ? 1.2 : 1.0);
-      if (boss.x <= arenaLeftWall + 14) { boss.x = arenaLeftWall + 14; boss.vx = Math.abs(boss.vx); }
-      if (boss.x + boss.w >= arenaRightWall - 14) { boss.x = arenaRightWall - 14 - boss.w; boss.vx = -Math.abs(boss.vx); }
-
-      var wasAirborne = boss.y + boss.h < 430;
-      boss.jumpTimer--;
-      if (boss.jumpTimer <= 0 && !wasAirborne) {
-        boss.vy = boss.isMega ? -14.5 : -13.5;
-        boss.vx = boss.facing * (2.6 + currentStage * 0.1);
-        boss.jumpTimer = boss.isMega ? (rage ? 110 : 145) : (difficulty === 'hard' ? 115 : 155);
         sfx.bossRoar();
+        spawnParticles(player.x + 17, player.y + 10, '#4ade80', 18);
       }
-      boss.vy += gravity;
-      boss.y += boss.vy;
-      if (boss.y + boss.h >= 430) {
-        boss.y = 430 - boss.h;
-        boss.vy = 0;
-        if (wasAirborne && boss.isMega) {
-          shockwaves.push({ x: boss.x, y: 414, w: 22, h: 16, vx: -5.2, life: 130 });
-          shockwaves.push({ x: boss.x + boss.w - 22, y: 414, w: 22, h: 16, vx: 5.2, life: 130 });
-          spawnParticles(boss.x + boss.w / 2, 428, '#38bdf8', 16);
+
+      // Enemies Update (including Electric Dash attacks!)
+      for (var e = 0; e < enemies.length; e++) {
+        var en = enemies[e];
+        if (!en.alive) continue;
+        en.x += en.vx;
+        if (en.x <= en.minX || en.x + en.w >= en.maxX) en.vx *= -1;
+        if (en.kind === 'flyer') {
+          en.y = en.baseY + Math.sin(frame * 0.08 + e) * 24;
+        }
+
+        if (rectIntersect(player, en)) {
+          if (player.dashTimer > 0) {
+            // Electric Dash zaps enemies!
+            damageEnemy(en, 3.5, player.facing * 8, true);
+            spawnParticles(en.x + en.w / 2, en.y + en.h / 2, '#38bdf8', 14);
+          } else if (player.shieldTimer > 0) {
+            damageEnemy(en, 6.0, 0, true);
+          } else if (player.vy > 0 && player.y + player.h - player.vy <= en.y + 16) {
+            player.vy = -9.8;
+            player.jumpsLeft = 2;
+            damageEnemy(en, 3.0, 0, true);
+          } else {
+            hurtPlayer();
+          }
         }
       }
 
-      boss.attackTimer--;
-      if (boss.attackTimer === 24) {
-        boss.telegraphTimer = 24;
-      }
-      if (boss.telegraphTimer > 0) boss.telegraphTimer--;
+      // Boss AI with Unique Attack Styles
+      if (bossActive && boss && boss.alive) {
+        if (boss.hurtTimer > 0) boss.hurtTimer--;
+        boss.facing = player.x < boss.x + boss.w / 2 ? -1 : 1;
+        var rage = boss.isMega && boss.hp <= boss.maxHp * 0.5;
 
-      if (boss.attackTimer <= 0) {
-        var baseCd = difficulty === 'hard' ? 75 : (difficulty === 'easy' ? 120 : 95);
-        boss.attackTimer = boss.isMega ? (rage ? 72 : 90) : Math.max(62, baseCd - currentStage * 2);
-        var centerAngle = Math.atan2((player.y + 20) - (boss.y + boss.h * 0.42), (player.x + 17) - (boss.x + boss.w / 2));
-        var spd = (difficulty === 'hard' ? 5.0 : 4.2) + (boss.isMega ? 0.4 : currentStage * 0.1);
+        // Stage 11 Titan summons reinforcements at 50% HP
+        if (boss.isMega && rage && !boss.summonedMinions) {
+          boss.summonedMinions = true;
+          stageBannerText = 'TITAN RAGE! FUD REINFORCEMENTS SUMMONED!';
+          stageBannerTimer = 85;
+          enemies.push({ x: arenaLeftWall + 60, y: 394, w: 34, h: 36, vx: 2.2, alive: true, minX: arenaLeftWall + 20, maxX: arenaRightWall - 20, kind: 'walker', hp: 1 });
+          enemies.push({ x: arenaRightWall - 90, y: 215, w: 36, h: 28, vx: -2.4, alive: true, minX: arenaLeftWall + 20, maxX: arenaRightWall - 20, kind: 'flyer', baseY: 215, hp: 1 });
+        }
 
-        if (boss.isMega) {
-          var fan = [-0.24, 0, 0.24];
-          for (var f = 0; f < fan.length; f++) {
+        boss.x += boss.vx * (rage ? 1.2 : 1.0);
+        if (boss.x <= arenaLeftWall + 14) { boss.x = arenaLeftWall + 14; boss.vx = Math.abs(boss.vx); }
+        if (boss.x + boss.w >= arenaRightWall - 14) { boss.x = arenaRightWall - 14 - boss.w; boss.vx = -Math.abs(boss.vx); }
+
+        var wasAirborne = boss.y + boss.h < 430;
+        boss.jumpTimer--;
+        if (boss.jumpTimer <= 0 && !wasAirborne) {
+          boss.vy = boss.isMega ? -14.5 : -13.5;
+          boss.vx = boss.facing * (2.6 + currentStage * 0.1);
+          boss.jumpTimer = boss.isMega ? (rage ? 110 : 145) : (difficulty === 'hard' ? 115 : 155);
+          sfx.bossRoar();
+        }
+        boss.vy += gravity;
+        boss.y += boss.vy;
+        if (boss.y + boss.h >= 430) {
+          boss.y = 430 - boss.h;
+          boss.vy = 0;
+          if (wasAirborne && (boss.isMega || boss.style === 'spikes' || boss.style === 'forest')) {
+            var wSpd = boss.style === 'spikes' ? 6.0 : 5.2;
+            shockwaves.push({ x: boss.x, y: 414, w: 22, h: 16, vx: -wSpd, life: 130 });
+            shockwaves.push({ x: boss.x + boss.w - 22, y: 414, w: 22, h: 16, vx: wSpd, life: 130 });
+            spawnParticles(boss.x + boss.w / 2, 428, '#38bdf8', 16);
+          }
+        }
+
+        // Primary Ranged Attack
+        boss.attackTimer--;
+        if (boss.attackTimer === 24) boss.telegraphTimer = 24;
+        if (boss.telegraphTimer > 0) boss.telegraphTimer--;
+
+        if (boss.attackTimer <= 0) {
+          var baseCd = difficulty === 'hard' ? 75 : (difficulty === 'easy' ? 120 : 95);
+          boss.attackTimer = boss.isMega ? (rage ? 72 : 90) : Math.max(62, baseCd - currentStage * 2);
+          var centerAngle = Math.atan2((player.y + 20) - (boss.y + boss.h * 0.42), (player.x + 17) - (boss.x + boss.w / 2));
+          var spd = (difficulty === 'hard' ? 5.0 : 4.2) + (boss.isMega ? 0.4 : currentStage * 0.1);
+
+          if (boss.isMega || boss.style === 'forest') {
+            var fan = [-0.24, 0, 0.24];
+            for (var f = 0; f < fan.length; f++) {
+              bossShots.push({
+                x: boss.x + boss.w / 2,
+                y: boss.y + boss.h * 0.42,
+                vx: Math.cos(centerAngle + fan[f]) * spd,
+                vy: Math.sin(centerAngle + fan[f]) * spd,
+                life: 165
+              });
+            }
+          } else {
             bossShots.push({
               x: boss.x + boss.w / 2,
-              y: boss.y + boss.h * 0.42,
-              vx: Math.cos(centerAngle + fan[f]) * spd,
-              vy: Math.sin(centerAngle + fan[f]) * spd,
-              life: 165
+              y: boss.y + 52,
+              vx: Math.cos(centerAngle) * spd,
+              vy: Math.sin(centerAngle) * spd,
+              life: 150
             });
           }
-        } else {
-          bossShots.push({
-            x: boss.x + boss.w / 2,
-            y: boss.y + 52,
-            vx: Math.cos(centerAngle) * spd,
-            vy: Math.sin(centerAngle) * spd,
-            life: 150
-          });
+          sfx.fire();
         }
-        sfx.fire();
-      }
 
-      if (rectIntersect(player, boss)) {
-        if (player.vy > 0 && player.y + player.h - player.vy <= boss.y + 30) {
-          player.vy = -11;
-          player.jumpsLeft = 2;
-          damageBoss(3.0);
-        } else {
-          hurtPlayer();
+        // Signature Special Attack per Boss Style!
+        boss.specialTimer--;
+        if (boss.specialTimer <= 0) {
+          boss.specialTimer = difficulty === 'hard' ? 160 : 210;
+          if (boss.style === 'meteor') {
+            // Summon 3 sky meteors with ground warning targets
+            for (var m = 0; m < 3; m++) {
+              var mx = arenaLeftWall + 90 + Math.random() * 600;
+              meteors.push({ x: mx, y: -40 - m * 45, vy: 6.5, targetX: mx });
+            }
+          } else if (boss.style === 'laser' || (boss.isMega && rage)) {
+            // Sweeping Horizontal Laser Beam (40 frames warning line, 28 frames active beam)
+            bossLaser = { y: 392, warnTimer: 42, activeTimer: 28 };
+            sfx.laser();
+          } else if (boss.style === 'spikes') {
+            shockwaves.push({ x: boss.x, y: 414, w: 22, h: 16, vx: -6.4, life: 130 });
+            shockwaves.push({ x: boss.x + boss.w - 22, y: 414, w: 22, h: 16, vx: 6.4, life: 130 });
+          }
+        }
+
+        if (rectIntersect(player, boss)) {
+          if (player.vy > 0 && player.y + player.h - player.vy <= boss.y + 30) {
+            player.vy = -11;
+            player.jumpsLeft = 2;
+            damageBoss(3.0);
+          } else {
+            hurtPlayer();
+          }
+        }
+      }
+    } else {
+      // Collect Secret Vault Coins
+      for (var bc = 0; bc < bonusCoins.length; bc++) {
+        var bcn = bonusCoins[bc];
+        if (!bcn.collected && Math.hypot((player.x + 17) - bcn.x, (player.y + 21) - bcn.y) < 30) {
+          bcn.collected = true;
+          coins++;
+          score += 150;
+          sfx.coin();
+          spawnParticles(bcn.x, bcn.y, '#facc15', 7);
         }
       }
     }
 
+    // Player Projectiles Update
     for (var f = projectiles.length - 1; f >= 0; f--) {
       var fb = projectiles[f];
       fb.x += fb.vx;
@@ -1160,63 +1628,112 @@
       fb.life--;
 
       var hitWall = false;
-      for (var b = 0; b < blocks.length; b++) {
-        if (fb.x > blocks[b].x && fb.x < blocks[b].x + blocks[b].w && fb.y > blocks[b].y && fb.y < blocks[b].y + blocks[b].h) {
+      for (var b = 0; b < activeBlocks.length; b++) {
+        if (fb.x > activeBlocks[b].x && fb.x < activeBlocks[b].x + activeBlocks[b].w &&
+            fb.y > activeBlocks[b].y && fb.y < activeBlocks[b].y + activeBlocks[b].h) {
           hitWall = true; break;
         }
       }
-      for (var e = 0; e < enemies.length; e++) {
-        var en = enemies[e];
-        if (en.alive && fb.x > en.x && fb.x < en.x + en.w && fb.y > en.y && fb.y < en.y + en.h) {
+
+      if (!inBonusRoom) {
+        // Hit Exploding Barrels!
+        for (var br = 0; br < barrels.length; br++) {
+          var bar = barrels[br];
+          if (bar.alive && fb.x > bar.x && fb.x < bar.x + bar.w && fb.y > bar.y && fb.y < bar.y + bar.h) {
+            detonateBarrel(bar);
+            hitWall = true;
+            break;
+          }
+        }
+
+        if (!hitWall) {
+          for (var e = 0; e < enemies.length; e++) {
+            var en = enemies[e];
+            if (en.alive && fb.x > en.x && fb.x < en.x + en.w && fb.y > en.y && fb.y < en.y + en.h) {
+              if (fb.kind === 'nova') {
+                triggerNovaExplosion(fb.x, fb.y);
+                hitWall = true;
+              } else {
+                damageEnemy(en, fb.dmg, fb.vx > 0 ? 4 : -4, !!fb.armorPiercing);
+                if (!fb.pierce) hitWall = true;
+              }
+              break;
+            }
+          }
+        }
+
+        if (!hitWall && bossActive && boss && boss.alive && fb.x > boss.x && fb.x < boss.x + boss.w && fb.y > boss.y && fb.y < boss.y + boss.h) {
           if (fb.kind === 'nova') {
             triggerNovaExplosion(fb.x, fb.y);
-            hitWall = true;
           } else {
-            damageEnemy(en, fb.dmg, fb.vx > 0 ? 4 : -4);
-            if (!fb.pierce) hitWall = true;
+            damageBoss(fb.dmg);
           }
-          break;
+          hitWall = true;
         }
-      }
-      if (!hitWall && bossActive && boss && boss.alive && fb.x > boss.x && fb.x < boss.x + boss.w && fb.y > boss.y && fb.y < boss.y + boss.h) {
-        if (fb.kind === 'nova') {
-          triggerNovaExplosion(fb.x, fb.y);
-        } else {
-          damageBoss(fb.dmg);
-        }
-        hitWall = true;
       }
 
       if (hitWall || fb.life <= 0) {
-        if (fb.kind === 'nova' && !hitWall) triggerNovaExplosion(fb.x, fb.y);
+        if (fb.kind === 'nova' && !hitWall && !inBonusRoom) triggerNovaExplosion(fb.x, fb.y);
         spawnParticles(fb.x, fb.y, fb.kind === 'hyper' ? '#38bdf8' : '#facc15', 5);
         projectiles.splice(f, 1);
       }
     }
 
-    for (var bs = bossShots.length - 1; bs >= 0; bs--) {
-      var s = bossShots[bs];
-      s.x += s.vx;
-      s.y += s.vy;
-      s.life--;
-      if (s.x > player.x + 4 && s.x < player.x + player.w - 4 && s.y > player.y + 4 && s.y < player.y + player.h - 4) {
-        hurtPlayer();
-        bossShots.splice(bs, 1);
-        continue;
+    // Boss Projectiles, Meteors, Laser & Shockwaves
+    if (!inBonusRoom) {
+      for (var bs = bossShots.length - 1; bs >= 0; bs--) {
+        var s = bossShots[bs];
+        s.x += s.vx;
+        s.y += s.vy;
+        s.life--;
+        if (s.x > player.x + 4 && s.x < player.x + player.w - 4 && s.y > player.y + 4 && s.y < player.y + player.h - 4) {
+          hurtPlayer();
+          bossShots.splice(bs, 1);
+          continue;
+        }
+        if (s.life <= 0 || s.y > 430) bossShots.splice(bs, 1);
       }
-      if (s.life <= 0 || s.y > 430) bossShots.splice(bs, 1);
-    }
 
-    for (var sw = shockwaves.length - 1; sw >= 0; sw--) {
-      var wv = shockwaves[sw];
-      wv.x += wv.vx;
-      wv.life--;
-      if (rectIntersect(player, wv)) {
-        hurtPlayer();
-        shockwaves.splice(sw, 1);
-        continue;
+      for (var m = meteors.length - 1; m >= 0; m--) {
+        var mt = meteors[m];
+        mt.y += mt.vy;
+        if (Math.abs((player.x + 17) - mt.x) < 22 && Math.abs((player.y + 21) - mt.y) < 24) {
+          hurtPlayer();
+          spawnParticles(mt.x, mt.y, '#ef4444', 12);
+          meteors.splice(m, 1);
+          continue;
+        }
+        if (mt.y >= 425) {
+          sfx.boom();
+          spawnParticles(mt.x, 425, '#f97316', 14);
+          meteors.splice(m, 1);
+        }
       }
-      if (wv.life <= 0 || wv.x < arenaLeftWall || wv.x > arenaRightWall) shockwaves.splice(sw, 1);
+
+      if (bossLaser) {
+        if (bossLaser.warnTimer > 0) {
+          bossLaser.warnTimer--;
+        } else if (bossLaser.activeTimer > 0) {
+          bossLaser.activeTimer--;
+          if (player.y + player.h > bossLaser.y - 8 && player.y < bossLaser.y + 12) {
+            hurtPlayer();
+          }
+        } else {
+          bossLaser = null;
+        }
+      }
+
+      for (var sw = shockwaves.length - 1; sw >= 0; sw--) {
+        var wv = shockwaves[sw];
+        wv.x += wv.vx;
+        wv.life--;
+        if (rectIntersect(player, wv)) {
+          hurtPlayer();
+          shockwaves.splice(sw, 1);
+          continue;
+        }
+        if (wv.life <= 0 || wv.x < arenaLeftWall || wv.x > arenaRightWall) shockwaves.splice(sw, 1);
+      }
     }
 
     for (var a = afterimages.length - 1; a >= 0; a--) {
@@ -1235,8 +1752,17 @@
       floatingPopups[fp].life--;
       if (floatingPopups[fp].life <= 0) floatingPopups.splice(fp, 1);
     }
+    for (var fw = fireworks.length - 1; fw >= 0; fw--) {
+      fireworks[fw].timer--;
+      if (fireworks[fw].timer === 0) {
+        spawnParticles(fireworks[fw].x, fireworks[fw].y, fireworks[fw].color, 26);
+        fireworks.splice(fw, 1);
+      }
+    }
 
-    if (bossActive) {
+    if (inBonusRoom) {
+      camX = 0;
+    } else if (bossActive) {
       var targetCam = arenaLeftWall - 10;
       camX += (targetCam - camX) * 0.12;
     } else {
@@ -1264,6 +1790,20 @@
   }
 
   function drawBackground() {
+    if (inBonusRoom) {
+      var bSky = ctx.createLinearGradient(0, 0, 0, 430);
+      bSky.addColorStop(0, '#090d16');
+      bSky.addColorStop(1, '#311042');
+      ctx.fillStyle = bSky;
+      ctx.fillRect(0, 0, W, 430);
+      ctx.strokeStyle = 'rgba(250, 204, 21, 0.16)';
+      ctx.lineWidth = 2;
+      for (var gx = 0; gx < W; gx += 40) {
+        ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, 430); ctx.stroke();
+      }
+      return;
+    }
+
     var t = STAGE_THEMES[currentStage - 1];
     var sky = ctx.createLinearGradient(0, 0, 0, 430);
     sky.addColorStop(0, t.skyTop);
@@ -1314,9 +1854,9 @@
       ctx.stroke();
     }
 
-    for (var c = 0; c < 12; c++) {
-      var cx = (c * 280 - (camX * 0.3)) % 3360;
-      if (cx < -120) cx += 3360;
+    for (var c = 0; c < 18; c++) {
+      var cx = (c * 310 - (camX * 0.3)) % 5580;
+      if (cx < -120) cx += 5580;
       var cy = 65 + (c % 3) * 35;
       ctx.fillStyle = currentStage === 11 ? 'rgba(192, 132, 252, 0.35)' : 'rgba(255, 255, 255, 0.85)';
       ctx.beginPath();
@@ -1327,7 +1867,15 @@
     }
   }
 
-  function drawGround() {
+  function drawGroundAndHazards() {
+    if (inBonusRoom) {
+      ctx.fillStyle = '#1e1b4b';
+      ctx.fillRect(0, 430, W, 70);
+      ctx.fillStyle = '#facc15';
+      ctx.fillRect(0, 430, W, 10);
+      return;
+    }
+
     var t = STAGE_THEMES[currentStage - 1];
     ctx.fillStyle = t.soil;
     ctx.fillRect(0, 430, W, 70);
@@ -1346,13 +1894,112 @@
     grassGrad.addColorStop(1, t.grassBot);
     ctx.fillStyle = grassGrad;
     ctx.fillRect(0, 430, W, 16);
-    ctx.fillStyle = 'rgba(0,0,0,0.4)';
-    ctx.fillRect(0, 445, W, 2);
+
+    // Draw Lava / Spike Pits cutting through the ground
+    for (var i = 0; i < pits.length; i++) {
+      var pit = pits[i];
+      var px = Math.round(pit.x - camX);
+      if (px + pit.w < -20 || px > W + 20) continue;
+
+      ctx.fillStyle = '#090d16';
+      ctx.fillRect(px, 430, pit.w, 70);
+
+      // Bubbling Lava / Energy Hazard at bottom of pit
+      var wave = Math.sin(frame * 0.15) * 3;
+      ctx.fillStyle = '#dc2626';
+      ctx.fillRect(px, 466 + wave, pit.w, 34);
+      ctx.fillStyle = '#facc15';
+      ctx.fillRect(px, 466 + wave, pit.w, 5);
+    }
+
+    // Moving Platforms
+    for (var mp = 0; mp < movingPlats.length; mp++) {
+      var plat = movingPlats[mp];
+      var mx = Math.round(plat.x - camX);
+      if (mx + plat.w < -30 || mx > W + 30) continue;
+      ctx.fillStyle = '#38bdf8';
+      drawRoundRect(mx, plat.y, plat.w, plat.h, 6);
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.fillStyle = '#fef08a';
+      ctx.fillRect(mx + 8, plat.y + 4, plat.w - 16, 4);
+    }
+
+    // Crumbling Platforms
+    for (var cp = 0; cp < crumblePlats.length; cp++) {
+      var cr = crumblePlats[cp];
+      if (cr.state === 'fallen') continue;
+      var cx = Math.round(cr.x - camX);
+      if (cx + cr.w < -30 || cx > W + 30) continue;
+      var shakeX = cr.state === 'shaking' ? (Math.random() - 0.5) * 6 : 0;
+      ctx.fillStyle = cr.state === 'shaking' ? '#ef4444' : '#d97706';
+      drawRoundRect(cx + shakeX, cr.y, cr.w, cr.h, 5);
+      ctx.fill();
+      ctx.strokeStyle = '#451a03';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    // Jump Pads (Springs)
+    for (var jp = 0; jp < jumpPads.length; jp++) {
+      var pad = jumpPads[jp];
+      var jx = Math.round(pad.x - camX);
+      if (jx + pad.w < -30 || jx > W + 30) continue;
+      var lift = pad.bounceTimer > 0 ? -8 : 0;
+      ctx.fillStyle = '#475569';
+      ctx.fillRect(jx + 6, pad.y + 6, pad.w - 12, 12);
+      ctx.fillStyle = '#22c55e';
+      drawRoundRect(jx, pad.y + lift, pad.w, 8, 4);
+      ctx.fill();
+      ctx.strokeStyle = '#dcfce7';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+
+    // Exploding Barrels
+    for (var br = 0; br < barrels.length; br++) {
+      var bar = barrels[br];
+      if (!bar.alive) continue;
+      var bx = Math.round(bar.x - camX);
+      if (bx + bar.w < -30 || bx > W + 30) continue;
+      ctx.fillStyle = '#dc2626';
+      drawRoundRect(bx, bar.y, bar.w, bar.h, 6);
+      ctx.fill();
+      ctx.strokeStyle = '#facc15';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.fillStyle = '#facc15';
+      ctx.fillRect(bx + 2, bar.y + 8, bar.w - 4, 4);
+      ctx.fillRect(bx + 2, bar.y + 26, bar.w - 4, 4);
+      ctx.font = '900 10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('TNT', bx + bar.w / 2, bar.y + 22);
+      ctx.textAlign = 'left';
+    }
+
+    // Stage Coins
+    for (var sc = 0; sc < stageCoins.length; sc++) {
+      var cn = stageCoins[sc];
+      if (cn.collected) continue;
+      var cnx = Math.round(cn.x - camX);
+      if (cnx < -20 || cnx > W + 20) continue;
+      var bob = Math.sin(frame * 0.12 + sc) * 3;
+      ctx.fillStyle = '#facc15';
+      ctx.beginPath();
+      ctx.ellipse(cnx, cn.y + bob, 7, 10, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#854d0e';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
   }
 
   function drawBlocks() {
-    for (var i = 0; i < blocks.length; i++) {
-      var b = blocks[i];
+    var activeBlocks = inBonusRoom ? bonusBlocks : blocks;
+    for (var i = 0; i < activeBlocks.length; i++) {
+      var b = activeBlocks[i];
       var bx = Math.round(b.x - camX);
       var by = Math.round(b.y - b.bump);
       if (bx + b.w < -50 || bx > W + 50) continue;
@@ -1363,20 +2010,9 @@
         grad.addColorStop(1, '#9a3412');
         ctx.fillStyle = grad;
         ctx.fillRect(bx, by, b.w, b.h);
-
         ctx.strokeStyle = '#431407';
         ctx.lineWidth = 2;
         ctx.strokeRect(bx + 1, by + 1, b.w - 2, b.h - 2);
-
-        ctx.beginPath();
-        ctx.moveTo(bx, by + 20); ctx.lineTo(bx + b.w, by + 20);
-        ctx.moveTo(bx + 20, by); ctx.lineTo(bx + 20, by + 20);
-        ctx.moveTo(bx + 10, by + 20); ctx.lineTo(bx + 10, by + 40);
-        ctx.moveTo(bx + 30, by + 20); ctx.lineTo(bx + 30, by + 40);
-        ctx.stroke();
-
-        ctx.fillStyle = 'rgba(255,255,255,0.28)';
-        ctx.fillRect(bx + 2, by + 2, b.w - 4, 4);
 
       } else if (b.type === 'q_box') {
         var qGrad = ctx.createLinearGradient(bx, by, bx, by + b.h);
@@ -1385,16 +2021,9 @@
         qGrad.addColorStop(1, '#ca8a04');
         ctx.fillStyle = qGrad;
         ctx.fillRect(bx, by, b.w, b.h);
-
         ctx.strokeStyle = '#713f12';
         ctx.lineWidth = 2.5;
         ctx.strokeRect(bx + 1, by + 1, b.w - 2, b.h - 2);
-
-        ctx.fillStyle = '#713f12';
-        ctx.fillRect(bx + 4, by + 4, 3, 3);
-        ctx.fillRect(bx + b.w - 7, by + 4, 3, 3);
-        ctx.fillRect(bx + 4, by + b.h - 7, 3, 3);
-        ctx.fillRect(bx + b.w - 7, by + b.h - 7, 3, 3);
 
         ctx.font = '900 22px sans-serif';
         ctx.textAlign = 'center';
@@ -1410,33 +2039,62 @@
         ctx.strokeStyle = '#1e293b';
         ctx.lineWidth = 2.5;
         ctx.strokeRect(bx + 1, by + 1, b.w - 2, b.h - 2);
-        ctx.fillStyle = '#94a3b8';
-        ctx.fillRect(bx + 4, by + 4, 3, 3);
-        ctx.fillRect(bx + b.w - 7, by + 4, 3, 3);
-        ctx.fillRect(bx + 4, by + b.h - 7, 3, 3);
-        ctx.fillRect(bx + b.w - 7, by + b.h - 7, 3, 3);
 
-      } else if (b.type === 'pipe') {
+      } else if (b.type === 'pipe' || b.type === 'warp_pipe' || b.type === 'exit_pipe') {
+        var isWarp = b.type === 'warp_pipe' && !b.used;
+        var isExit = b.type === 'exit_pipe';
         var pGrad = ctx.createLinearGradient(bx, by, bx + b.w, by);
-        pGrad.addColorStop(0, '#15803d');
-        pGrad.addColorStop(0.3, '#4ade80');
-        pGrad.addColorStop(0.7, '#22c55e');
-        pGrad.addColorStop(1, '#14532d');
+        if (isWarp || isExit) {
+          pGrad.addColorStop(0, '#6b21a8');
+          pGrad.addColorStop(0.4, '#c084fc');
+          pGrad.addColorStop(1, '#3b0764');
+        } else {
+          pGrad.addColorStop(0, '#15803d');
+          pGrad.addColorStop(0.3, '#4ade80');
+          pGrad.addColorStop(0.7, '#22c55e');
+          pGrad.addColorStop(1, '#14532d');
+        }
 
         ctx.fillStyle = pGrad;
         ctx.fillRect(bx + 4, by + 22, b.w - 8, b.h - 22);
-        ctx.strokeStyle = '#052e16';
+        ctx.strokeStyle = isWarp || isExit ? '#facc15' : '#052e16';
         ctx.lineWidth = 2.5;
         ctx.strokeRect(bx + 4, by + 22, b.w - 8, b.h - 22);
 
         ctx.fillStyle = pGrad;
         ctx.fillRect(bx, by, b.w, 22);
         ctx.strokeRect(bx, by, b.w, 22);
+
+        if (isWarp) {
+          ctx.font = '900 10px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillStyle = frame % 16 < 8 ? '#fef08a' : '#38bdf8';
+          ctx.fillText('▼ SECRET', bx + b.w / 2, by - 8);
+          ctx.textAlign = 'left';
+        } else if (isExit) {
+          ctx.font = '900 10px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillStyle = '#4ade80';
+          ctx.fillText('EXIT ▶', bx + b.w / 2, by - 8);
+          ctx.textAlign = 'left';
+        }
+      }
+    }
+
+    if (inBonusRoom) {
+      for (var bc = 0; bc < bonusCoins.length; bc++) {
+        var bcn = bonusCoins[bc];
+        if (bcn.collected) continue;
+        ctx.fillStyle = '#facc15';
+        ctx.beginPath();
+        ctx.ellipse(bcn.x, bcn.y + Math.sin(frame * 0.15 + bc) * 3, 7, 10, 0, 0, Math.PI * 2);
+        ctx.fill();
       }
     }
   }
 
   function drawEnemies() {
+    if (inBonusRoom) return;
     for (var e = 0; e < enemies.length; e++) {
       var en = enemies[e];
       if (!en.alive) continue;
@@ -1444,7 +2102,27 @@
       var ey = Math.round(en.y);
       if (ex + en.w < -40 || ex > W + 40) continue;
 
-      if (en.kind === 'flyer') {
+      if (en.kind === 'armored') {
+        // Heavy Armored Knight (Fire Cannon melts it!)
+        ctx.fillStyle = '#334155';
+        drawRoundRect(ex + 2, ey + 6, en.w - 4, en.h - 10, 8);
+        ctx.fill();
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        // Steel Helmet Visor
+        ctx.fillStyle = '#64748b';
+        ctx.fillRect(ex + 4, ey, en.w - 8, 14);
+        ctx.fillStyle = '#ef4444';
+        ctx.fillRect(ex + 9, ey + 6, 7, 4);
+        ctx.fillRect(ex + 22, ey + 6, 7, 4);
+
+        // Front Shield Plate
+        ctx.fillStyle = '#cbd5e1';
+        ctx.fillRect(en.vx < 0 ? ex - 2 : ex + en.w - 6, ey + 10, 8, 22);
+
+      } else if (en.kind === 'flyer') {
         var wing = Math.sin(frame * 0.4) * 7;
         ctx.fillStyle = '#e2e8f0';
         ctx.fillRect(ex + 2, ey - 4 + wing, 12, 6);
@@ -1479,17 +2157,12 @@
         ctx.fillStyle = '#000';
         ctx.fillRect(ex + 9, ey + 16 - bounce, 3, 3);
         ctx.fillRect(ex + 22, ey + 16 - bounce, 3, 3);
-
-        var step = Math.sin(frame * 0.25) * 3;
-        ctx.fillStyle = '#1e293b';
-        ctx.fillRect(ex + 4 + step, ey + en.h - 5, 10, 5);
-        ctx.fillRect(ex + 20 - step, ey + en.h - 5, 10, 5);
       }
     }
   }
 
   function drawBoss() {
-    if (!boss || !boss.alive) return;
+    if (inBonusRoom || !boss || !boss.alive) return;
     var t = STAGE_THEMES[currentStage - 1];
     var bx = Math.round(boss.x - camX);
     var by = Math.round(boss.y);
@@ -1539,17 +2212,6 @@
     drawRoundRect(bx + 20, by + 48 + breath, boss.w - 40, boss.h - 76, 12);
     ctx.fill();
 
-    if (boss.isMega) {
-      ctx.fillStyle = boss.hp <= boss.maxHp * 0.5 ? '#ef4444' : '#38bdf8';
-      ctx.beginPath();
-      ctx.arc(bx + boss.w / 2, by + boss.h * 0.56 + breath, 15 + Math.sin(frame * 0.2) * 2, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#ffffff';
-      ctx.beginPath();
-      ctx.arc(bx + boss.w / 2, by + boss.h * 0.56 + breath, 6, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
     ctx.fillStyle = t.bossHorn;
     ctx.beginPath();
     ctx.moveTo(bx + 18, by + 20 + breath);
@@ -1563,14 +2225,6 @@
     ctx.lineTo(bx + boss.w - 34, by + 16 + breath);
     ctx.fill();
 
-    if (boss.isMega) {
-      ctx.beginPath();
-      ctx.moveTo(bx + boss.w / 2 - 14, by + 16 + breath);
-      ctx.lineTo(bx + boss.w / 2, by - 16 + breath);
-      ctx.lineTo(bx + boss.w / 2 + 14, by + 16 + breath);
-      ctx.fill();
-    }
-
     var eyeShift = boss.facing === -1 ? -6 : 6;
     var eyeY = by + (boss.isMega ? 34 : 28) + breath;
     ctx.fillStyle = '#fef08a';
@@ -1579,13 +2233,6 @@
     ctx.fillStyle = '#ef4444';
     ctx.fillRect(bx + 27 + eyeShift, eyeY + 2, 6, 7);
     ctx.fillRect(bx + boss.w - 33 + eyeShift, eyeY + 2, 6, 7);
-
-    if (boss.telegraphTimer > 0) {
-      ctx.fillStyle = '#fef08a';
-      ctx.beginPath();
-      ctx.arc(bx + boss.w / 2, by + boss.h * 0.42, 12 + (24 - boss.telegraphTimer) * 0.45, 0, Math.PI * 2);
-      ctx.fill();
-    }
 
     if (bossActive) {
       var barW = boss.isMega ? 360 : 300;
@@ -1610,7 +2257,7 @@
   function drawPlayer() {
     for (var a = 0; a < afterimages.length; a++) {
       var ai = afterimages[a];
-      ctx.fillStyle = 'rgba(56, 189, 248, ' + (ai.life / 24) + ')';
+      ctx.fillStyle = 'rgba(56, 189, 248, ' + (ai.life / 22) + ')';
       drawRoundRect(Math.round(ai.x - camX), Math.round(ai.y), player.w, player.h, 8);
       ctx.fill();
     }
@@ -1620,21 +2267,34 @@
     var px = Math.round(player.x - camX);
     var py = Math.round(player.y);
 
-    // Star Shield or Super Weapon Aura
-    if (player.shieldTimer > 0) {
+    // Visual Auras for Shield, Electric Dash, Super Weapons, or Heart Overcharge!
+    if (player.dashTimer > 0) {
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(px + player.w / 2, py + player.h / 2, 28, 0, Math.PI * 2);
+      ctx.stroke();
+    } else if (player.shieldTimer > 0) {
       ctx.strokeStyle = frame % 6 < 3 ? '#facc15' : '#ffffff';
       ctx.lineWidth = 4;
       ctx.beginPath();
       ctx.arc(px + player.w / 2, py + player.h / 2, 29 + Math.sin(frame * 0.35) * 3, 0, Math.PI * 2);
       ctx.stroke();
-    } else if (weaponIdx >= 2) {
-      ctx.strokeStyle = weaponIdx === 2 ? 'rgba(56, 189, 248, 0.65)' : 'rgba(250, 204, 21, 0.75)';
-      ctx.lineWidth = 3;
+    } else if (superWeaponTimer > 0) {
+      ctx.strokeStyle = superWeapon === 'HYPER BEAM' ? 'rgba(56, 189, 248, 0.8)' : 'rgba(168, 85, 247, 0.85)';
+      ctx.lineWidth = 3.5;
       ctx.beginPath();
-      ctx.arc(px + player.w / 2, py + player.h / 2, 26 + Math.sin(frame * 0.25) * 3, 0, Math.PI * 2);
+      ctx.arc(px + player.w / 2, py + player.h / 2, 27 + Math.sin(frame * 0.25) * 3, 0, Math.PI * 2);
+      ctx.stroke();
+    } else if (isOvercharged()) {
+      ctx.strokeStyle = 'rgba(250, 204, 21, 0.55)';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.arc(px + player.w / 2, py + player.h / 2, 25 + Math.sin(frame * 0.2) * 2, 0, Math.PI * 2);
       ctx.stroke();
     }
 
+    // Player Name + Low HP Warning
     ctx.font = '900 11px sans-serif';
     ctx.textAlign = 'center';
     var nameW = ctx.measureText(playerName).width + 12;
@@ -1643,6 +2303,12 @@
     ctx.fill();
     ctx.fillStyle = selectedHero === 'pepe' ? '#4ade80' : '#fef08a';
     ctx.fillText(playerName, px + player.w / 2, py - 12);
+
+    if (player.hp === 1 && frame % 18 < 10) {
+      ctx.font = '900 9px sans-serif';
+      ctx.fillStyle = '#f43f5e';
+      ctx.fillText('♥ LOW HP!', px + player.w / 2, py - 30);
+    }
     ctx.textAlign = 'left';
 
     var runOffset = (Math.abs(player.vx) > 0.5 && player.grounded) ? Math.sin(frame * 0.35) * 3 : 0;
@@ -1651,125 +2317,148 @@
       ctx.fillStyle = '#1e40af';
       ctx.fillRect(px + 6 + runOffset, py + 30, 8, 12);
       ctx.fillRect(px + 20 - runOffset, py + 30, 8, 12);
-
       ctx.fillStyle = '#2563eb';
       ctx.fillRect(px + 5, py + 18, 24, 14);
-
       ctx.fillStyle = '#4ade80';
       drawRoundRect(px + 3, py + 4, 28, 17, 7);
       ctx.fill();
       ctx.strokeStyle = '#14532d';
       ctx.lineWidth = 1.5;
       ctx.stroke();
-
       ctx.fillStyle = '#4ade80';
       ctx.beginPath();
       ctx.arc(px + 11, py + 4, 6, 0, Math.PI * 2);
       ctx.arc(px + 23, py + 4, 6, 0, Math.PI * 2);
       ctx.fill();
       ctx.stroke();
-
       ctx.fillStyle = '#ffffff';
       ctx.beginPath();
       ctx.arc(px + 11, py + 4, 4, 0, Math.PI * 2);
       ctx.arc(px + 23, py + 4, 4, 0, Math.PI * 2);
       ctx.fill();
-
       var pupilShift = player.facing === 1 ? 1.5 : -1.5;
       ctx.fillStyle = '#0f172a';
       ctx.beginPath();
       ctx.arc(px + 11 + pupilShift, py + 4, 2, 0, Math.PI * 2);
       ctx.arc(px + 23 + pupilShift, py + 4, 2, 0, Math.PI * 2);
       ctx.fill();
-
       ctx.fillStyle = '#dc2626';
       var lipX = player.facing === 1 ? px + 11 : px + 4;
       drawRoundRect(lipX, py + 13, 18, 5, 2.5);
       ctx.fill();
-
     } else {
       ctx.fillStyle = '#1d4ed8';
       ctx.fillRect(px + 6 + runOffset, py + 30, 8, 12);
       ctx.fillRect(px + 20 - runOffset, py + 30, 8, 12);
-
       ctx.fillStyle = '#2563eb';
       ctx.fillRect(px + 5, py + 18, 24, 15);
       ctx.fillStyle = '#facc15';
       ctx.fillRect(px + 9, py + 22, 4, 4);
       ctx.fillRect(px + 21, py + 22, 4, 4);
-
       ctx.fillStyle = '#f59e0b';
       drawRoundRect(px + 4, py + 2, 26, 20, 7);
       ctx.fill();
       ctx.strokeStyle = '#78350f';
       ctx.lineWidth = 1.5;
       ctx.stroke();
-
       ctx.fillStyle = '#fef3c7';
       var snoutX = player.facing === 1 ? px + 16 : px + 4;
       ctx.fillRect(snoutX, py + 11, 13, 8);
       ctx.fillStyle = '#0f172a';
       ctx.fillRect(player.facing === 1 ? px + 26 : px + 4, py + 11, 3, 3);
-
       ctx.fillStyle = '#0f172a';
       ctx.fillRect(player.facing === 1 ? px + 20 : px + 10, py + 7, 3, 4);
-
       ctx.fillStyle = '#dc2626';
       ctx.fillRect(px + 4, py - 1, 26, 5);
       ctx.fillRect(player.facing === 1 ? px + 14 : px, py + 2, 20, 3);
     }
 
-    // Blaster / Super Blaster Visual
-    var wpn = weapons[weaponIdx];
-    ctx.fillStyle = wpn === 'HYPER BEAM' || wpn === 'OMEGA NOVA' ? '#facc15' : '#334155';
-    var gx = player.facing === 1 ? px + 24 : px - 8;
-    ctx.fillRect(gx, py + 19, 18, 8);
-    ctx.fillStyle = wpn === 'FIRE' ? '#f97316' : '#38bdf8';
-    ctx.fillRect(player.facing === 1 ? gx + 14 : gx, py + 20, 4, 6);
+    // Distinct Visible Weapon Graphics Held by the Hero!
+    var wpn = getActiveWeapon();
+    var gx = player.facing === 1 ? px + 22 : px - 12;
+    if (wpn === 'BLASTER') {
+      ctx.fillStyle = '#334155';
+      ctx.fillRect(gx, py + 20, 18, 7);
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillRect(player.facing === 1 ? gx + 14 : gx, py + 21, 5, 5);
+    } else if (wpn === 'FIRE') {
+      // Heavy Orange Flamethrower Cannon + Pilot Flame
+      ctx.fillStyle = '#ea580c';
+      ctx.fillRect(gx, py + 18, 22, 10);
+      ctx.fillStyle = '#fef08a';
+      ctx.beginPath();
+      ctx.arc(player.facing === 1 ? gx + 24 : gx - 2, py + 23, 4 + Math.sin(frame * 0.5) * 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (wpn === 'HYPER BEAM') {
+      // Twin-barrel Golden Railgun
+      ctx.fillStyle = '#facc15';
+      ctx.fillRect(gx, py + 17, 24, 5);
+      ctx.fillRect(gx, py + 24, 24, 5);
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillRect(player.facing === 1 ? gx + 20 : gx, py + 17, 5, 12);
+    } else if (wpn === 'OMEGA NOVA') {
+      // Orbiting Purple/Gold Nova Orb
+      var orbX = player.facing === 1 ? px + 40 : px - 6;
+      var orbY = py + 20 + Math.sin(frame * 0.25) * 4;
+      ctx.fillStyle = '#a855f7';
+      ctx.beginPath(); ctx.arc(orbX, orbY, 8, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fef08a';
+      ctx.beginPath(); ctx.arc(orbX, orbY, 4, 0, Math.PI * 2); ctx.fill();
+    }
   }
 
   function drawHUD() {
-    ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
     ctx.fillRect(0, 0, W, 36);
     ctx.fillStyle = '#facc15';
     ctx.fillRect(0, 35, W, 1.5);
 
-    ctx.font = '900 12px sans-serif';
+    ctx.font = '900 11px sans-serif';
     ctx.fillStyle = selectedHero === 'pepe' ? '#4ade80' : '#38bdf8';
-    ctx.fillText(playerName, 12, 23);
+    ctx.fillText(playerName, 10, 23);
 
     var hearts = '';
     for (var h = 0; h < player.maxHp; h++) hearts += h < player.hp ? '♥' : '♡';
-    ctx.fillStyle = '#f43f5e';
-    ctx.font = '900 15px sans-serif';
-    ctx.fillText(hearts, 126, 23);
+    ctx.fillStyle = isOvercharged() ? '#facc15' : '#f43f5e';
+    ctx.font = player.maxHp > 6 ? '900 11.5px sans-serif' : '900 13.5px sans-serif';
+    ctx.fillText(hearts, 102, 23);
 
-    ctx.font = '900 11px sans-serif';
+    ctx.font = '900 10.5px sans-serif';
     ctx.fillStyle = '#e9d5ff';
-    ctx.fillText('STG ' + currentStage + '/11', 238, 23);
+    ctx.fillText(inBonusRoom ? ('VAULT:' + Math.ceil(bonusTimer / 60) + 's') : ('STG ' + currentStage + '/11'), 208, 23);
 
-    var isSuper = weaponIdx >= 2;
-    ctx.fillStyle = isSuper ? '#38bdf8' : '#c084fc';
-    ctx.fillText((isSuper ? '⚡' : 'WPN:') + weapons[weaponIdx], 315, 23);
+    var activeWpn = getActiveWeapon();
+    if (superWeaponTimer > 0) {
+      var secsLeft = Math.ceil(superWeaponTimer / 60);
+      ctx.fillStyle = secsLeft <= 3 && frame % 8 < 4 ? '#f43f5e' : '#38bdf8';
+      ctx.fillText('⚡' + activeWpn + ' ' + secsLeft + 's', 278, 21);
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.25)';
+      ctx.fillRect(278, 26, 122, 4);
+      ctx.fillStyle = '#facc15';
+      ctx.fillRect(278, 26, 122 * (superWeaponTimer / SUPER_WEAPON_MAX_TIME), 4);
+    } else {
+      ctx.fillStyle = activeWpn === 'FIRE' ? '#fb923c' : '#c084fc';
+      ctx.fillText('WPN:' + activeWpn, 278, 23);
+    }
 
     ctx.fillStyle = player.dashCooldown <= 0 ? '#38bdf8' : '#64748b';
-    ctx.fillText(player.dashCooldown <= 0 ? 'DASH:OK' : 'DASH...', 445, 23);
+    ctx.fillText(player.dashCooldown <= 0 ? 'DASH:OK' : 'DASH...', 416, 23);
 
     ctx.fillStyle = '#facc15';
-    ctx.fillText('COINS:' + coins, 525, 23);
+    ctx.fillText('COINS:' + coins, 484, 23);
 
     ctx.fillStyle = '#4ade80';
-    ctx.fillText('SCORE:' + score, 615, 23);
+    ctx.fillText('SCORE:' + score, 558, 23);
 
     if (stageBannerTimer > 0) {
       ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
-      drawRoundRect(W / 2 - 245, 82, 490, 42, 12);
+      drawRoundRect(W / 2 - 265, 82, 530, 42, 12);
       ctx.fill();
       ctx.strokeStyle = '#facc15';
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      ctx.font = '900 15px sans-serif';
+      ctx.font = '900 13.5px sans-serif';
       ctx.fillStyle = '#fef08a';
       ctx.textAlign = 'center';
       ctx.fillText(stageBannerText, W / 2, 108);
@@ -1780,60 +2469,94 @@
   function render() {
     drawBackground();
     drawBlocks();
-    drawGround();
+    drawGroundAndHazards();
     drawEnemies();
     drawBoss();
     drawPlayer();
 
+    var scale = isOvercharged() ? 1.35 : 1.0;
     for (var f = 0; f < projectiles.length; f++) {
       var fb = projectiles[f];
       if (fb.kind === 'blaster') {
         ctx.fillStyle = '#38bdf8';
-        ctx.fillRect(fb.x - camX - 8, fb.y - 3, 18, 6);
+        ctx.fillRect(fb.x - camX - 8 * scale, fb.y - 3 * scale, 18 * scale, 6 * scale);
         ctx.fillStyle = '#ffffff';
-        ctx.fillRect(fb.x - camX - 4, fb.y - 1.5, 10, 3);
+        ctx.fillRect(fb.x - camX - 4 * scale, fb.y - 1.5 * scale, 10 * scale, 3 * scale);
       } else if (fb.kind === 'hyper') {
         ctx.fillStyle = '#38bdf8';
-        ctx.fillRect(fb.x - camX - 14, fb.y - 4, 28, 8);
+        ctx.fillRect(fb.x - camX - 14 * scale, fb.y - 4 * scale, 28 * scale, 8 * scale);
         ctx.fillStyle = '#fef08a';
-        ctx.fillRect(fb.x - camX - 10, fb.y - 2, 20, 4);
+        ctx.fillRect(fb.x - camX - 10 * scale, fb.y - 2 * scale, 20 * scale, 4 * scale);
       } else if (fb.kind === 'nova') {
         ctx.fillStyle = '#a855f7';
-        ctx.beginPath(); ctx.arc(fb.x - camX, fb.y, 13, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(fb.x - camX, fb.y, 13 * scale, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = '#38bdf8';
-        ctx.beginPath(); ctx.arc(fb.x - camX, fb.y, 8, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(fb.x - camX, fb.y, 8 * scale, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = '#ffffff';
-        ctx.beginPath(); ctx.arc(fb.x - camX, fb.y, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(fb.x - camX, fb.y, 4 * scale, 0, Math.PI * 2); ctx.fill();
       } else {
-        ctx.fillStyle = selectedHero === 'pepe' ? '#22c55e' : '#f97316';
-        ctx.beginPath(); ctx.arc(fb.x - camX, fb.y, 7, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#f97316';
+        ctx.beginPath(); ctx.arc(fb.x - camX, fb.y, 8 * scale, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = '#fef08a';
-        ctx.beginPath(); ctx.arc(fb.x - camX, fb.y, 3.5, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(fb.x - camX, fb.y, 4 * scale, 0, Math.PI * 2); ctx.fill();
       }
     }
 
-    for (var bs = 0; bs < bossShots.length; bs++) {
-      var s = bossShots[bs];
-      ctx.fillStyle = '#ef4444';
-      ctx.beginPath(); ctx.arc(s.x - camX, s.y, 8, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#fef08a';
-      ctx.beginPath(); ctx.arc(s.x - camX, s.y, 3.5, 0, Math.PI * 2); ctx.fill();
-    }
+    if (!inBonusRoom) {
+      for (var bs = 0; bs < bossShots.length; bs++) {
+        var s = bossShots[bs];
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath(); ctx.arc(s.x - camX, s.y, 8, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#fef08a';
+        ctx.beginPath(); ctx.arc(s.x - camX, s.y, 3.5, 0, Math.PI * 2); ctx.fill();
+      }
 
-    for (var sw = 0; sw < shockwaves.length; sw++) {
-      var wv = shockwaves[sw];
-      ctx.fillStyle = '#38bdf8';
-      ctx.beginPath();
-      ctx.moveTo(wv.x - camX, wv.y + wv.h);
-      ctx.lineTo(wv.x - camX + wv.w / 2, wv.y);
-      ctx.lineTo(wv.x - camX + wv.w, wv.y + wv.h);
-      ctx.closePath();
-      ctx.fill();
+      // Falling Meteors + Ground Warning Crosshairs
+      for (var m = 0; m < meteors.length; m++) {
+        var mt = meteors[m];
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.45)';
+        ctx.fillRect(mt.targetX - camX - 16, 424, 32, 6);
+        ctx.fillStyle = '#f97316';
+        ctx.beginPath(); ctx.arc(mt.x - camX, mt.y, 14, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#fef08a';
+        ctx.beginPath(); ctx.arc(mt.x - camX, mt.y, 7, 0, Math.PI * 2); ctx.fill();
+      }
+
+      // Boss Sweeping Horizontal Laser Beam
+      if (bossLaser) {
+        var lx = arenaLeftWall - camX;
+        if (bossLaser.warnTimer > 0) {
+          ctx.strokeStyle = frame % 6 < 3 ? '#facc15' : '#ef4444';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([8, 6]);
+          ctx.beginPath();
+          ctx.moveTo(lx, bossLaser.y);
+          ctx.lineTo(lx + 780, bossLaser.y);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        } else {
+          ctx.fillStyle = 'rgba(239, 68, 68, 0.85)';
+          ctx.fillRect(lx, bossLaser.y - 8, 780, 18);
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(lx, bossLaser.y - 3, 780, 6);
+        }
+      }
+
+      for (var sw = 0; sw < shockwaves.length; sw++) {
+        var wv = shockwaves[sw];
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.moveTo(wv.x - camX, wv.y + wv.h);
+        ctx.lineTo(wv.x - camX + wv.w / 2, wv.y);
+        ctx.lineTo(wv.x - camX + wv.w, wv.y + wv.h);
+        ctx.closePath();
+        ctx.fill();
+      }
     }
 
     for (var fp = 0; fp < floatingPopups.length; fp++) {
       var pop = floatingPopups[fp];
-      ctx.font = '900 13px sans-serif';
+      ctx.font = '900 12px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillStyle = '#0f172a';
       ctx.fillText(pop.text, pop.x - camX + 1, pop.y + 1);
