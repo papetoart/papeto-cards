@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>THE DOGE REACTOR - Dogeparty NFT by PAPETO</title>
+<meta property="og:title" content="THE DOGE REACTOR - Dogeparty NFT by PAPETO">
+<meta property="og:url" content="https://papetoart.github.io/papeto-cards/doge-reactor.html">
+<link rel="canonical" href="https://papetoart.github.io/papeto-cards/doge-reactor.html">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+  body {
+    background: radial-gradient(circle at top, #17153b, #04050a);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100dvh;
+    padding: 8px;
+    overflow: hidden;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    touch-action: none;
+  }
+  #card-frame {
+    position: relative;
+    width: 96vw;
+    max-width: 860px;
+    height: 92dvh;
+    max-height: 590px;
+    border: 3px solid #facc15;
+    border-radius: 16px;
+    box-shadow: 0 0 46px rgba(250, 204, 21, 0.42), inset 0 0 24px rgba(56, 189, 248, 0.16);
+    background: #060913;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: border-color 0.35s ease, box-shadow 0.35s ease;
+  }
+  #top-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 7px 10px;
+    background: rgba(15, 23, 42, 0.94);
+    border-bottom: 1.5px solid rgba(250, 204, 21, 0.3);
+    z-index: 8;
+  }
+  .title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .brand {
+    font-weight: 900;
+    font-size: clamp(11px, 1.8vw, 14px);
+    color: #facc15;
+    letter-spacing: 0.7px;
+  }
+  .counter-pill {
+    background: rgba(250, 204, 21, 0.14);
+    border: 1px solid rgba(250, 204, 21, 0.65);
+    color: #fef08a;
+    font-size: clamp(9px, 1.35vw, 11px);
+    font-weight: 900;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hud-btn {
+    background: #1e293b;
+    border: 1.5px solid #38bdf8;
+    color: #e0f2fe;
+    font-weight: 800;
+    font-size: clamp(9px, 1.35vw, 11px);
+    padding: 4px 9px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .hud-btn.gold {
+    border-color: #facc15;
+    color: #fef08a;
+  }
+  .hud-btn.muted {
+    border-color: #64748b;
+    color: #94a3b8;
+  }
+  .hud-btn:active { transform: scale(0.95); }
+
+  #stage-wrap {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 150px;
+    width: 100%;
+    overflow: hidden;
+  }
+  canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  #sig-badge {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(250, 204, 21, 0.72);
+    border-radius: 20px;
+    color: #fef08a;
+    font-size: clamp(8px, 1.2vw, 10px);
+    font-weight: 800;
+    padding: 2px 10px;
+    letter-spacing: 0.8px;
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  #console {
+    background: linear-gradient(180deg, #0f172a 0%, #070b14 100%);
+    border-top: 1.5px solid #1e293b;
+    padding: 8px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    z-index: 8;
+  }
+  .elements-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+  }
+  .el-btn {
+    background: linear-gradient(180deg, #1e293b, #0f172a);
+    border: 1.5px solid #475569;
+    color: #f8fafc;
+    font-weight: 900;
+    font-size: clamp(9px, 1.45vw, 12px);
+    padding: 8px 3px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 3px 0 #020617;
+    transition: transform 0.06s ease, border-color 0.15s ease;
+  }
+  .el-btn[data-el="MOON"] { border-color: #fde047; color: #fef9c3; }
+  .el-btn[data-el="LASER"] { border-color: #38bdf8; color: #e0f2fe; }
+  .el-btn[data-el="PAWS"] { border-color: #2dd4bf; color: #ccfbf1; }
+  .el-btn[data-el="FUD"] { border-color: #f43f5e; color: #ffe4e6; }
+  .el-btn[data-el="WOW"] { border-color: #c084fc; color: #f3e8ff; }
+  .el-btn:active { transform: translateY(2px); }
+
+  .action-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 7px;
+  }
+  .fuse-btn {
+    background: linear-gradient(180deg, #334155, #1e293b);
+    border: 2px solid #64748b;
+    color: #94a3b8;
+    font-weight: 900;
+    font-size: clamp(11px, 1.7vw, 14px);
+    padding: 9px 10px;
+    border-radius: 11px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    box-shadow: 0 3px 0 #0f172a;
+    transition: all 0.15s ease;
+  }
+  .fuse-btn.ready {
+    background: linear-gradient(180deg, #facc15, #ca8a04);
+    border-color: #fef08a;
+    color: #09090b;
+    box-shadow: 0 3px 0 #713f12, 0 0 18px rgba(250, 204, 21, 0.55);
+  }
+  .fuse-btn:active { transform: translateY(2px); }
+  .clear-btn {
+    background: linear-gradient(180deg, #1e293b, #0f172a);
+    border: 1.5px solid #64748b;
+    color: #cbd5e1;
+    font-weight: 800;
+    font-size: clamp(10px, 1.5vw, 12px);
+    padding: 9px 8px;
+    border-radius: 11px;
+    cursor: pointer;
+    box-shadow: 0 3px 0 #020617;
+  }
+  .clear-btn:active { transform: translateY(2px); }
+
+  /* In-Card Codex Overlay */
+  #codex-modal {
+    position: absolute;
+    inset: 38px 0 0 0;
+    background: rgba(6, 9, 19, 0.95);
+    backdrop-filter: blur(8px);
+    z-index: 12;
+    display: none;
+    flex-direction: column;
+    padding: 10px 12px;
+    overflow-y: auto;
+    touch-action: pan-y;
+  }
+  #codex-modal.open { display: flex; }
+  .codex-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .codex-header h3 {
+    color: #facc15;
+    font-size: 13px;
+    letter-spacing: 0.6px;
+  }
+  .codex-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    gap: 7px;
+  }
+  .codex-item {
+    background: #0f172a;
+    border: 1.5px solid #1e293b;
+    border-radius: 10px;
+    padding: 7px 8px;
+    text-align: left;
+  }
+  .codex-item.unlocked {
+    border-color: #facc15;
+    cursor: pointer;
+    background: linear-gradient(180deg, #1e293b, #0f172a);
+  }
+  .codex-item.unlocked:active { transform: scale(0.97); }
+  .codex-name {
+    font-size: 11px;
+    font-weight: 900;
+    color: #fef08a;
+    margin-bottom: 2px;
+  }
+  .codex-item:not(.unlocked) .codex-name { color: #64748b; }
+  .codex-recipe {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #38bdf8;
+  }
+  .codex-item:not(.unlocked) .codex-recipe { color: #475569; }
+</style>
+</head>
+<body>
+<div id="card-frame">
+  <div id="top-bar">
+    <div class="title-group">
+      <span class="brand">THE DOGE REACTOR</span>
+      <span id="disc-pill" class="counter-pill">DISCOVERED: 0/12</span>
+    </div>
+    <div class="top-actions">
+      <button id="btn-codex" class="hud-btn gold" type="button">CODEX [12]</button>
+      <button id="btn-mute" class="hud-btn" type="button">AUDIO: ON</button>
+    </div>
+  </div>
+
+  <div id="stage-wrap">
+    <div id="sig-badge">DOGEPARTY NFT &bull; BY PAPETO</div>
+    <canvas id="reactor-canvas" width="640" height="320"></canvas>
+
+    <div id="codex-modal">
+      <div class="codex-header">
+        <h3>MUTATION CODEX (TAP UNLOCKED TO EQUIP)</h3>
+        <button id="btn-close-codex" class="hud-btn gold" type="button">CLOSE</button>
+      </div>
+      <div id="codex-grid" class="codex-grid"></div>
+    </div>
+  </div>
+
+  <div id="console">
+    <div class="elements-row">
+      <button class="el-btn" data-el="MOON" type="button">🌕 MOON</button>
+      <button class="el-btn" data-el="LASER" type="button">⚡ LASER</button>
+      <button class="el-btn" data-el="PAWS" type="button">💎 PAWS</button>
+      <button class="el-btn" data-el="FUD" type="button">☣️ FUD</button>
+      <button class="el-btn" data-el="WOW" type="button">✨ WOW</button>
+    </div>
+    <div class="action-row">
+      <button id="btn-fuse" class="fuse-btn" type="button">SELECT 2 ELEMENTS</button>
+      <button id="btn-clear" class="clear-btn" type="button">CLEAR SLOTS</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var canvas = document.getElementById('reactor-canvas');
+  var ctx = canvas.getContext('2d');
+  var cardFrame = document.getElementById('card-frame');
+  var W = 640, H = 320;
+
+  // Safe rounded rect helper for all WebViews
+  function rRect(c, x, y, w, h, r) {
+    c.beginPath();
+    c.moveTo(x + r, y);
+    c.lineTo(x + w - r, y);
+    c.quadraticCurveTo(x + w, y, x + w, y + r);
+    c.lineTo(x + w, y + h - r);
+    c.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    c.lineTo(x + r, y + h);
+    c.quadraticCurveTo(x, y + h, x, y + h - r);
+    c.lineTo(x, y + r);
+    c.quadraticCurveTo(x, y, x + r, y);
+    c.closePath();
+  }
+
+  var ELEMENTS = {
+    MOON:  { label: 'MOON',  icon: '🌕', color: '#fde047', freq: 330 },
+    LASER: { label: 'LASER', icon: '⚡', color: '#38bdf8', freq: 587.33 },
+    PAWS:  { label: 'PAWS',  icon: '💎', color: '#2dd4bf', freq: 440 },
+    FUD:   { label: 'FUD',   icon: '☣️', color: '#f43f5e', freq: 146.83 },
+    WOW:   { label: 'WOW',   icon: '✨', color: '#c084fc', freq: 659.25 }
+  };
+
+  var RECIPES = [
+    { id: 'orbital',   pair: ['LASER', 'MOON'],  name: 'ORBITAL SNIPER',   color: '#38bdf8', wave: 'sawtooth', notes: [220, 330, 440, 659.25], trait: 'orbital' },
+    { id: 'astro',     pair: ['MOON', 'PAWS'],   name: 'DIAMOND ASTRO',    color: '#2dd4bf', wave: 'sine',     notes: [261.63, 329.63, 392, 523.25], trait: 'astro' },
+    { id: 'eclipse',   pair: ['FUD', 'MOON'],    name: 'DARK ECLIPSE',     color: '#f43f5e', wave: 'sawtooth', notes: [73.42, 82.41, 110, 73.42], trait: 'eclipse' },
+    { id: 'celestial', pair: ['MOON', 'WOW'],    name: 'CELESTIAL SHIBA',  color: '#fef08a', wave: 'triangle', notes: [293.66, 369.99, 440, 587.33], trait: 'celestial' },
+    { id: 'prism',     pair: ['LASER', 'PAWS'],  name: 'PRISM GUARDIAN',   color: '#67e8f9', wave: 'triangle', notes: [392, 493.88, 587.33, 783.99], trait: 'prism' },
+    { id: 'glitch',    pair: ['FUD', 'LASER'],   name: 'GLITCH OVERLORD',  color: '#fb7185', wave: 'square',   notes: [110, 233.08, 130.81, 246.94], trait: 'glitch' },
+    { id: 'hyper',     pair: ['LASER', 'WOW'],   name: 'HYPER DOGE',       color: '#facc15', wave: 'square',   notes: [329.63, 440, 659.25, 880], trait: 'hyper' },
+    { id: 'titan',     pair: ['FUD', 'PAWS'],    name: 'HODL TITAN',       color: '#fb923c', wave: 'sawtooth', notes: [98, 98, 130.81, 116.54], trait: 'titan' },
+    { id: 'relic',     pair: ['PAWS', 'WOW'],    name: 'GOLDEN RELIC',     color: '#eab308', wave: 'triangle', notes: [261.63, 392, 523.25, 659.25], trait: 'relic' },
+    { id: 'anomaly',   pair: ['FUD', 'WOW'],     name: 'MEME ANOMALY',     color: '#e879f9', wave: 'square',   notes: [196, 293.66, 233.08, 392], trait: 'anomaly' },
+    { id: 'supernova', pair: ['MOON', 'MOON'],   name: 'SUPERNOVA CORE',   color: '#fde047', wave: 'sine',     notes: [174.61, 261.63, 349.23, 523.25], trait: 'supernova' },
+    { id: 'omega',     pair: ['WOW', 'WOW'],     name: 'OMEGA DOGE',       color: '#c084fc', wave: 'triangle', notes: [261.63, 329.63, 493.88, 783.99], trait: 'omega' }
+  ];
+
+  // Audio Engine
+  var audioCtx = null;
+  var muted = false;
+  var unlocked = false;
+
+  function initAudio() {
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (AC && !audioCtx) audioCtx = new AC();
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+      if (audioCtx && audioCtx.state === 'running') unlocked = true;
+    } catch (e) {}
+  }
+
+  cardFrame.addEventListener('pointerdown', initAudio);
+
+  function playTone(freq, type, dur, vol, slideTo) {
+    if (muted) return;
+    initAudio();
+    if (!audioCtx) return;
+    var t = audioCtx.currentTime;
+    var o = audioCtx.createOscillator();
+    var g = audioCtx.createGain();
+    o.type = type || 'triangle';
+    o.frequency.setValueAtTime(freq, t);
+    if (slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, t + dur);
+    g.gain.setValueAtTime(vol || 0.12, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    o.start(t);
+    o.stop(t + dur + 0.01);
+  }
+
+  function playFusionBoom(isNew) {
+    if (muted) return;
+    initAudio();
+    if (!audioCtx) return;
+    playTone(140, 'sine', 0.45, 0.28, 36);
+    var chord = isNew ? [523.25, 659.25, 783.99, 1046.5] : [392, 493.88, 587.33];
+    for (var i = 0; i < chord.length; i++) {
+      (function(idx) {
+        setTimeout(function() {
+          playTone(chord[idx], 'triangle', 0.35, 0.11);
+        }, idx * 55);
+      })(i);
+    }
+  }
+
+  // Reactor State
+  var slotA = null;
+  var slotB = null;
+  var currentMutation = null;
+  var unlockedMap = {};
+  var unlockedCount = 0;
+
+  var timeSec = 0;
+  var shakeTimer = 0;
+  var flashAlpha = 0;
+  var fusionCharge = 0;
+  var statusBanner = 'LOAD 2 ELEMENTS TO FUSE';
+  var bannerTimer = 0;
+  var pulseClock = 0;
+  var noteIdx = 0;
+  var particles = [];
+  var shockwaves = [];
+
+  function addParticles(x, y, col, count, spdMax) {
+    for (var i = 0; i < count; i++) {
+      var a = Math.random() * Math.PI * 2;
+      var sp = 1 + Math.random() * (spdMax || 4.5);
+      particles.push({
+        x: x, y: y,
+        vx: Math.cos(a) * sp,
+        vy: Math.sin(a) * sp,
+        life: 0.4 + Math.random() * 0.4,
+        maxLife: 0.8,
+        color: col,
+        size: 2 + Math.random() * 3
+      });
+    }
+  }
+
+  function addShockwave(col) {
+    shockwaves.push({ r: 16, maxR: 260, alpha: 0.95, color: col });
+  }
+
+  var btnFuse = document.getElementById('btn-fuse');
+  var discPill = document.getElementById('disc-pill');
+
+  function updateControlsUI() {
+    if (slotA && slotB) {
+      btnFuse.textContent = '⚡ FUSE ' + slotA + ' + ' + slotB;
+      btnFuse.classList.add('ready');
+    } else if (slotA) {
+      btnFuse.textContent = 'SELECT 2ND ELEMENT (' + slotA + ' + ?)';
+      btnFuse.classList.remove('ready');
+    } else {
+      btnFuse.textContent = 'SELECT 2 ELEMENTS';
+      btnFuse.classList.remove('ready');
+    }
+    discPill.textContent = 'DISCOVERED: ' + unlockedCount + '/12';
+  }
+
+  function selectElement(elKey) {
+    var info = ELEMENTS[elKey];
+    if (!info) return;
+    playTone(info.freq, 'triangle', 0.16, 0.14, info.freq * 1.15);
+
+    if (!slotA) {
+      slotA = elKey;
+      addParticles(135, 160, info.color, 10, 3);
+    } else if (!slotB) {
+      slotB = elKey;
+      addParticles(505, 160, info.color, 10, 3);
+    } else {
+      // Shift slots if both full
+      slotA = slotB;
+      slotB = elKey;
+      addParticles(505, 160, info.color, 10, 3);
+    }
+    fusionCharge = 0.35;
+    updateControlsUI();
+  }
+
+  function clearSlots() {
+    slotA = null;
+    slotB = null;
+    playTone(220, 'sine', 0.1, 0.08, 150);
+    updateControlsUI();
+  }
+
+  function applyMutation(recipe, announce) {
+    currentMutation = recipe;
+    cardFrame.style.borderColor = recipe.color;
+    cardFrame.style.boxShadow = '0 0 46px ' + recipe.color + '66, inset 0 0 24px ' + recipe.color + '29';
+    addShockwave(recipe.color);
+    addParticles(320, 160, recipe.color, 28, 6);
+    flashAlpha = 0.55;
+    shakeTimer = 0.28;
+    if (announce) {
+      statusBanner = announce;
+      bannerTimer = 2.6;
+    }
+  }
+
+  function executeFusion() {
+    if (!slotA || !slotB) {
+      playTone(150, 'sawtooth', 0.12, 0.1);
+      statusBanner = 'PICK 2 ELEMENTS FIRST!';
+      bannerTimer = 1.4;
+      return;
+    }
+
+    var sorted = [slotA, slotB].sort();
+    var match = null;
+    for (var i = 0; i < RECIPES.length; i++) {
+      var r = RECIPES[i];
+      if (r.pair[0] === sorted[0] && r.pair[1] === sorted[1]) {
+        match = r;
+        break;
+      }
+    }
+
+    slotA = null;
+    slotB = null;
+    updateControlsUI();
+
+    if (match) {
+      var isNew = !unlockedMap[match.id];
+      if (isNew) {
+        unlockedMap[match.id] = true;
+        unlockedCount++;
+        updateControlsUI();
+        renderCodex();
+      }
+      playFusionBoom(isNew);
+      applyMutation(match, (isNew ? 'NEW MUTATION: ' : 'FUSED: ') + match.name);
+    } else {
+      // Unstable pure double (LASER+LASER, PAWS+PAWS, FUD+FUD)
+      playTone(120, 'sawtooth', 0.28, 0.18, 65);
+      shakeTimer = 0.25;
+      addShockwave('#f43f5e');
+      addParticles(320, 160, '#f43f5e', 18, 5);
+      statusBanner = 'UNSTABLE DOUBLE! MIX DIFFERENT ELEMENTS';
+      bannerTimer = 2.2;
+    }
+  }
+
+  // Wire Element & Action Buttons
+  var elBtns = document.querySelectorAll('.el-btn');
+  for (var i = 0; i < elBtns.length; i++) {
+    (function(btn) {
+      btn.addEventListener('pointerdown', function(e) {
+        e.preventDefault();
+        selectElement(btn.dataset.el);
+      });
+    })(elBtns[i]);
+  }
+
+  btnFuse.addEventListener('pointerdown', function(e) {
+    e.preventDefault();
+    executeFusion();
+  });
+
+  document.getElementById('btn-clear').addEventListener('pointerdown', function(e) {
+    e.preventDefault();
+    clearSlots();
+  });
+
+  // Mute Toggle
+  var btnMute = document.getElementById('btn-mute');
+  btnMute.addEventListener('pointerdown', function(e) {
+    e.preventDefault();
+    muted = !muted;
+    btnMute.textContent = 'AUDIO: ' + (muted ? 'OFF' : 'ON');
+    btnMute.classList.toggle('muted', muted);
+  });
+
+  // Codex Modal
+  var codexModal = document.getElementById('codex-modal');
+  var codexGrid = document.getElementById('codex-grid');
+
+  function renderCodex() {
+    codexGrid.innerHTML = '';
+    for (var i = 0; i < RECIPES.length; i++) {
+      (function(rec) {
+        var isUnlocked = !!unlockedMap[rec.id];
+        var card = document.createElement('div');
+        card.className = 'codex-item' + (isUnlocked ? ' unlocked' : '');
+
+        var title = document.createElement('div');
+        title.className = 'codex-name';
+        title.textContent = isUnlocked ? ('#' + (i + 1) + ' ' + rec.name) : ('#' + (i + 1) + ' ??? LOCKED');
+
+        var sub = document.createElement('div');
+        sub.className = 'codex-recipe';
+        sub.textContent = isUnlocked ? (rec.pair[0] + ' + ' + rec.pair[1]) : ('HINT: ' + rec.pair[0] + ' + ???');
+
+        card.appendChild(title);
+        card.appendChild(sub);
+
+        if (isUnlocked) {
+          card.addEventListener('pointerdown', function(e) {
+            e.preventDefault();
+            codexModal.classList.remove('open');
+            playFusionBoom(false);
+            applyMutation(rec, 'EQUIPPED: ' + rec.name);
+          });
+        }
+        codexGrid.appendChild(card);
+      })(RECIPES[i]);
+    }
+  }
+
+  document.getElementById('btn-codex').addEventListener('pointerdown', function(e) {
+    e.preventDefault();
+    renderCodex();
+    codexModal.classList.toggle('open');
+  });
+
+  document.getElementById('btn-close-codex').addEventListener('pointerdown', function(e) {
+    e.preventDefault();
+    codexModal.classList.remove('open');
+  });
+
+  // Keyboard Controls
+  window.addEventListener('keydown', function(e) {
+    if (e.repeat) return;
+    if (e.code === 'Digit1') selectElement('MOON');
+    if (e.code === 'Digit2') selectElement('LASER');
+    if (e.code === 'Digit3') selectElement('PAWS');
+    if (e.code === 'Digit4') selectElement('FUD');
+    if (e.code === 'Digit5') selectElement('WOW');
+    if (e.code === 'Enter' || e.code === 'Space') { e.preventDefault(); executeFusion(); }
+    if (e.code === 'Backspace' || e.code === 'Escape') {
+      if (codexModal.classList.contains('open')) codexModal.classList.remove('open');
+      else clearSlots();
+    }
+    if (e.code === 'KeyC') {
+      renderCodex();
+      codexModal.classList.toggle('open');
+    }
+  });
+
+  function update(dt) {
+    timeSec += dt;
+    if (audioCtx && audioCtx.state === 'running') unlocked = true;
+    if (shakeTimer > 0) shakeTimer = Math.max(0, shakeTimer - dt);
+    if (flashAlpha > 0) flashAlpha = Math.max(0, flashAlpha - dt * 1.8);
+    if (fusionCharge > 0) fusionCharge = Math.max(0, fusionCharge - dt * 0.9);
+    if (bannerTimer > 0) bannerTimer = Math.max(0, bannerTimer - dt);
+
+    // Generative ambient pulse for active mutation
+    if (currentMutation && unlocked && !muted) {
+      pulseClock += dt;
+      if (pulseClock >= 0.42) {
+        pulseClock -= 0.42;
+        var notes = currentMutation.notes;
+        var n = notes[noteIdx % notes.length];
+        noteIdx++;
+        playTone(n, currentMutation.wave, 0.34, 0.045);
+        if (Math.random() < 0.4) {
+          addParticles(320 + (Math.random() - 0.5) * 90, 160 + (Math.random() - 0.5) * 70, currentMutation.color, 2, 1.8);
+        }
+      }
+    }
+
+    for (var i = particles.length - 1; i >= 0; i--) {
+      var p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vx *= 0.97;
+      p.vy *= 0.97;
+      p.life -= dt;
+      if (p.life <= 0) particles.splice(i, 1);
+    }
+
+    for (var s = shockwaves.length - 1; s >= 0; s--) {
+      var sw = shockwaves[s];
+      sw.r += dt * 420;
+      sw.alpha -= dt * 1.6;
+      if (sw.alpha <= 0 || sw.r >= sw.maxR) shockwaves.splice(s, 1);
+    }
+  }
+
+  function drawDogeCore(cx, cy, trait, themeCol) {
+    var pulse = 1 + Math.sin(timeSec * 5) * 0.03 + fusionCharge * 0.1;
+    var gx = (trait === 'glitch' || trait === 'anomaly') ? (Math.random() - 0.5) * 6 : 0;
+
+    ctx.save();
+    ctx.translate(cx + gx, cy);
+    ctx.scale(pulse, pulse);
+
+    // Background Aura by trait
+    if (trait === 'eclipse') {
+      ctx.fillStyle = '#020617';
+      ctx.beginPath(); ctx.arc(0, 0, 68, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#f43f5e';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+    } else if (trait === 'hyper' || trait === 'omega') {
+      ctx.strokeStyle = themeCol;
+      ctx.lineWidth = 3;
+      for (var r = 0; r < 8; r++) {
+        var ang = timeSec * 2 + (r * Math.PI) / 4;
+        ctx.beginPath();
+        ctx.moveTo(Math.cos(ang) * 48, Math.sin(ang) * 48);
+        ctx.lineTo(Math.cos(ang) * 76, Math.sin(ang) * 76);
+        ctx.stroke();
+      }
+    } else if (trait === 'prism') {
+      var cols = ['#f43f5e', '#facc15', '#4ade80', '#38bdf8', '#c084fc'];
+      for (var c = 0; c < cols.length; c++) {
+        var pa = timeSec * 1.4 + c * 1.25;
+        ctx.strokeStyle = cols[c];
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(Math.cos(pa) * 90, Math.sin(pa) * 90);
+        ctx.stroke();
+      }
+    }
+
+    // Ears
+    ctx.fillStyle = trait === 'eclipse' ? '#1e293b' : (trait === 'anomaly' ? '#a855f7' : '#ca8a04');
+    ctx.beginPath(); ctx.moveTo(-36, -20); ctx.lineTo(-28, -56); ctx.lineTo(-6, -26); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(36, -20); ctx.lineTo(28, -56); ctx.lineTo(6, -26); ctx.fill();
+
+    // Head
+    ctx.fillStyle = trait === 'eclipse' ? '#0f172a' : (trait === 'anomaly' ? '#22d3ee' : '#facc15');
+    ctx.beginPath(); ctx.ellipse(0, 0, 48, 38, 0, 0, Math.PI * 2); ctx.fill();
+
+    // Snout
+    ctx.fillStyle = trait === 'eclipse' ? '#334155' : '#fef9c3';
+    ctx.beginPath(); ctx.ellipse(0, 10, 24, 15, 0, 0, Math.PI * 2); ctx.fill();
+
+    // Nose
+    ctx.fillStyle = '#09090b';
+    ctx.beginPath(); ctx.arc(0, 4, 5, 0, Math.PI * 2); ctx.fill();
+
+    // Eyes
+    var glowingEyes = (trait === 'orbital' || trait === 'hyper' || trait === 'glitch' || trait === 'omega');
+    ctx.fillStyle = glowingEyes ? '#38bdf8' : '#09090b';
+    ctx.beginPath(); ctx.arc(-16, -8, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(16, -8, 5, 0, Math.PI * 2); ctx.fill();
+
+    // Laser Beams for Orbital / Hyper
+    if (trait === 'orbital' || trait === 'hyper') {
+      ctx.strokeStyle = trait === 'orbital' ? '#38bdf8' : '#f43f5e';
+      ctx.lineWidth = 3.5;
+      ctx.beginPath();
+      ctx.moveTo(-16, -8); ctx.lineTo(-180, -36 + Math.sin(timeSec * 8) * 14);
+      ctx.moveTo(16, -8); ctx.lineTo(180, -36 + Math.cos(timeSec * 8) * 14);
+      ctx.stroke();
+    }
+
+    // Special Headgear / Symbols
+    if (trait === 'celestial') {
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.ellipse(0, -54, 24, 6, 0, 0, Math.PI * 2); ctx.stroke();
+    } else if (trait === 'relic') {
+      ctx.fillStyle = '#facc15';
+      ctx.beginPath();
+      ctx.moveTo(-20, -36); ctx.lineTo(-14, -54); ctx.lineTo(0, -42); ctx.lineTo(14, -54); ctx.lineTo(20, -36);
+      ctx.closePath(); ctx.fill();
+    } else if (trait === 'astro') {
+      ctx.strokeStyle = 'rgba(103, 232, 249, 0.75)';
+      ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(0, -4, 58, 0, Math.PI * 2); ctx.stroke();
+    } else if (trait === 'titan') {
+      ctx.fillStyle = '#475569';
+      rRect(ctx, -30, -15, 60, 13, 4); ctx.fill();
+      ctx.fillStyle = '#fb923c';
+      rRect(ctx, -22, -11, 44, 5, 2); ctx.fill();
+    } else if (trait === 'omega') {
+      ctx.fillStyle = '#facc15';
+      ctx.font = '900 16px sans-serif';
+      ctx.fillText('Ð', -6, -18);
+    } else if (trait === 'supernova') {
+      var mx = Math.cos(timeSec * 2.5) * 74;
+      var my = Math.sin(timeSec * 2.5) * 28;
+      ctx.fillStyle = '#fde047';
+      ctx.beginPath(); ctx.arc(mx, my, 9, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(-mx, -my, 7, 0, Math.PI * 2); ctx.fill();
+    }
+
+    ctx.restore();
+  }
+
+  function render() {
+    var sx = shakeTimer > 0 ? (Math.random() - 0.5) * 10 : 0;
+    var sy = shakeTimer > 0 ? (Math.random() - 0.5) * 10 : 0;
+    var themeCol = currentMutation ? currentMutation.color : '#facc15';
+
+    ctx.fillStyle = '#060913';
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.save();
+    ctx.translate(sx, sy);
+
+    // Reactor Grid
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.08)';
+    ctx.lineWidth = 1;
+    for (var x = 40; x < W; x += 40) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+    }
+    for (var y = 40; y < H; y += 40) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+    }
+
+    var cx = W / 2, cy = H / 2 - 4;
+
+    // Rotating Containment Rings
+    for (var ring = 0; ring < 2; ring++) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(timeSec * (ring === 0 ? 0.7 : -1.1));
+      ctx.strokeStyle = ring === 0 ? themeCol : 'rgba(56, 189, 248, 0.45)';
+      ctx.lineWidth = ring === 0 ? 2.5 : 1.5;
+      ctx.setLineDash([28, 16]);
+      ctx.beginPath();
+      ctx.arc(0, 0, 82 + ring * 22, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // Energy Conduits from Left & Right Slots to Core
+    var leftCol = slotA ? ELEMENTS[slotA].color : '#1e293b';
+    var rightCol = slotB ? ELEMENTS[slotB].color : '#1e293b';
+
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = leftCol;
+    ctx.beginPath(); ctx.moveTo(135, cy); ctx.lineTo(cx - 58, cy); ctx.stroke();
+
+    ctx.strokeStyle = rightCol;
+    ctx.beginPath(); ctx.moveTo(505, cy); ctx.lineTo(cx + 58, cy); ctx.stroke();
+
+    // Slot A Node (Left)
+    ctx.fillStyle = '#0f172a';
+    ctx.strokeStyle = leftCol;
+    ctx.lineWidth = 2.5;
+    rRect(ctx, 55, cy - 28, 84, 56, 12); ctx.fill(); ctx.stroke();
+    ctx.font = '900 11px sans-serif';
+    ctx.fillStyle = slotA ? leftCol : '#64748b';
+    ctx.textAlign = 'center';
+    ctx.fillText(slotA ? (ELEMENTS[slotA].icon + ' ' + slotA) : 'SLOT A', 97, cy + 4);
+
+    // Slot B Node (Right)
+    ctx.fillStyle = '#0f172a';
+    ctx.strokeStyle = rightCol;
+    rRect(ctx, 501, cy - 28, 84, 56, 12); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = slotB ? rightCol : '#64748b';
+    ctx.fillText(slotB ? (ELEMENTS[slotB].icon + ' ' + slotB) : 'SLOT B', 543, cy + 4);
+
+    // Central Mutated Doge
+    drawDogeCore(cx, cy, currentMutation ? currentMutation.trait : 'base', themeCol);
+
+    // Shockwaves
+    for (var s = 0; s < shockwaves.length; s++) {
+      var sw = shockwaves[s];
+      ctx.strokeStyle = sw.color;
+      ctx.globalAlpha = Math.max(0, sw.alpha);
+      ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(cx, cy, sw.r, 0, Math.PI * 2); ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+
+    // Particles
+    for (var p = 0; p < particles.length; p++) {
+      var pt = particles[p];
+      ctx.fillStyle = pt.color;
+      ctx.beginPath(); ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2); ctx.fill();
+    }
+
+    ctx.restore();
+
+    // Active Mutation Title / Status Banner at Bottom of Canvas
+    ctx.textAlign = 'center';
+    if (bannerTimer > 0) {
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+      rRect(ctx, cx - 185, H - 38, 370, 26, 13); ctx.fill();
+      ctx.strokeStyle = themeCol; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.fillStyle = '#fef08a';
+      ctx.font = '900 12px sans-serif';
+      ctx.fillText(statusBanner, cx, H - 21);
+    } else {
+      ctx.fillStyle = themeCol;
+      ctx.font = '900 12px sans-serif';
+      var label = currentMutation ? ('ACTIVE FORM: ' + currentMutation.name) : 'BASE REACTOR • COMBINE 2 ELEMENTS';
+      ctx.fillText(label, cx, H - 16);
+    }
+    ctx.textAlign = 'left';
+
+    // Flash overlay on fusion
+    if (flashAlpha > 0) {
+      ctx.fillStyle = 'rgba(255, 255, 255, ' + flashAlpha + ')';
+      ctx.fillRect(0, 0, W, H);
+    }
+  }
+
+  var STEP = 1000 / 60, FIXED_DT = 1 / 60, last = performance.now(), acc = 0;
+  function loop(now) {
+    acc += Math.min(100, now - last);
+    last = now;
+    var steps = 0;
+    while (acc >= STEP - 0.5 && steps < 4) {
+      update(FIXED_DT);
+      acc -= STEP;
+      steps++;
+    }
+    render();
+    requestAnimationFrame(loop);
+  }
+
+  renderCodex();
+  updateControlsUI();
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
