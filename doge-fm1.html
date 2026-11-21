@@ -15,17 +15,17 @@
     justify-content: center;
     align-items: center;
     min-height: 100dvh;
-    padding: 6px;
+    padding: 5px;
     overflow: hidden;
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     touch-action: none;
   }
   #card-frame {
     position: relative;
-    width: 97vw;
+    width: 98vw;
     max-width: 920px;
-    height: 95dvh;
-    max-height: 680px;
+    height: 96dvh;
+    max-height: 740px;
     border: 2.5px solid #38bdf8;
     border-radius: 16px;
     box-shadow: 0 0 44px rgba(56, 189, 248, 0.35), inset 0 0 22px rgba(250, 204, 21, 0.12);
@@ -40,28 +40,29 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 5px;
-    padding: 6px 9px;
+    gap: 4px;
+    padding: 5px 8px;
     background: rgba(11, 17, 32, 0.96);
     border-bottom: 1.5px solid rgba(148, 163, 184, 0.25);
+    flex-shrink: 0;
     z-index: 9;
   }
   .brand-box {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
   }
   .brand {
     font-weight: 900;
-    font-size: clamp(12px, 1.8vw, 15px);
+    font-size: clamp(11px, 1.7vw, 14px);
     color: #facc15;
-    letter-spacing: 0.8px;
+    letter-spacing: 0.7px;
   }
   .fw-tag {
     font-family: monospace;
-    font-size: clamp(9px, 1.3vw, 11px);
+    font-size: clamp(8.5px, 1.25vw, 11px);
     font-weight: 900;
-    padding: 2px 7px;
+    padding: 2px 6px;
     border-radius: 6px;
     background: rgba(56, 189, 248, 0.16);
     border: 1px solid #38bdf8;
@@ -78,8 +79,8 @@
     border: 1.5px solid #475569;
     color: #e2e8f0;
     font-weight: 800;
-    font-size: clamp(8.5px, 1.25vw, 11px);
-    padding: 4px 7px;
+    font-size: clamp(8px, 1.2vw, 10.5px);
+    padding: 3.5px 6px;
     border-radius: 7px;
     cursor: pointer;
     white-space: nowrap;
@@ -94,10 +95,11 @@
   }
   .hw-btn:active { transform: scale(0.95); }
 
+  /* Stage always keeps generous height so Modern DJ Doge is clearly visible */
   #stage-wrap {
     position: relative;
-    flex: 1 1 auto;
-    min-height: 95px;
+    flex: 1 1 175px;
+    min-height: 150px;
     width: 100%;
     overflow: hidden;
   }
@@ -108,16 +110,15 @@
   }
   #sig-badge {
     position: absolute;
-    top: 7px;
-    right: 9px;
-    background: rgba(8, 12, 24, 0.84);
-    backdrop-filter: blur(4px);
+    top: 6px;
+    right: 8px;
+    background: rgba(8, 12, 24, 0.85);
     border: 1px solid rgba(250, 204, 21, 0.7);
     border-radius: 20px;
     color: #fef08a;
-    font-size: clamp(8px, 1.2vw, 10px);
+    font-size: clamp(8px, 1.15vw, 10px);
     font-weight: 800;
-    padding: 2px 9px;
+    padding: 2px 8px;
     letter-spacing: 0.7px;
     pointer-events: none;
     z-index: 4;
@@ -127,13 +128,12 @@
   #guide-modal {
     position: absolute;
     inset: 0;
-    background: rgba(6, 9, 19, 0.96);
-    backdrop-filter: blur(8px);
+    background: rgba(6, 9, 19, 0.97);
     z-index: 12;
     display: none;
     flex-direction: column;
     justify-content: space-between;
-    padding: 12px 14px;
+    padding: 10px 12px;
     overflow-y: auto;
     touch-action: pan-y;
   }
@@ -143,70 +143,69 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #1e293b;
-    padding-bottom: 6px;
-    margin-bottom: 8px;
+    padding-bottom: 5px;
+    margin-bottom: 6px;
   }
   .guide-head h3 {
     color: #facc15;
-    font-size: clamp(12px, 1.8vw, 14px);
-    letter-spacing: 0.6px;
+    font-size: clamp(11px, 1.7vw, 13px);
   }
   .guide-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-    gap: 8px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 6px;
   }
   .guide-card {
     background: #0f172a;
     border: 1px solid #334155;
-    border-radius: 9px;
-    padding: 8px 10px;
+    border-radius: 8px;
+    padding: 7px 9px;
   }
   .guide-card strong {
     display: block;
     color: #38bdf8;
-    font-size: 11px;
-    margin-bottom: 3px;
+    font-size: 10.5px;
+    margin-bottom: 2px;
   }
   .guide-card p {
     color: #cbd5e1;
-    font-size: 10.5px;
-    line-height: 1.38;
+    font-size: 10px;
+    line-height: 1.35;
   }
 
   #deck {
     background: linear-gradient(180deg, #0d1526 0%, #070b14 100%);
     border-top: 1.5px solid #1e293b;
-    padding: 6px 9px 8px;
+    padding: 5px 8px 7px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
+    flex-shrink: 0;
     z-index: 8;
   }
 
-  /* 4 Control Sliders (Including DRUM VOL!) */
   .params-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
+    gap: 5px;
   }
   .param-box {
     background: #090f1d;
     border: 1px solid #1e293b;
-    border-radius: 8px;
-    padding: 4px 7px;
+    border-radius: 7px;
+    padding: 3px 6px;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 1px;
   }
   .param-box.drum-vol-box {
-    border-color: rgba(250, 204, 21, 0.55);
-    background: rgba(250, 204, 21, 0.06);
+    border-color: rgba(250, 204, 21, 0.65);
+    background: rgba(250, 204, 21, 0.08);
   }
   .param-head {
     display: flex;
     justify-content: space-between;
-    font-size: clamp(7.5px, 1.15vw, 9.5px);
+    font-size: clamp(7.5px, 1.1vw, 9.5px);
     font-weight: 900;
     color: #94a3b8;
     font-family: monospace;
@@ -218,29 +217,27 @@
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    height: 14px;
+    height: 13px;
     background: transparent;
     cursor: pointer;
     touch-action: pan-x;
   }
   input[type="range"].synth-slider::-webkit-slider-runnable-track {
-    height: 5px;
+    height: 4px;
     background: #1e293b;
     border-radius: 999px;
   }
   input[type="range"].synth-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 14px;
-    height: 14px;
+    width: 13px;
+    height: 13px;
     border-radius: 50%;
     background: #facc15;
     border: 2px solid #090d16;
     margin-top: -4.5px;
-    box-shadow: 0 0 8px rgba(250, 204, 21, 0.7);
   }
 
-  /* Drum & Rave Sample Pads */
   .pads-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -251,9 +248,9 @@
     border: 1.5px solid #facc15;
     color: #fef08a;
     font-weight: 900;
-    font-size: clamp(8.5px, 1.3vw, 11px);
+    font-size: clamp(8px, 1.25vw, 10.5px);
     padding: 5px 3px;
-    border-radius: 8px;
+    border-radius: 7px;
     cursor: pointer;
     box-shadow: 0 2px 0 #854d0e;
     text-align: center;
@@ -274,15 +271,14 @@
   .pad-btn.purple.hit { background: #c084fc; color: #09090b; }
   .pad-btn.orange.hit { background: #fb923c; color: #09090b; }
 
-  /* Polyphonic Keyboard */
   #keyboard {
     position: relative;
-    height: clamp(72px, 14.5dvh, 108px);
+    height: clamp(66px, 13.5dvh, 102px);
     display: flex;
     gap: 3px;
     background: #020617;
     padding: 4px;
-    border-radius: 10px;
+    border-radius: 9px;
     border: 1.5px solid #334155;
   }
   .w-key {
@@ -290,16 +286,16 @@
     height: 100%;
     background: linear-gradient(180deg, #f8fafc 0%, #cbd5e1 100%);
     border: 1px solid #64748b;
-    border-radius: 0 0 7px 7px;
+    border-radius: 0 0 6px 6px;
     display: flex;
     align-items: flex-end;
     justify-content: center;
     padding-bottom: 4px;
-    font-size: 10px;
+    font-size: 9.5px;
     font-weight: 900;
     color: #334155;
     cursor: pointer;
-    box-shadow: 0 3px 0 #475569;
+    box-shadow: 0 2.5px 0 #475569;
   }
   .w-key.pressed {
     background: linear-gradient(180deg, #fef08a 0%, #facc15 100%);
@@ -314,17 +310,17 @@
     height: 58%;
     background: linear-gradient(180deg, #1e293b 0%, #090d16 100%);
     border: 1.5px solid #38bdf8;
-    border-radius: 0 0 6px 6px;
+    border-radius: 0 0 5px 5px;
     z-index: 4;
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    padding-bottom: 4px;
+    padding-bottom: 3px;
     font-size: 8px;
     font-weight: 800;
     color: #7dd3fc;
     cursor: pointer;
-    box-shadow: 0 3px 0 #020617;
+    box-shadow: 0 2.5px 0 #020617;
   }
   .b-key.pressed {
     background: #38bdf8;
@@ -338,7 +334,7 @@
   <div id="top-bar">
     <div class="brand-box">
       <span class="brand">DOGE FM1</span>
-      <span id="fw-badge" class="fw-tag">FW 1/4: FM KEYS</span>
+      <span id="fw-badge" class="fw-tag">FW 1/6: FM KEYS</span>
     </div>
     <div class="ctrl-strip">
       <button id="btn-fw" class="hw-btn fw-btn" type="button">SWITCH ENGINE</button>
@@ -354,44 +350,43 @@
 
   <div id="stage-wrap">
     <div id="sig-badge">DOGEPARTY NFT &bull; BY PAPETO</div>
-    <canvas id="stage" width="680" height="220"></canvas>
+    <canvas id="stage" width="680" height="240"></canvas>
 
     <div id="guide-modal">
       <div class="guide-head">
-        <h3>DOGE FM1 — RAVE &amp; SYNTH MANUAL</h3>
+        <h3>DOGE FM1 — 6-ENGINE RAVE SYNTH MANUAL</h3>
         <button id="btn-close-guide" class="hw-btn gold" type="button">BACK TO SYNTH</button>
       </div>
       <div class="guide-grid">
         <div class="guide-card">
-          <strong>1. CRANK THE DRUMS (DRUM VOL)</strong>
-          <p>Use the gold <b>DRUM VOL</b> slider (up to <b>180%</b>) to boost the 909 Kick, Snare &amp; Hats. Switch rhythms with <b>DRUMS</b> (Techno 909, Euro Techno, Trance, Prodigy Break).</p>
+          <strong>1. 6 SYNTH ENGINES (SWITCH ENGINE)</strong>
+          <p>Tap <b>SWITCH ENGINE</b> to switch between <b>FM KEYS</b>, <b>ANALOG POLY</b>, <b>ACID 303</b>, <b>PRODIGY RAVE</b> (distorted rave lead), <b>TRANCE SUPERSAW</b> (5-voice anthem lead), and <b>COSMIC PAD</b>.</p>
         </div>
         <div class="guide-card">
-          <strong>2. RAVE SAMPLE PADS [5–8]</strong>
-          <p>Trigger iconic electronic hooks synced to BPM: <b>PRODIGY</b> (break + rave lead), <b>EURO TECHNO</b> (90s rave stabs), <b>TECHNO</b> (303 acid sequence), and <b>TRANCE</b> (supersaw anthem).</p>
+          <strong>2. LOUD DRUMS + DRUM VOL (UP TO 200%)</strong>
+          <p>Adjust the gold <b>DRUM VOL</b> slider to make the 909 Kick, Snare &amp; Hats as loud as you want. Tap <b>DRUMS</b> to switch patterns.</p>
         </div>
         <div class="guide-card">
-          <strong>3. SWITCH SYNTH ENGINE (4 FIRMWARES)</strong>
-          <p>Tap <b>SWITCH ENGINE</b> to change the keyboard sound between <b>FM KEYS</b>, <b>ANALOG POLY</b>, <b>ACID 303</b>, and <b>COSMIC PAD</b>.</p>
+          <strong>3. RAVE RIFF PADS [5–8]</strong>
+          <p>Trigger instant BPM-synced hooks: <b>PRODIGY [5]</b>, <b>EURO TECHNO [6]</b>, <b>TECHNO 303 [7]</b>, and <b>TRANCE [8]</b>.</p>
         </div>
         <div class="guide-card">
           <strong>4. HANDS-FREE ARPEGGIATOR</strong>
-          <p>Set <b>ARP</b> to <b>UP</b>, enable <b>LATCH</b>, and tap 2–3 keys—DOGE FM1 loops the melody automatically over your beat.</p>
+          <p>Set <b>ARP</b> to <b>UP</b>, enable <b>LATCH</b>, and tap 2–3 keys—DOGE FM1 loops the melody over your beat.</p>
         </div>
       </div>
     </div>
   </div>
 
   <div id="deck">
-    <!-- Row 1: Sliders with Prominent DRUM VOL -->
     <div class="params-row">
       <div class="param-box drum-vol-box">
-        <div class="param-head"><span>DRUM VOL</span><span id="val-dvol">135%</span></div>
-        <input id="sl-dvol" class="synth-slider" type="range" min="0" max="180" value="135">
+        <div class="param-head"><span>DRUM VOL</span><span id="val-dvol">140%</span></div>
+        <input id="sl-dvol" class="synth-slider" type="range" min="0" max="200" value="140">
       </div>
       <div class="param-box">
-        <div class="param-head"><span>BRIGHTNESS</span><span id="val-cut">3600Hz</span></div>
-        <input id="sl-cut" class="synth-slider" type="range" min="150" max="7500" value="3600">
+        <div class="param-head"><span>BRIGHTNESS</span><span id="val-cut">3800Hz</span></div>
+        <input id="sl-cut" class="synth-slider" type="range" min="150" max="7500" value="3800">
       </div>
       <div class="param-box">
         <div class="param-head"><span id="lbl-mod">FM DEPTH</span><span id="val-mod">65%</span></div>
@@ -403,7 +398,6 @@
       </div>
     </div>
 
-    <!-- Row 2: Punchy Drum Pads -->
     <div class="pads-row">
       <button id="pad-kick" class="pad-btn" type="button">909 KICK [1]</button>
       <button id="pad-snare" class="pad-btn cyan" type="button">SNARE [2]</button>
@@ -411,7 +405,6 @@
       <button id="pad-chord" class="pad-btn green" type="button">CHORD STAB [4]</button>
     </div>
 
-    <!-- Row 3: Iconic Prodigy / Euro-Techno / Techno / Trance Sample Pads -->
     <div class="pads-row">
       <button id="smp-prodigy" class="pad-btn orange" type="button">&#9889; PRODIGY [5]</button>
       <button id="smp-euro" class="pad-btn purple" type="button">&#9835; EURO TECHNO [6]</button>
@@ -419,7 +412,6 @@
       <button id="smp-trance" class="pad-btn green" type="button">&#10024; TRANCE [8]</button>
     </div>
 
-    <!-- Row 4: Polyphonic Keyboard -->
     <div id="keyboard">
       <div class="w-key" data-semi="0" data-lbl="C">C</div>
       <div class="w-key" data-semi="2" data-lbl="D">D</div>
@@ -444,7 +436,7 @@
   var canvas = document.getElementById('stage');
   var ctx = canvas.getContext('2d');
   var frame = document.getElementById('card-frame');
-  var W = 680, H = 220;
+  var W = 680, H = 240;
 
   function rRect(c, x, y, w, h, r) {
     c.beginPath();
@@ -460,36 +452,59 @@
     c.closePath();
   }
 
+  // 6 Engines (Including PRODIGY RAVE & TRANCE SUPERSAW!)
   var FIRMWARES = [
     {
       id: 'FM KEYS',
-      badge: 'FW 1/4: FM KEYS',
+      badge: 'FW 1/6: FM KEYS',
       desc: 'FM ENGINE • ELECTRIC KEYS & CRYSTAL BELLS',
       color: '#38bdf8',
+      rgb: '56, 189, 248',
       modLabel: 'FM DEPTH',
       mono: false
     },
     {
       id: 'ANALOG POLY',
-      badge: 'FW 2/4: ANALOG',
+      badge: 'FW 2/6: ANALOG',
       desc: 'ANALOG ENGINE • WARM DETUNED POLY SYNTH',
       color: '#facc15',
+      rgb: '250, 204, 21',
       modLabel: 'RESONANCE',
       mono: false
     },
     {
-      id: 'ACID BASS',
-      badge: 'FW 3/4: ACID 303',
+      id: 'ACID 303',
+      badge: 'FW 3/6: ACID 303',
       desc: 'ACID ENGINE • MONO GLIDE RESONANT BASS',
       color: '#4ade80',
+      rgb: '74, 222, 128',
       modLabel: 'ACID BITE',
       mono: true
     },
     {
+      id: 'PRODIGY RAVE',
+      badge: 'FW 4/6: PRODIGY',
+      desc: 'PRODIGY ENGINE • SCREAMING RAVE LEAD & SUB',
+      color: '#fb923c',
+      rgb: '251, 146, 60',
+      modLabel: 'RAVE GRIT',
+      mono: true
+    },
+    {
+      id: 'TRANCE SUPERSAW',
+      badge: 'FW 5/6: TRANCE',
+      desc: 'TRANCE ENGINE • 5-VOICE EUPHORIC SUPERSAW',
+      color: '#22d3ee',
+      rgb: '34, 211, 238',
+      modLabel: 'DETUNE',
+      mono: false
+    },
+    {
       id: 'COSMIC PAD',
-      badge: 'FW 4/4: COSMIC',
+      badge: 'FW 6/6: COSMIC',
       desc: 'COSMIC ENGINE • 3-VOICE LUSH AMBIENT PAD',
       color: '#c084fc',
+      rgb: '192, 132, 252',
       modLabel: 'CHORUS',
       mono: false
     }
@@ -506,37 +521,25 @@
   var holdLatch = false;
   var octaveOffset = 0;
 
-  var drumVolume = 1.35; // Loud default 135%
-  var paramCutoff = 3600;
+  var drumVolume = 1.40;
+  var paramCutoff = 3800;
   var paramMod = 0.65;
   var paramRelease = 0.34;
   var paramDelay = 0.32;
 
-  // Web Audio DSP Engine
+  // Bulletproof Web Audio Graph (No risky WaveShaperNode that can break mobile WebViews)
   var audioCtx = null;
+  var masterGain = null;
   var synthBus = null;
   var drumBus = null;
-  var drumDrive = null;
   var delayNode = null;
   var delayFeedback = null;
   var delayWet = null;
-  var saturator = null;
-  var masterComp = null;
   var analyser = null;
   var waveData = null;
   var freqData = null;
   var noiseBuffer = null;
-  var unlocked = false;
-
-  function makeWarmCurve(amount) {
-    var n = 44100;
-    var curve = new Float32Array(n);
-    for (var i = 0; i < n; i++) {
-      var x = (i * 2) / n - 1;
-      curve[i] = Math.tanh(x * amount);
-    }
-    return curve;
-  }
+  var audioReady = false;
 
   function initAudio() {
     try {
@@ -545,23 +548,27 @@
       if (!audioCtx) {
         audioCtx = new AC();
 
-        synthBus = audioCtx.createGain();
-        synthBus.gain.value = 0.72; // Balanced below punchy drums
+        // Force-unlock mobile WebViews with 1-sample silent buffer
+        var silentBuf = audioCtx.createBuffer(1, 1, 22050);
+        var silentSrc = audioCtx.createBufferSource();
+        silentSrc.buffer = silentBuf;
+        silentSrc.connect(audioCtx.destination);
+        silentSrc.start(0);
 
-        // High-headroom Drum Bus with Saturation + Volume Gain
+        masterGain = audioCtx.createGain();
+        masterGain.gain.value = 0.92;
+
+        synthBus = audioCtx.createGain();
+        synthBus.gain.value = 0.72;
+
         drumBus = audioCtx.createGain();
         drumBus.gain.value = drumVolume;
 
-        drumDrive = audioCtx.createWaveShaper();
-        drumDrive.curve = makeWarmCurve(1.65);
-        drumDrive.oversample = '2x';
-
-        // Dotted 8th Stereo-Feel Delay
         delayNode = audioCtx.createDelay(1.0);
         delayNode.delayTime.value = (60 / BPM_PRESETS[bpmIdx]) * 0.75;
 
         delayFeedback = audioCtx.createGain();
-        delayFeedback.gain.value = 0.38;
+        delayFeedback.gain.value = 0.36;
 
         var delayFilter = audioCtx.createBiquadFilter();
         delayFilter.type = 'lowpass';
@@ -576,28 +583,15 @@
         delayFeedback.connect(delayNode);
         delayFilter.connect(delayWet);
 
-        saturator = audioCtx.createWaveShaper();
-        saturator.curve = makeWarmCurve(1.3);
-        saturator.oversample = '2x';
-
-        masterComp = audioCtx.createDynamicsCompressor();
-        masterComp.threshold.value = -10;
-        masterComp.knee.value = 12;
-        masterComp.ratio.value = 6;
-        masterComp.attack.value = 0.003;
-        masterComp.release.value = 0.12;
-
         analyser = audioCtx.createAnalyser();
         analyser.fftSize = 256;
         waveData = new Uint8Array(analyser.frequencyBinCount);
         freqData = new Uint8Array(analyser.frequencyBinCount);
 
-        synthBus.connect(saturator);
-        delayWet.connect(saturator);
-        drumBus.connect(drumDrive);
-        drumDrive.connect(masterComp);
-        saturator.connect(masterComp);
-        masterComp.connect(analyser);
+        synthBus.connect(masterGain);
+        delayWet.connect(masterGain);
+        drumBus.connect(masterGain);
+        masterGain.connect(analyser);
         analyser.connect(audioCtx.destination);
 
         var bufLen = audioCtx.sampleRate * 1.0;
@@ -605,12 +599,20 @@
         var ch = noiseBuffer.getChannelData(0);
         for (var i = 0; i < bufLen; i++) ch[i] = Math.random() * 2 - 1;
       }
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      if (audioCtx.state === 'running') unlocked = true;
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      if (audioCtx.state === 'running') {
+        audioReady = true;
+      }
     } catch (e) {}
   }
 
-  frame.addEventListener('pointerdown', initAudio);
+  // Unlock audio on every possible user gesture type across Android/iOS/PC
+  var unlockEvents = ['pointerdown', 'touchstart', 'touchend', 'mousedown', 'click', 'keydown'];
+  for (var u = 0; u < unlockEvents.length; u++) {
+    window.addEventListener(unlockEvents[u], initAudio, true);
+  }
 
   function noteFreq(semi) {
     var midi = 60 + octaveOffset * 12 + semi;
@@ -632,7 +634,7 @@
       var sp = 1.6 + Math.random() * 4.2;
       particles.push({
         x: 340 + (Math.random() - 0.5) * 150,
-        y: 112 + (Math.random() - 0.5) * 40,
+        y: 120 + (Math.random() - 0.5) * 40,
         vx: Math.cos(a) * sp,
         vy: Math.sin(a) * sp - 0.8,
         life: 0.35 + Math.random() * 0.25,
@@ -641,26 +643,24 @@
     }
   }
 
-  // Heavy Club 909 / Rave Drum Synthesis
+  // High-Impact Club Drum Synthesis
   function playKick(extraDrive) {
     initAudio();
     bounce = 1;
     headphonePulse = 1;
-    if (!audioCtx) return;
+    if (!audioCtx || !drumBus) return;
     var t = audioCtx.currentTime;
 
-    // Sub-Bass Body
     var o = audioCtx.createOscillator();
     var g = audioCtx.createGain();
     o.type = 'sine';
     o.frequency.setValueAtTime(165, t);
     o.frequency.exponentialRampToValueAtTime(44, t + 0.16);
-    g.gain.setValueAtTime(extraDrive ? 1.05 : 0.85, t);
+    g.gain.setValueAtTime(extraDrive ? 0.95 : 0.8, t);
     g.gain.exponentialRampToValueAtTime(0.002, t + 0.28);
     o.connect(g); g.connect(drumBus);
     o.start(t); o.stop(t + 0.29);
 
-    // Punchy Beater Transient Click
     var click = audioCtx.createOscillator();
     var cg = audioCtx.createGain();
     click.type = 'triangle';
@@ -676,7 +676,7 @@
     initAudio();
     bounce = 0.72;
     headphonePulse = 0.75;
-    if (!audioCtx || !noiseBuffer) return;
+    if (!audioCtx || !noiseBuffer || !drumBus) return;
     var t = audioCtx.currentTime;
 
     var n = audioCtx.createBufferSource();
@@ -686,7 +686,7 @@
     bp.frequency.setValueAtTime(1650, t);
     bp.Q.value = 0.75;
     var ng = audioCtx.createGain();
-    ng.gain.setValueAtTime(heavy ? 0.78 : 0.62, t);
+    ng.gain.setValueAtTime(heavy ? 0.72 : 0.58, t);
     ng.gain.exponentialRampToValueAtTime(0.002, t + 0.19);
     n.connect(bp); bp.connect(ng); ng.connect(drumBus);
     n.start(t); n.stop(t + 0.2);
@@ -696,7 +696,7 @@
     body.type = 'triangle';
     body.frequency.setValueAtTime(215, t);
     body.frequency.exponentialRampToValueAtTime(92, t + 0.085);
-    bg.gain.setValueAtTime(heavy ? 0.65 : 0.5, t);
+    bg.gain.setValueAtTime(heavy ? 0.6 : 0.48, t);
     bg.gain.exponentialRampToValueAtTime(0.002, t + 0.1);
     body.connect(bg); bg.connect(drumBus);
     body.start(t); body.stop(t + 0.11);
@@ -704,7 +704,7 @@
 
   function playHat(open) {
     initAudio();
-    if (!audioCtx || !noiseBuffer) return;
+    if (!audioCtx || !noiseBuffer || !drumBus) return;
     var t = audioCtx.currentTime;
     var dur = open ? 0.18 : 0.055;
     var n = audioCtx.createBufferSource();
@@ -713,13 +713,12 @@
     hp.type = 'highpass';
     hp.frequency.setValueAtTime(7000, t);
     var g = audioCtx.createGain();
-    g.gain.setValueAtTime(open ? 0.36 : 0.30, t);
+    g.gain.setValueAtTime(open ? 0.34 : 0.28, t);
     g.gain.exponentialRampToValueAtTime(0.002, t + dur);
     n.connect(hp); hp.connect(g); g.connect(drumBus);
     n.start(t); n.stop(t + dur + 0.01);
   }
 
-  // Rave Sample Helper: Cancel any currently running sample phrase before starting a new one
   function clearSampleTimers() {
     for (var i = 0; i < activeSampleTimers.length; i++) {
       clearTimeout(activeSampleTimers[i]);
@@ -727,9 +726,8 @@
     activeSampleTimers = [];
   }
 
-  // Helper to play a Supersaw / Rave Stab Chord or Lead Note
   function fireRaveSynth(freqs, waveType, dur, cutoffStart, cutoffEnd, reso, gainAmt, slideFromFreq) {
-    if (!audioCtx) return;
+    if (!audioCtx || !synthBus) return;
     var t = audioCtx.currentTime;
     var filter = audioCtx.createBiquadFilter();
     filter.type = 'lowpass';
@@ -760,16 +758,14 @@
     }
   }
 
-  // SAMPLE 1: PRODIGY (Distorted Breakbeat + Screaming Pitched Rave Lead Riff)
   function playSampleProdigy() {
     initAudio();
     clearSampleTimers();
-    lastNoteLabel = 'SAMPLE: PRODIGY RAVE';
+    lastNoteLabel = 'RIFF: PRODIGY RAVE';
     spawnSparks('#fb923c', 18);
     var bpm = BPM_PRESETS[bpmIdx];
     var stepMs = ((60 / bpm) / 4) * 1000;
 
-    // Aggressive syncopated Prodigy-style riff (E minor / Phrygian bite)
     var events = [
       { s: 0,  fn: function() { playKick(true); fireRaveSynth([164.81, 329.63, 331.5], 'sawtooth', 0.22, 4800, 1400, 7, 0.24, 110); } },
       { s: 2,  fn: function() { playHat(true); } },
@@ -795,16 +791,14 @@
     }
   }
 
-  // SAMPLE 2: EURO TECHNO (Classic 90s Euro-Dance / Rave Brass Chord Stabs)
   function playSampleEuroTechno() {
     initAudio();
     clearSampleTimers();
-    lastNoteLabel = 'SAMPLE: 90s EURO TECHNO';
+    lastNoteLabel = 'RIFF: EURO TECHNO';
     spawnSparks('#c084fc', 18);
     var bpm = BPM_PRESETS[bpmIdx];
     var stepMs = ((60 / bpm) / 4) * 1000;
 
-    // Punchy 90s rave chord stabs (Am -> F -> C -> G)
     var cAm = [220.00, 261.63, 329.63, 440.00, 442.2];
     var cF  = [174.61, 220.00, 261.63, 349.23, 351.0];
     var cC  = [261.63, 329.63, 392.00, 523.25, 525.8];
@@ -835,11 +829,10 @@
     }
   }
 
-  // SAMPLE 3: TECHNO 303 (Warehouse 909 Kick + Squelchy 303 Acid Line)
   function playSampleTechno() {
     initAudio();
     clearSampleTimers();
-    lastNoteLabel = 'SAMPLE: ACID TECHNO 303';
+    lastNoteLabel = 'RIFF: TECHNO 303';
     spawnSparks('#38bdf8', 18);
     var bpm = BPM_PRESETS[bpmIdx];
     var stepMs = ((60 / bpm) / 4) * 1000;
@@ -872,16 +865,14 @@
     }
   }
 
-  // SAMPLE 4: TRANCE ANTHEM (Euphoric Gated Supersaw Riff + Stereo Echo)
   function playSampleTrance() {
     initAudio();
     clearSampleTimers();
-    lastNoteLabel = 'SAMPLE: TRANCE ANTHEM';
+    lastNoteLabel = 'RIFF: TRANCE ANTHEM';
     spawnSparks('#4ade80', 18);
     var bpm = BPM_PRESETS[bpmIdx];
     var stepMs = ((60 / bpm) / 4) * 1000;
 
-    // Iconic staccato trance anthem hook (E5 -> G5 -> D5 -> A4)
     var notes = [
       { s: 0,  f: 659.25, dur: 0.11, kick: true },
       { s: 1,  f: 659.25, dur: 0.11, kick: false },
@@ -902,7 +893,6 @@
           if (nt.kick) playKick(false);
           bounce = 0.7;
           headphonePulse = 0.85;
-          // 4-voice Supersaw spread
           fireRaveSynth(
             [nt.f * 0.992, nt.f, nt.f * 1.008, nt.f * 0.5],
             'sawtooth',
@@ -918,7 +908,7 @@
     }
   }
 
-  // Multi-Firmware Synthesizer Voice
+  // 6-Engine Synthesizer Voice
   function triggerVoice(freq, label, autoDur) {
     initAudio();
     var fw = FIRMWARES[fwIdx];
@@ -926,7 +916,7 @@
     lastNoteLabel = label;
     spawnSparks(fw.color, 5);
 
-    if (!audioCtx) return null;
+    if (!audioCtx || !synthBus) return null;
     var t = audioCtx.currentTime;
     var nodesToStop = [];
 
@@ -956,8 +946,8 @@
       filter.Q.value = 1.5;
 
       env.gain.setValueAtTime(0.001, t);
-      env.gain.linearRampToValueAtTime(0.22, t + 0.008);
-      env.gain.exponentialRampToValueAtTime(0.11, t + 0.25);
+      env.gain.linearRampToValueAtTime(0.24, t + 0.008);
+      env.gain.exponentialRampToValueAtTime(0.12, t + 0.25);
 
       carrier.connect(filter);
       filter.connect(env);
@@ -980,8 +970,8 @@
       filter.Q.value = 1 + paramMod * 10;
 
       env.gain.setValueAtTime(0.001, t);
-      env.gain.linearRampToValueAtTime(0.16, t + 0.015);
-      env.gain.exponentialRampToValueAtTime(0.11, t + 0.2);
+      env.gain.linearRampToValueAtTime(0.18, t + 0.015);
+      env.gain.exponentialRampToValueAtTime(0.12, t + 0.2);
 
       osc1.connect(filter);
       osc2.connect(filter);
@@ -991,7 +981,7 @@
       osc1.start(t);
       osc2.start(t);
       nodesToStop.push(osc1, osc2);
-    } else if (fw.id === 'ACID BASS') {
+    } else if (fw.id === 'ACID 303') {
       var bassFreq = freq * 0.5;
       var osc = audioCtx.createOscillator();
       osc.type = 'sawtooth';
@@ -1010,21 +1000,78 @@
       filter.Q.value = 6 + paramMod * 13;
 
       env.gain.setValueAtTime(0.001, t);
-      env.gain.linearRampToValueAtTime(0.24, t + 0.008);
-      env.gain.exponentialRampToValueAtTime(0.14, t + 0.22);
+      env.gain.linearRampToValueAtTime(0.26, t + 0.008);
+      env.gain.exponentialRampToValueAtTime(0.15, t + 0.22);
 
       osc.connect(filter);
       filter.connect(env);
       env.connect(synthBus);
       osc.start(t);
       nodesToStop.push(osc);
+    } else if (fw.id === 'PRODIGY RAVE') {
+      // Aggressive 90s Prodigy Screaming Lead + Sub Oscillator + Pitch Glide
+      var p1 = audioCtx.createOscillator();
+      var p2 = audioCtx.createOscillator();
+      var pSub = audioCtx.createOscillator();
+      p1.type = 'sawtooth';
+      p2.type = 'sawtooth';
+      pSub.type = 'square';
+
+      var startSlide = lastFreqPlayed > 0 ? lastFreqPlayed : freq * 0.85;
+      p1.frequency.setValueAtTime(startSlide, t);
+      p1.frequency.exponentialRampToValueAtTime(freq, t + 0.045);
+
+      p2.frequency.setValueAtTime(startSlide * 1.009, t);
+      p2.frequency.exponentialRampToValueAtTime(freq * 1.009, t + 0.045);
+
+      pSub.frequency.setValueAtTime(freq * 0.5, t);
+      lastFreqPlayed = freq;
+
+      filter.frequency.setValueAtTime(Math.min(7800, paramCutoff * 1.5), t);
+      filter.frequency.exponentialRampToValueAtTime(Math.max(450, paramCutoff * 0.75), t + 0.25);
+      filter.Q.value = 4 + paramMod * 10;
+
+      env.gain.setValueAtTime(0.001, t);
+      env.gain.linearRampToValueAtTime(0.24, t + 0.006);
+      env.gain.exponentialRampToValueAtTime(0.15, t + 0.2);
+
+      p1.connect(filter);
+      p2.connect(filter);
+      pSub.connect(filter);
+      filter.connect(env);
+      env.connect(synthBus);
+
+      p1.start(t); p2.start(t); pSub.start(t);
+      nodesToStop.push(p1, p2, pSub);
+    } else if (fw.id === 'TRANCE SUPERSAW') {
+      // 5-Voice Detuned Euphoric Trance Supersaw Stack
+      var spread = 0.004 + paramMod * 0.016;
+      var detunes = [1 - spread * 2, 1 - spread, 1.0, 1 + spread, 1 + spread * 2];
+      filter.frequency.setValueAtTime(Math.min(8000, paramCutoff * 1.35), t);
+      filter.Q.value = 2.8;
+
+      env.gain.setValueAtTime(0.001, t);
+      env.gain.linearRampToValueAtTime(0.16, t + 0.018);
+      env.gain.exponentialRampToValueAtTime(0.11, t + 0.28);
+
+      for (var d = 0; d < detunes.length; d++) {
+        var so = audioCtx.createOscillator();
+        so.type = 'sawtooth';
+        so.frequency.setValueAtTime(freq * detunes[d], t);
+        so.connect(filter);
+        so.start(t);
+        nodesToStop.push(so);
+      }
+      filter.connect(env);
+      env.connect(synthBus);
     } else {
+      // COSMIC PAD
       var ratios = [1 - paramMod * 0.012, 1.0, 1 + paramMod * 0.012];
       filter.frequency.setValueAtTime(paramCutoff, t);
       filter.Q.value = 2.5;
 
       env.gain.setValueAtTime(0.001, t);
-      env.gain.linearRampToValueAtTime(0.11, t + 0.16);
+      env.gain.linearRampToValueAtTime(0.13, t + 0.14);
 
       for (var r = 0; r < ratios.length; r++) {
         var o = audioCtx.createOscillator();
@@ -1159,13 +1206,11 @@
     });
   }
 
-  // Drum & Chord Pads
   bindPad('pad-kick', function() { playKick(false); });
   bindPad('pad-snare', function() { playSnare(false); });
   bindPad('pad-hat', function() { playHat(false); });
   bindPad('pad-chord', playMinor9Chord);
 
-  // Rave Sample Pads
   bindPad('smp-prodigy', playSampleProdigy);
   bindPad('smp-euro', playSampleEuroTechno);
   bindPad('smp-techno', playSampleTechno);
@@ -1184,7 +1229,7 @@
     fwBadge.style.borderColor = fw.color;
     lblMod.textContent = fw.modLabel;
     frame.style.borderColor = fw.color;
-    frame.style.boxShadow = '0 0 44px ' + fw.color + '55, inset 0 0 22px ' + fw.color + '22';
+    frame.style.boxShadow = '0 0 44px rgba(' + fw.rgb + ', 0.38), inset 0 0 22px rgba(' + fw.rgb + ', 0.14)';
     spawnSparks(fw.color, 14);
   });
 
@@ -1242,7 +1287,6 @@
     }
   });
 
-  // Guide Modal
   var guideModal = document.getElementById('guide-modal');
   document.getElementById('btn-guide').addEventListener('pointerdown', function(e) {
     e.preventDefault();
@@ -1253,7 +1297,6 @@
     guideModal.classList.remove('open');
   });
 
-  // Sliders (including DRUM VOL)
   document.getElementById('sl-dvol').addEventListener('input', function(e) {
     initAudio();
     var pct = parseInt(e.target.value, 10);
@@ -1279,7 +1322,6 @@
     }
   });
 
-  // PC Keyboard Shortcuts (1-4 Drums/Chord, 5-8 Rave Samples, Z-M Keys)
   var qwertyMap = {
     'KeyZ': 0, 'KeyS': 1, 'KeyX': 2, 'KeyD': 3, 'KeyC': 4,
     'KeyV': 5, 'KeyG': 6, 'KeyB': 7, 'KeyH': 8, 'KeyN': 9,
@@ -1315,7 +1357,6 @@
     }
   });
 
-  // 16-Step Drum Machine Patterns (Techno 909, Euro Techno, Trance, Prodigy Break)
   function runStep(s) {
     var beat = BEAT_MODES[beatIdx];
     if (beat === 'TECHNO 909') {
@@ -1358,3 +1399,265 @@
       arpFlashSemi = semiToPlay;
       arpFlashTimer = 0.1;
       syncKeyboardHighlights();
+      triggerVoice(noteFreq(semiToPlay), 'ARP NOTE', 0.14);
+      if (arp === 'UP') arpStep++;
+    }
+  }
+
+  function update(dt) {
+    if (audioCtx && audioCtx.state === 'running') audioReady = true;
+    bounce = Math.max(0, bounce - dt * 3.4);
+    headphonePulse = Math.max(0, headphonePulse - dt * 4.0);
+    if (arpFlashTimer > 0) {
+      arpFlashTimer -= dt;
+      if (arpFlashTimer <= 0) syncKeyboardHighlights();
+    }
+
+    var bpm = BPM_PRESETS[bpmIdx];
+    var sixteenth = (60 / bpm) / 4;
+    if (audioReady && (BEAT_MODES[beatIdx] !== 'OFF' || (ARP_MODES[arpIdx] !== 'OFF' && heldSemis.length > 0))) {
+      stepClock += dt;
+      if (stepClock >= sixteenth) {
+        stepClock -= sixteenth;
+        runStep(stepCounter % 16);
+        stepCounter++;
+      }
+    }
+
+    if (analyser && waveData && freqData) {
+      analyser.getByteTimeDomainData(waveData);
+      analyser.getByteFrequencyData(freqData);
+    }
+
+    for (var i = particles.length - 1; i >= 0; i--) {
+      var p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.1;
+      p.life -= dt;
+      if (p.life <= 0) particles.splice(i, 1);
+    }
+  }
+
+  // Modern DJ Doge with Studio LED Headphones (Safe RGBA colors for 100% compatibility)
+  function drawModernDogeDJ(cx, cy, fw) {
+    var accentCol = fw.color;
+    var rgb = fw.rgb;
+    var dy = cy - bounce * 10;
+
+    ctx.save();
+    ctx.translate(cx, dy);
+    ctx.scale(1 + bounce * 0.06, 1 - bounce * 0.04);
+
+    // Soundwave Halo behind Headphones
+    if (headphonePulse > 0.05) {
+      ctx.strokeStyle = 'rgba(' + rgb + ', ' + (headphonePulse * 0.6).toFixed(2) + ')';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(0, 0, 74 + (1 - headphonePulse) * 32, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // Modern Headphone Arch Band
+    ctx.strokeStyle = '#1e293b';
+    ctx.lineWidth = 13;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.arc(0, -2, 64, Math.PI * 1.05, Math.PI * 1.95);
+    ctx.stroke();
+
+    // Neon Rim on Headband
+    ctx.strokeStyle = accentCol;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(0, -2, 69, Math.PI * 1.18, Math.PI * 1.82);
+    ctx.stroke();
+
+    // Top Cushion Pad
+    ctx.fillStyle = '#0f172a';
+    rRect(ctx, -26, -72, 52, 10, 5);
+    ctx.fill();
+
+    // Angular Modern Doge Ears
+    ctx.fillStyle = '#d97706';
+    ctx.beginPath();
+    ctx.moveTo(-40, -24); ctx.lineTo(-32, -62); ctx.lineTo(-10, -30);
+    ctx.closePath(); ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(40, -24); ctx.lineTo(32, -62); ctx.lineTo(10, -30);
+    ctx.closePath(); ctx.fill();
+
+    // Inner Ears
+    ctx.fillStyle = '#fde047';
+    ctx.beginPath();
+    ctx.moveTo(-34, -26); ctx.lineTo(-29, -50); ctx.lineTo(-15, -30);
+    ctx.closePath(); ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(34, -26); ctx.lineTo(29, -50); ctx.lineTo(15, -30);
+    ctx.closePath(); ctx.fill();
+
+    // Main Head Contour
+    var headGrad = ctx.createLinearGradient(0, -44, 0, 44);
+    headGrad.addColorStop(0, '#fde047');
+    headGrad.addColorStop(0.65, '#facc15');
+    headGrad.addColorStop(1, '#ca8a04');
+    ctx.fillStyle = headGrad;
+    ctx.beginPath();
+    ctx.ellipse(0, 4, 52, 41, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Cream Muzzle
+    ctx.fillStyle = '#fefce8';
+    ctx.beginPath();
+    ctx.ellipse(0, 15, 27, 16, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Sleek Futuristic DJ Visor
+    ctx.fillStyle = '#060913';
+    ctx.strokeStyle = accentCol;
+    ctx.lineWidth = 2.5;
+    rRect(ctx, -36, -15, 72, 16, 7);
+    ctx.fill();
+    ctx.stroke();
+
+    // Glowing Eye Bars
+    ctx.fillStyle = accentCol;
+    rRect(ctx, -26, -10, 19, 6, 3);
+    ctx.fill();
+    rRect(ctx, 7, -10, 19, 6, 3);
+    ctx.fill();
+
+    // Nose & Smirk
+    ctx.fillStyle = '#090d16';
+    ctx.beginPath();
+    ctx.ellipse(0, 9, 6.5, 4.5, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.strokeStyle = '#713f12';
+    ctx.lineWidth = 2.2;
+    ctx.beginPath();
+    ctx.moveTo(0, 14); ctx.lineTo(0, 19);
+    ctx.moveTo(-11, 19); ctx.quadraticCurveTo(0, 25, 12, 18);
+    ctx.stroke();
+
+    // Large Over-Ear Studio Headphones (Left & Right Cups)
+    var cupScale = 1 + headphonePulse * 0.09;
+
+    // Left Earcup
+    ctx.save();
+    ctx.translate(-56, 0);
+    ctx.scale(cupScale, cupScale);
+    ctx.fillStyle = '#334155';
+    rRect(ctx, -5, -22, 11, 44, 5); ctx.fill();
+    ctx.fillStyle = '#0f172a';
+    ctx.strokeStyle = '#94a3b8';
+    ctx.lineWidth = 2;
+    rRect(ctx, -18, -24, 16, 48, 7); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = accentCol;
+    rRect(ctx, -14, -15, 5, 30, 2.5); ctx.fill();
+    ctx.restore();
+
+    // Right Earcup
+    ctx.save();
+    ctx.translate(56, 0);
+    ctx.scale(cupScale, cupScale);
+    ctx.fillStyle = '#334155';
+    rRect(ctx, -6, -22, 11, 44, 5); ctx.fill();
+    ctx.fillStyle = '#0f172a';
+    ctx.strokeStyle = '#94a3b8';
+    ctx.lineWidth = 2;
+    rRect(ctx, 2, -24, 16, 48, 7); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = accentCol;
+    rRect(ctx, 9, -15, 5, 30, 2.5); ctx.fill();
+    ctx.restore();
+
+    ctx.restore();
+  }
+
+  function render() {
+    var fw = FIRMWARES[fwIdx];
+    ctx.fillStyle = '#060913';
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.strokeStyle = 'rgba(148, 163, 184, 0.06)';
+    ctx.lineWidth = 1;
+    for (var x = 34; x < W; x += 34) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+    }
+
+    // 16-Step Sequencer LEDs
+    for (var s = 0; s < 16; s++) {
+      var lx = 14 + s * 22;
+      var active = audioReady && (s === (stepCounter % 16));
+      ctx.fillStyle = active ? fw.color : (s % 4 === 0 ? '#334155' : '#1e293b');
+      rRect(ctx, lx, 8, 16, 7, 3);
+      ctx.fill();
+    }
+
+    // Frequency Spectrum Analyzer
+    if (freqData && audioReady) {
+      var barCount = 32;
+      var bw = (W - 28) / barCount;
+      for (var b = 0; b < barCount; b++) {
+        var val = freqData[b * 2] / 255;
+        var bh = val * 125;
+        ctx.fillStyle = 'rgba(' + fw.rgb + ', 0.16)';
+        ctx.fillRect(14 + b * bw, H - 24 - bh, bw - 3, bh);
+      }
+    }
+
+    // Dual-Trace Oscilloscope Wave
+    ctx.strokeStyle = fw.color;
+    ctx.lineWidth = 2.4;
+    ctx.beginPath();
+    var len = waveData ? waveData.length : 64;
+    for (var i = 0; i < len; i++) {
+      var wx = (i / (len - 1)) * W;
+      var v = (waveData && audioReady) ? (waveData[i] - 128) / 128 : 0;
+      var wy = (H / 2 + 4) + v * 95;
+      if (i === 0) ctx.moveTo(wx, wy);
+      else ctx.lineTo(wx, wy);
+    }
+    ctx.stroke();
+
+    // Modern DJ Doge with Headphones
+    drawModernDogeDJ(340, H / 2 + 4, fw);
+
+    // Bottom Status Telemetry
+    ctx.font = '900 11px monospace';
+    ctx.fillStyle = fw.color;
+    ctx.fillText(fw.desc, 14, H - 8);
+
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#fef08a';
+    var octStr = 'OCT ' + (4 + octaveOffset);
+    ctx.fillText((audioReady ? lastNoteLabel : 'TAP ANY PAD OR KEY TO START') + '  |  ' + octStr, W - 14, H - 8);
+    ctx.textAlign = 'left';
+
+    for (var pi = 0; pi < particles.length; pi++) {
+      var pt = particles[pi];
+      ctx.fillStyle = pt.color;
+      ctx.beginPath(); ctx.arc(pt.x, pt.y, 2.8, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+
+  var STEP = 1000 / 60, FIXED_DT = 1 / 60, last = performance.now(), acc = 0;
+  function loop(now) {
+    acc += Math.min(100, now - last);
+    last = now;
+    var steps = 0;
+    while (acc >= STEP - 0.5 && steps < 4) {
+      update(FIXED_DT);
+      acc -= STEP;
+      steps++;
+    }
+    render();
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
