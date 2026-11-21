@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DOGE-808 BEAT CARD - Dogeparty NFT by PAPETO</title>
+<meta property="og:title" content="DOGE-808 BEAT CARD - Dogeparty NFT by PAPETO">
+<meta property="og:url" content="https://papetoart.github.io/papeto-cards/doge-808.html">
+<link rel="canonical" href="https://papetoart.github.io/papeto-cards/doge-808.html">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
   body {
@@ -297,21 +300,18 @@
     ctx.fillStyle = '#090d16';
     ctx.fillRect(0, 0, W, H);
 
-    // Top HUD inside card
     ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
     ctx.fillRect(0, 0, W, 34);
     ctx.font = '800 13px sans-serif';
     ctx.fillStyle = '#facc15';
     ctx.fillText('DOGE-808 CARD', 14, 22);
 
-    // 8-Step Sequencer LEDs
     for (var s = 0; s < 8; s++) {
       var lx = 155 + s * 22;
       ctx.fillStyle = (s === step % 8 && loopOn && unlocked) ? '#facc15' : '#1e293b';
       ctx.beginPath(); ctx.roundRect(lx, 11, 14, 12, 3); ctx.fill();
     }
 
-    // Equalizer Bars behind Doge
     for (var i = 0; i < 8; i++) {
       var bh = bars[i] * 95;
       var bx = 140 + i * 48;
@@ -319,7 +319,6 @@
       ctx.beginPath(); ctx.roundRect(bx, 330 - bh, 32, bh, 5); ctx.fill();
     }
 
-    // Bouncing Doge Head
     var dy = 185 - bounce * 20;
     ctx.save();
     ctx.translate(320, dy);
@@ -341,7 +340,6 @@
     ctx.beginPath(); ctx.arc(28, -8, 6, 0, Math.PI * 2); ctx.fill();
     ctx.restore();
 
-    // Tap-to-start prompt before first touch
     if (!unlocked) {
       ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
       ctx.beginPath(); ctx.roundRect(195, 255, 250, 28, 14); ctx.fill();
@@ -351,7 +349,6 @@
       ctx.fillText('TAP CARD OR PAD TO START AUDIO', 214, 273);
     }
 
-    // Sparks
     for (var sp = 0; sp < sparks.length; sp++) {
       var pt = sparks[sp];
       ctx.fillStyle = pt.color;
