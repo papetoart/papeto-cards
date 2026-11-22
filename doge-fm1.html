@@ -23,9 +23,9 @@
   #card-frame {
     position: relative;
     width: 98vw;
-    max-width: 940px;
+    max-width: 980px;
     height: 97dvh;
-    max-height: 760px;
+    max-height: 780px;
     border: 2.5px solid #38bdf8;
     border-radius: 16px;
     box-shadow: 0 0 44px rgba(56, 189, 248, 0.35), inset 0 0 22px rgba(250, 204, 21, 0.12);
@@ -35,6 +35,8 @@
     overflow: hidden;
     transition: border-color 0.25s ease, box-shadow 0.25s ease;
   }
+
+  /* Top Hardware Bar */
   #top-bar {
     display: flex;
     flex-wrap: wrap;
@@ -54,13 +56,13 @@
   }
   .brand {
     font-weight: 900;
-    font-size: clamp(11px, 1.7vw, 14px);
+    font-size: clamp(11px, 1.6vw, 14px);
     color: #facc15;
     letter-spacing: 0.7px;
   }
   .fw-tag {
     font-family: monospace;
-    font-size: clamp(8.5px, 1.25vw, 11px);
+    font-size: clamp(8.5px, 1.2vw, 11px);
     font-weight: 900;
     padding: 2px 6px;
     border-radius: 6px;
@@ -74,6 +76,58 @@
     align-items: center;
     gap: 3.5px;
   }
+
+  /* Unified Side-by-Side Button Groups (BPM - / BPM + and OCT - / OCT + never separate!) */
+  .btn-group {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    background: #0b1222;
+    border: 1.5px solid #38bdf8;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .btn-group.gold-grp {
+    border-color: #facc15;
+  }
+  .grp-btn {
+    background: #162036;
+    border: none;
+    color: #e0f2fe;
+    font-weight: 900;
+    font-size: clamp(8px, 1.15vw, 10px);
+    padding: 3.5px 6px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .btn-group.gold-grp .grp-btn {
+    color: #fef08a;
+  }
+  .grp-btn:active {
+    background: #38bdf8;
+    color: #090d16;
+  }
+  .btn-group.gold-grp .grp-btn:active {
+    background: #facc15;
+    color: #090d16;
+  }
+  .grp-val {
+    font-family: monospace;
+    font-weight: 900;
+    font-size: clamp(8px, 1.15vw, 10px);
+    color: #facc15;
+    padding: 0 5px;
+    background: #070b14;
+    border-left: 1px solid rgba(56, 189, 248, 0.35);
+    border-right: 1px solid rgba(56, 189, 248, 0.35);
+    white-space: nowrap;
+  }
+  .grp-divider {
+    width: 1px;
+    height: 14px;
+    background: rgba(250, 204, 21, 0.4);
+  }
+
   .hw-btn {
     background: #162036;
     border: 1.5px solid #475569;
@@ -106,10 +160,27 @@
   }
   .hw-btn:active { transform: scale(0.95); }
 
+  /* Main Workspace (Vertical in Portrait/PC, Split-Deck in Mobile Landscape!) */
+  #workspace {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  #left-pane {
+    flex: 1 1 160px;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
   #stage-wrap {
     position: relative;
-    flex: 1 1 165px;
-    min-height: 145px;
+    flex: 1 1 auto;
+    min-height: 115px;
     width: 100%;
     overflow: hidden;
   }
@@ -126,9 +197,9 @@
     border: 1px solid rgba(250, 204, 21, 0.75);
     border-radius: 20px;
     color: #fef08a;
-    font-size: clamp(8px, 1.15vw, 10px);
+    font-size: clamp(7.5px, 1.1vw, 10px);
     font-weight: 900;
-    padding: 2px 9px;
+    padding: 2px 8px;
     letter-spacing: 0.7px;
     pointer-events: none;
     z-index: 4;
@@ -139,7 +210,7 @@
     position: absolute;
     inset: 0;
     background: rgba(6, 9, 19, 0.97);
-    z-index: 12;
+    z-index: 15;
     display: none;
     flex-direction: column;
     justify-content: space-between;
@@ -183,18 +254,13 @@
     line-height: 1.35;
   }
 
-  #deck {
-    background: linear-gradient(180deg, #0d1526 0%, #070b14 100%);
-    border-top: 1.5px solid #1e293b;
-    padding: 5px 8px 7px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+  /* Sliders Panel */
+  #sliders-panel {
+    background: #0a101f;
+    border-top: 1px solid #1e293b;
+    padding: 4px 8px;
     flex-shrink: 0;
-    z-index: 8;
   }
-
-  /* 5 Hardware Sliders: BPM, DRUM VOL, PAD/SYNTH VOL, BRIGHTNESS, ECHO/MOD */
   .params-row {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -254,18 +320,33 @@
     margin-top: -4px;
   }
 
-  .pads-row {
+  /* Right Pane (Pads + Keyboard) */
+  #right-pane {
+    background: linear-gradient(180deg, #0d1526 0%, #070b14 100%);
+    padding: 5px 8px 7px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+
+  .pads-row-4 {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 5px;
+    gap: 4px;
+  }
+  .pads-row-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
   }
   .pad-btn {
     background: linear-gradient(180deg, #1e293b, #0f172a);
     border: 1.5px solid #facc15;
     color: #fef08a;
     font-weight: 900;
-    font-size: clamp(7.8px, 1.2vw, 10.5px);
-    padding: 5px 3px;
+    font-size: clamp(7.5px, 1.15vw, 10px);
+    padding: 5px 2px;
     border-radius: 7px;
     cursor: pointer;
     box-shadow: 0 2px 0 #854d0e;
@@ -279,6 +360,7 @@
   .pad-btn.green { border-color: #4ade80; color: #dcfce7; box-shadow: 0 2px 0 #166534; }
   .pad-btn.purple { border-color: #c084fc; color: #f3e8ff; box-shadow: 0 2px 0 #6b21a8; }
   .pad-btn.orange { border-color: #fb923c; color: #ffedd5; box-shadow: 0 2px 0 #9a3412; }
+  .pad-btn.rose { border-color: #fb7185; color: #ffe4e6; box-shadow: 0 2px 0 #9f1239; }
 
   .pad-btn.hit { transform: translateY(2px); background: #facc15; color: #09090b; }
   .pad-btn.cyan.hit { background: #38bdf8; color: #09090b; }
@@ -286,17 +368,19 @@
   .pad-btn.green.hit { background: #4ade80; color: #09090b; }
   .pad-btn.purple.hit { background: #c084fc; color: #09090b; }
   .pad-btn.orange.hit { background: #fb923c; color: #09090b; }
+  .pad-btn.rose.hit { background: #fb7185; color: #09090b; }
 
   /* Zero-Gap Polyphonic Keyboard */
   #keyboard {
     position: relative;
-    height: clamp(64px, 13dvh, 98px);
+    height: clamp(72px, 14.5dvh, 110px);
     display: flex;
     gap: 1px;
     background: #020617;
     padding: 3px;
     border-radius: 9px;
     border: 1.5px solid #334155;
+    touch-action: none;
   }
   .w-key {
     flex: 1;
@@ -305,14 +389,20 @@
     border: 1px solid #64748b;
     border-radius: 0 0 6px 6px;
     display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
     padding-bottom: 4px;
     font-size: 9.5px;
     font-weight: 900;
     color: #334155;
     cursor: pointer;
     box-shadow: 0 2.5px 0 #475569;
+  }
+  .w-key .pc-hint {
+    font-size: 7.5px;
+    color: #64748b;
+    font-weight: 700;
   }
   .w-key.pressed {
     background: linear-gradient(180deg, #fef08a 0%, #facc15 100%);
@@ -324,14 +414,15 @@
     position: absolute;
     top: 3px;
     width: 8.4%;
-    height: 57%;
+    height: 56%;
     background: linear-gradient(180deg, #1e293b 0%, #090d16 100%);
     border: 1.5px solid #38bdf8;
     border-radius: 0 0 5px 5px;
     z-index: 4;
     display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
     padding-bottom: 3px;
     font-size: 7.5px;
     font-weight: 800;
@@ -339,10 +430,76 @@
     cursor: pointer;
     box-shadow: 0 2.5px 0 #020617;
   }
+  .b-key .pc-hint {
+    font-size: 6.5px;
+    color: #94a3b8;
+  }
   .b-key.pressed {
     background: #38bdf8;
     color: #09090b;
     transform: translateY(2px);
+  }
+
+  /* =====================================================================
+     MOBILE LANDSCAPE DEDICATED SPLIT-DECK LAYOUT
+     Makes keys huge & super playable with thumbs when phone is rotated!
+     ===================================================================== */
+  @media (orientation: landscape) and (max-height: 560px) {
+    body { padding: 2px; }
+    #card-frame {
+      width: 99vw;
+      height: 98dvh;
+      border-radius: 11px;
+    }
+    #top-bar {
+      padding: 3px 6px;
+      gap: 3px;
+    }
+    .hw-btn, .grp-btn, .grp-val {
+      padding: 2.5px 4.5px;
+      font-size: 8.5px;
+    }
+    #workspace {
+      display: grid;
+      grid-template-columns: 43% 57%;
+    }
+    #left-pane {
+      min-height: 0;
+      border-right: 1.5px solid #1e293b;
+    }
+    #stage-wrap {
+      min-height: 85px;
+    }
+    #sliders-panel {
+      padding: 3px 5px;
+    }
+    .params-row {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3px;
+    }
+    .params-row .param-box:first-child {
+      grid-column: span 2;
+    }
+    .param-box {
+      padding: 2px 5px;
+    }
+    input[type="range"].synth-slider {
+      height: 11px;
+    }
+    #right-pane {
+      padding: 4px 6px 5px;
+      gap: 4px;
+      min-height: 0;
+    }
+    .pad-btn {
+      padding: 4px 2px;
+      font-size: 8.5px;
+    }
+    #keyboard {
+      flex: 1 1 auto;
+      height: auto;
+      min-height: 95px;
+    }
   }
 </style>
 </head>
@@ -351,7 +508,7 @@
   <div id="top-bar">
     <div class="brand-box">
       <span class="brand">DOGE FM1</span>
-      <span id="fw-badge" class="fw-tag">FW 1/6: FM KEYS</span>
+      <span id="fw-badge" class="fw-tag">FW 1/7: FM KEYS</span>
     </div>
     <div class="ctrl-strip">
       <button id="btn-fw" class="hw-btn fw-btn" type="button">ENGINE</button>
@@ -361,101 +518,120 @@
       <button id="btn-hold" class="hw-btn" type="button">LATCH</button>
       <button id="btn-rec" class="hw-btn" type="button">REC</button>
       <button id="btn-clr" class="hw-btn" type="button">CLR</button>
-      <button id="btn-oct-down" class="hw-btn gold" type="button">OCT-</button>
-      <button id="btn-oct-up" class="hw-btn gold" type="button">OCT+</button>
+
+      <!-- Side-by-Side BPM - and BPM + Control Group -->
+      <div class="btn-group" title="Adjust BPM">
+        <button id="btn-bpm-down" class="grp-btn" type="button">BPM -</button>
+        <span id="bpm-readout" class="grp-val">135</span>
+        <button id="btn-bpm-up" class="grp-btn" type="button">BPM +</button>
+      </div>
+
+      <!-- Side-by-Side OCT - and OCT + Control Group -->
+      <div class="btn-group gold-grp" title="Octave Shift">
+        <button id="btn-oct-down" class="grp-btn" type="button">OCT -</button>
+        <span class="grp-divider"></span>
+        <button id="btn-oct-up" class="grp-btn" type="button">OCT +</button>
+      </div>
+
       <button id="btn-beat" class="hw-btn on" type="button">DRUMS: TECHNO 909</button>
       <button id="btn-drop" class="hw-btn" type="button">DROP</button>
       <button id="btn-guide" class="hw-btn gold" type="button">? GUIDE</button>
     </div>
   </div>
 
-  <div id="stage-wrap">
-    <div id="sig-badge">PLAYABLE NFT &bull; BY PAPETO</div>
-    <canvas id="stage" width="680" height="240"></canvas>
-
-    <div id="guide-modal">
-      <div class="guide-head">
-        <h3>DOGE FM1 — PLAYABLE NFT SYNTH &amp; RAVE MANUAL</h3>
-        <button id="btn-close-guide" class="hw-btn gold" type="button">BACK TO SYNTH</button>
+  <div id="workspace">
+    <!-- Left / Top Pane: Visualizer + Sliders -->
+    <div id="left-pane">
+      <div id="stage-wrap">
+        <div id="sig-badge">PLAYABLE NFT &bull; BY PAPETO</div>
+        <canvas id="stage" width="680" height="240"></canvas>
       </div>
-      <div class="guide-grid">
-        <div class="guide-card">
-          <strong>1. FULL BPM SLIDER (75 – 185 BPM)</strong>
-          <p>Slide <b>BPM</b> from slow 75 BPM dub/breakbeat all the way up to 185 BPM hardcore/psytrance. Use <b>DROP</b> to cut drums for a breakdown and slam them back in!</p>
+
+      <div id="sliders-panel">
+        <div class="params-row">
+          <div class="param-box cyan-box">
+            <div class="param-head"><span>BPM SLIDER</span><span id="val-bpm">135</span></div>
+            <input id="sl-bpm" class="synth-slider" type="range" min="75" max="185" value="135">
+          </div>
+          <div class="param-box highlight-box">
+            <div class="param-head"><span>DRUM VOL</span><span id="val-dvol">140%</span></div>
+            <input id="sl-dvol" class="synth-slider" type="range" min="0" max="200" value="140">
+          </div>
+          <div class="param-box highlight-box">
+            <div class="param-head"><span>PAD/SYNTH</span><span id="val-svol">150%</span></div>
+            <input id="sl-svol" class="synth-slider" type="range" min="0" max="200" value="150">
+          </div>
+          <div class="param-box">
+            <div class="param-head"><span>BRIGHTNESS</span><span id="val-cut">4400Hz</span></div>
+            <input id="sl-cut" class="synth-slider" type="range" min="180" max="8000" value="4400">
+          </div>
+          <div class="param-box">
+            <div class="param-head"><span>MOD/ECHO</span><span id="val-mod">55%</span></div>
+            <input id="sl-mod" class="synth-slider" type="range" min="0" max="100" value="55">
+          </div>
         </div>
-        <div class="guide-card">
-          <strong>2. RAVE SAMPLE PADS [5–8] &amp; DJ FX [1–4]</strong>
-          <p>Trigger loud BPM-synced riffs: <b>PRODIGY [5]</b>, <b>EURO TECHNO [6]</b>, <b>TECHNO 303 [7]</b>, and <b>TRANCE [8]</b>. Hold <b>SNARE ROLL [3]</b> for build-ups or hit <b>RAVE SIREN [4]</b>.</p>
-        </div>
-        <div class="guide-card">
-          <strong>3. RAVE SCALE + CHORD MODE + 6 ENGINES</strong>
-          <p>With <b>SCALE: RAVE</b> active, every key plays in tune! Turn on <b>CHORD</b> for 1-finger rave chords across all keys, or tap <b>ENGINE</b> for Prodigy &amp; Trance Supersaw leads.</p>
-        </div>
-        <div class="guide-card">
-          <strong>4. LIVE 16-STEP LOOP RECORDER (REC / CLR)</strong>
-          <p>Tap <b>REC</b>, play a melody on the keys, and DOGE FM1 loops it in sync with the beat. Tap <b>CLR</b> anytime to clear the loop.</p>
-        </div>
+      </div>
+    </div>
+
+    <!-- Right / Bottom Pane: DJ Pads + Rave/Vocal Sample Pads + Keyboard -->
+    <div id="right-pane">
+      <div class="pads-row-4">
+        <button id="pad-kick" class="pad-btn" type="button">909 KICK [1]</button>
+        <button id="pad-snare" class="pad-btn cyan" type="button">SNARE [2]</button>
+        <button id="pad-roll" class="pad-btn pink" type="button">SNARE ROLL [3]</button>
+        <button id="pad-siren" class="pad-btn green" type="button">RAVE SIREN [4]</button>
+      </div>
+
+      <div class="pads-row-5">
+        <button id="smp-prodigy" class="pad-btn orange" type="button">&#9889; PRODIGY [5]</button>
+        <button id="smp-vox" class="pad-btn rose" type="button">&#127908; DIVA VOX [6]</button>
+        <button id="smp-euro" class="pad-btn purple" type="button">&#9835; EURO [7]</button>
+        <button id="smp-techno" class="pad-btn cyan" type="button">&#9762; 303 [8]</button>
+        <button id="smp-trance" class="pad-btn green" type="button">&#10024; TRANCE [9]</button>
+      </div>
+
+      <div id="keyboard">
+        <div class="w-key" data-idx="0" data-lbl="C"><span>C</span><span class="pc-hint">Z</span></div>
+        <div class="w-key" data-idx="2" data-lbl="D"><span>D</span><span class="pc-hint">X</span></div>
+        <div class="w-key" data-idx="4" data-lbl="E"><span>E</span><span class="pc-hint">C</span></div>
+        <div class="w-key" data-idx="5" data-lbl="F"><span>F</span><span class="pc-hint">V</span></div>
+        <div class="w-key" data-idx="7" data-lbl="G"><span>G</span><span class="pc-hint">B</span></div>
+        <div class="w-key" data-idx="9" data-lbl="A"><span>A</span><span class="pc-hint">N</span></div>
+        <div class="w-key" data-idx="11" data-lbl="B"><span>B</span><span class="pc-hint">M</span></div>
+        <div class="w-key" data-idx="12" data-lbl="C+"><span>C+</span><span class="pc-hint">,</span></div>
+
+        <div class="b-key" style="left: 8.3%;" data-idx="1" data-lbl="C#"><span>C#</span><span class="pc-hint">S</span></div>
+        <div class="b-key" style="left: 20.8%;" data-idx="3" data-lbl="D#"><span>D#</span><span class="pc-hint">D</span></div>
+        <div class="b-key" style="left: 45.8%;" data-idx="6" data-lbl="F#"><span>F#</span><span class="pc-hint">G</span></div>
+        <div class="b-key" style="left: 58.3%;" data-idx="8" data-lbl="G#"><span>G#</span><span class="pc-hint">H</span></div>
+        <div class="b-key" style="left: 70.8%;" data-idx="10" data-lbl="A#"><span>A#</span><span class="pc-hint">J</span></div>
       </div>
     </div>
   </div>
 
-  <div id="deck">
-    <!-- Row 1: 5 Hardware Sliders -->
-    <div class="params-row">
-      <div class="param-box cyan-box">
-        <div class="param-head"><span>BPM</span><span id="val-bpm">135</span></div>
-        <input id="sl-bpm" class="synth-slider" type="range" min="75" max="185" value="135">
-      </div>
-      <div class="param-box highlight-box">
-        <div class="param-head"><span>DRUM VOL</span><span id="val-dvol">140%</span></div>
-        <input id="sl-dvol" class="synth-slider" type="range" min="0" max="200" value="140">
-      </div>
-      <div class="param-box highlight-box">
-        <div class="param-head"><span>PAD/SYNTH</span><span id="val-svol">145%</span></div>
-        <input id="sl-svol" class="synth-slider" type="range" min="0" max="200" value="145">
-      </div>
-      <div class="param-box">
-        <div class="param-head"><span>BRIGHTNESS</span><span id="val-cut">4200Hz</span></div>
-        <input id="sl-cut" class="synth-slider" type="range" min="180" max="8000" value="4200">
-      </div>
-      <div class="param-box">
-        <div class="param-head"><span>MOD/ECHO</span><span id="val-mod">55%</span></div>
-        <input id="sl-mod" class="synth-slider" type="range" min="0" max="100" value="55">
-      </div>
+  <!-- Built-in Manual Modal -->
+  <div id="guide-modal">
+    <div class="guide-head">
+      <h3>DOGE FM1 — PLAYABLE NFT SYNTH &amp; RAVE MANUAL</h3>
+      <button id="btn-close-guide" class="hw-btn gold" type="button">BACK TO SYNTH</button>
     </div>
-
-    <!-- Row 2: Drum & DJ Performance Pads -->
-    <div class="pads-row">
-      <button id="pad-kick" class="pad-btn" type="button">909 KICK [1]</button>
-      <button id="pad-snare" class="pad-btn cyan" type="button">SNARE [2]</button>
-      <button id="pad-roll" class="pad-btn pink" type="button">SNARE ROLL [3]</button>
-      <button id="pad-siren" class="pad-btn green" type="button">RAVE SIREN [4]</button>
-    </div>
-
-    <!-- Row 3: High-Output Rave Sample Riff Pads -->
-    <div class="pads-row">
-      <button id="smp-prodigy" class="pad-btn orange" type="button">&#9889; PRODIGY [5]</button>
-      <button id="smp-euro" class="pad-btn purple" type="button">&#9835; EURO TECHNO [6]</button>
-      <button id="smp-techno" class="pad-btn cyan" type="button">&#9762; TECHNO 303 [7]</button>
-      <button id="smp-trance" class="pad-btn green" type="button">&#10024; TRANCE [8]</button>
-    </div>
-
-    <!-- Row 4: Zero-Gap Polyphonic Keyboard -->
-    <div id="keyboard">
-      <div class="w-key" data-idx="0" data-lbl="C">C</div>
-      <div class="w-key" data-idx="2" data-lbl="D">D</div>
-      <div class="w-key" data-idx="4" data-lbl="E">E</div>
-      <div class="w-key" data-idx="5" data-lbl="F">F</div>
-      <div class="w-key" data-idx="7" data-lbl="G">G</div>
-      <div class="w-key" data-idx="9" data-lbl="A">A</div>
-      <div class="w-key" data-idx="11" data-lbl="B">B</div>
-      <div class="w-key" data-idx="12" data-lbl="C+">C+</div>
-
-      <div class="b-key" style="left: 8.3%;" data-idx="1" data-lbl="C#">C#</div>
-      <div class="b-key" style="left: 20.8%;" data-idx="3" data-lbl="D#">D#</div>
-      <div class="b-key" style="left: 45.8%;" data-idx="6" data-lbl="F#">F#</div>
-      <div class="b-key" style="left: 58.3%;" data-idx="8" data-lbl="G#">G#</div>
-      <div class="b-key" style="left: 70.8%;" data-idx="10" data-lbl="A#">A#</div>
+    <div class="guide-grid">
+      <div class="guide-card">
+        <strong>1. BPM - / BPM + &amp; SLIDER (75 – 185 BPM)</strong>
+        <p>Tap or hold <b>BPM -</b> and <b>BPM +</b> right next to each other (or slide <b>BPM SLIDER</b>) to adjust tempo smoothly from slow dub breakbeat to fast hardcore/psytrance.</p>
+      </div>
+      <div class="guide-card">
+        <strong>2. PRODIGY [5] &amp; FEMALE DIVA VOX [6] PADS</strong>
+        <p>Hit <b>PRODIGY [5]</b> for a 90s breakbeat + hoover rave riff, or <b>DIVA VOX [6]</b> for euphoric female soprano vocal formants (<i>Aaah–Ooooh–Eeeeh</i>) synced to your BPM!</p>
+      </div>
+      <div class="guide-card">
+        <strong>3. 7 SYNTH ENGINES (INCLUDING DIVA VOX)</strong>
+        <p>Tap <b>ENGINE</b> to switch between <b>FM KEYS</b>, <b>ANALOG</b>, <b>ACID 303</b>, <b>PRODIGY RAVE</b>, <b>TRANCE SUPERSAW</b>, <b>COSMIC PAD</b>, and <b>DIVA VOX</b> (playable female voice on keys).</p>
+      </div>
+      <div class="guide-card">
+        <strong>4. PC KEYBOARD &amp; MOBILE LANDSCAPE</strong>
+        <p>On mobile landscape, the deck splits side-by-side for thumb play. On PC, use <b>Z–M</b> to play keys, <b>1–9</b> for pads, <b>Space</b> for <b>DROP</b>, and <b>Arrow keys</b> for BPM/Octave.</p>
+      </div>
     </div>
   </div>
 </div>
@@ -481,10 +657,11 @@
     c.closePath();
   }
 
+  // 7 Synth Engines (Including PRODIGY RAVE, TRANCE SUPERSAW & FEMALE DIVA VOX)
   var FIRMWARES = [
     {
       id: 'FM KEYS',
-      badge: 'FW 1/6: FM KEYS',
+      badge: 'FW 1/7: FM KEYS',
       desc: 'FM ENGINE • ELECTRIC KEYS & CRYSTAL BELLS',
       color: '#38bdf8',
       rgb: '56, 189, 248',
@@ -492,7 +669,7 @@
     },
     {
       id: 'ANALOG POLY',
-      badge: 'FW 2/6: ANALOG',
+      badge: 'FW 2/7: ANALOG',
       desc: 'ANALOG ENGINE • WARM DETUNED POLY SYNTH',
       color: '#facc15',
       rgb: '250, 204, 21',
@@ -500,7 +677,7 @@
     },
     {
       id: 'ACID 303',
-      badge: 'FW 3/6: ACID 303',
+      badge: 'FW 3/7: ACID 303',
       desc: 'ACID ENGINE • MONO GLIDE RESONANT BASS',
       color: '#4ade80',
       rgb: '74, 222, 128',
@@ -508,15 +685,15 @@
     },
     {
       id: 'PRODIGY RAVE',
-      badge: 'FW 4/6: PRODIGY',
-      desc: 'PRODIGY ENGINE • SCREAMING RAVE LEAD & SUB',
+      badge: 'FW 4/7: PRODIGY',
+      desc: 'PRODIGY ENGINE • 90s HOOVER RAVE LEAD & SUB',
       color: '#fb923c',
       rgb: '251, 146, 60',
       mono: true
     },
     {
       id: 'TRANCE SUPERSAW',
-      badge: 'FW 5/6: TRANCE',
+      badge: 'FW 5/7: TRANCE',
       desc: 'TRANCE ENGINE • 5-VOICE EUPHORIC SUPERSAW',
       color: '#22d3ee',
       rgb: '34, 211, 238',
@@ -524,15 +701,22 @@
     },
     {
       id: 'COSMIC PAD',
-      badge: 'FW 6/6: COSMIC',
+      badge: 'FW 6/7: COSMIC',
       desc: 'COSMIC ENGINE • 3-VOICE LUSH AMBIENT PAD',
       color: '#c084fc',
       rgb: '192, 132, 252',
       mono: false
+    },
+    {
+      id: 'DIVA VOX',
+      badge: 'FW 7/7: DIVA VOX',
+      desc: 'VOCAL ENGINE • FEMALE SOPRANO FORMANT CHOIR',
+      color: '#fb7185',
+      rgb: '251, 113, 133',
+      mono: false
     }
   ];
 
-  // Rave Scale maps the 13 keys to a dark E-Minor / Phrygian Rave Scale so every key sounds awesome!
   var RAVE_SCALE_SEMIS = [0, 1, 3, 5, 7, 8, 10, 12, 13, 15, 17, 19, 24];
   var CHROMATIC_SEMIS  = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
@@ -549,12 +733,12 @@
   var drumMuted = false;
   var snareRollActive = false;
   var isRecording = false;
-  var loopPattern = new Array(16); // stores semi or null
+  var loopPattern = new Array(16);
   var octaveOffset = 0;
 
   var drumVolume = 1.40;
-  var synthVolume = 1.45;
-  var paramCutoff = 4200;
+  var synthVolume = 1.50;
+  var paramCutoff = 4400;
   var paramMod = 0.55;
 
   // Web Audio Engine
@@ -578,7 +762,6 @@
       if (!audioCtx) {
         audioCtx = new AC();
 
-        // Immediate silent buffer unlock for mobile Chrome/WebView
         var silentBuf = audioCtx.createBuffer(1, 1, 22050);
         var silentSrc = audioCtx.createBufferSource();
         silentSrc.buffer = silentBuf;
@@ -598,11 +781,11 @@
         delayNode.delayTime.value = (60 / currentBpm) * 0.75;
 
         delayFeedback = audioCtx.createGain();
-        delayFeedback.gain.value = 0.34;
+        delayFeedback.gain.value = 0.36;
 
         var delayFilter = audioCtx.createBiquadFilter();
         delayFilter.type = 'lowpass';
-        delayFilter.frequency.value = 3000;
+        delayFilter.frequency.value = 3200;
 
         delayWet = audioCtx.createGain();
         delayWet.gain.value = paramMod * 0.55;
@@ -653,7 +836,6 @@
   }
 
   function noteFreq(semi) {
-    // Base E3 (52) in Rave Scale or C4 (60) in Chromatic
     var baseMidi = raveScaleOn ? 52 : 60;
     var midi = baseMidi + octaveOffset * 12 + semi;
     return 440 * Math.pow(2, (midi - 69) / 12);
@@ -687,15 +869,17 @@
     }
   }
 
-  // Drum Synthesis (Respects DRUM MUTE / DROP)
-  function playKick(extraDrive, forcePlay) {
+  // Drum Synthesis
+  function playKick(extraDrive, forcePlay, atTime) {
     initAudio();
     if (drumMuted && !forcePlay) return;
-    bounce = 1;
-    headphonePulse = 1;
-    drumVu = Math.min(1, drumVu + 0.85);
+    if (!atTime) {
+      bounce = 1;
+      headphonePulse = 1;
+      drumVu = Math.min(1, drumVu + 0.85);
+    }
     if (!audioCtx || !drumBus) return;
-    var t = safeTime();
+    var t = atTime || safeTime();
 
     var o = audioCtx.createOscillator();
     var g = audioCtx.createGain();
@@ -718,23 +902,27 @@
     click.start(t); click.stop(t + 0.035);
   }
 
-  function playSnare(heavy, forcePlay) {
+  function playSnare(heavy, forcePlay, atTime, pitchMult) {
     initAudio();
     if (drumMuted && !forcePlay) return;
-    bounce = 0.72;
-    headphonePulse = 0.75;
-    drumVu = Math.min(1, drumVu + 0.72);
+    if (!atTime) {
+      bounce = 0.72;
+      headphonePulse = 0.75;
+      drumVu = Math.min(1, drumVu + 0.72);
+    }
     if (!audioCtx || !noiseBuffer || !drumBus) return;
-    var t = safeTime();
+    var t = atTime || safeTime();
+    var pm = pitchMult || 1.0;
 
     var n = audioCtx.createBufferSource();
     n.buffer = noiseBuffer;
+    n.playbackRate.setValueAtTime(pm, t);
     var bp = audioCtx.createBiquadFilter();
     bp.type = 'bandpass';
-    bp.frequency.setValueAtTime(1650, t);
-    bp.Q.value = 0.75;
+    bp.frequency.setValueAtTime(1650 * pm, t);
+    bp.Q.value = 0.85;
     var ng = audioCtx.createGain();
-    ng.gain.setValueAtTime(heavy ? 0.75 : 0.6, t);
+    ng.gain.setValueAtTime(heavy ? 0.78 : 0.6, t);
     ng.gain.exponentialRampToValueAtTime(0.002, t + 0.19);
     n.connect(bp); bp.connect(ng); ng.connect(drumBus);
     n.start(t); n.stop(t + 0.2);
@@ -742,20 +930,20 @@
     var body = audioCtx.createOscillator();
     var bg = audioCtx.createGain();
     body.type = 'triangle';
-    body.frequency.setValueAtTime(220, t);
-    body.frequency.exponentialRampToValueAtTime(92, t + 0.085);
-    bg.gain.setValueAtTime(heavy ? 0.62 : 0.48, t);
+    body.frequency.setValueAtTime(225 * pm, t);
+    body.frequency.exponentialRampToValueAtTime(92 * pm, t + 0.085);
+    bg.gain.setValueAtTime(heavy ? 0.65 : 0.48, t);
     bg.gain.exponentialRampToValueAtTime(0.002, t + 0.1);
     body.connect(bg); bg.connect(drumBus);
     body.start(t); body.stop(t + 0.11);
   }
 
-  function playHat(open) {
+  function playHat(open, atTime) {
     initAudio();
     if (drumMuted) return;
-    drumVu = Math.min(1, drumVu + 0.35);
+    if (!atTime) drumVu = Math.min(1, drumVu + 0.35);
     if (!audioCtx || !noiseBuffer || !drumBus) return;
-    var t = safeTime();
+    var t = atTime || safeTime();
     var dur = open ? 0.18 : 0.055;
     var n = audioCtx.createBufferSource();
     n.buffer = noiseBuffer;
@@ -812,7 +1000,6 @@
     osc.stop(t + 0.66); lfo.stop(t + 0.66);
   }
 
-  // Stop previous sample oscillators & visual timers cleanly
   function stopPreviousSamples() {
     for (var i = 0; i < activeSampleTimers.length; i++) {
       clearTimeout(activeSampleTimers[i]);
@@ -824,7 +1011,6 @@
     activeSampleNodes = [];
   }
 
-  // Sample-Accurate Hardware Web Audio Rave Synth Scheduler
   function scheduleRaveSynth(startTime, freqs, waveType, dur, cutStart, cutEnd, reso, gainAmt, slideFromFreq) {
     if (!audioCtx || !synthBus) return;
     var filter = audioCtx.createBiquadFilter();
@@ -846,7 +1032,7 @@
       o.type = waveType;
       if (slideFromFreq && i === 0) {
         o.frequency.setValueAtTime(slideFromFreq, startTime);
-        o.frequency.exponentialRampToValueAtTime(freqs[i], startTime + 0.05);
+        o.frequency.exponentialRampToValueAtTime(freqs[i], startTime + 0.055);
       } else {
         o.frequency.setValueAtTime(freqs[i], startTime);
       }
@@ -857,39 +1043,194 @@
     }
   }
 
-  // SAMPLE 1: PRODIGY [5] (Loud Screaming Octave Rave Riff)
+  // SAMPLE 1: AUTHENTIC PRODIGY [5] (90s Breakbeat Amen Snare Chop + Hoover Rave Stab + Sub Drop)
   function playSampleProdigy() {
     initAudio();
     stopPreviousSamples();
-    lastNoteLabel = 'SAMPLE: PRODIGY RAVE';
-    spawnSparks('#fb923c', 20);
-    if (!audioCtx) return;
+    lastNoteLabel = 'PRODIGY: BREAK + HOOVER';
+    spawnSparks('#fb923c', 22);
+    if (!audioCtx || !synthBus) return;
 
     var baseT = safeTime();
     var stepSec = (60 / currentBpm) / 4;
 
-    var events = [
-      { s: 0,  f: [164.81, 329.63, 332.0], w: 'sawtooth', d: 0.22, c1: 5800, c2: 1800, q: 7, g: 0.36, sl: 110 },
-      { s: 3,  f: [196.00, 392.00, 394.5], w: 'sawtooth', d: 0.16, c1: 6200, c2: 2000, q: 8, g: 0.34, sl: 164.81 },
-      { s: 6,  f: [220.00, 440.00, 443.0], w: 'sawtooth', d: 0.16, c1: 6500, c2: 1900, q: 8, g: 0.35, sl: 196.00 },
-      { s: 7,  f: [233.08, 466.16, 469.5], w: 'square',   d: 0.22, c1: 7000, c2: 1500, q: 9, g: 0.34, sl: 220.00 },
-      { s: 9,  f: [220.00, 440.00],        w: 'sawtooth', d: 0.15, c1: 5800, c2: 1800, q: 7, g: 0.32, sl: 233.08 },
-      { s: 10, f: [196.00, 392.00],        w: 'sawtooth', d: 0.15, c1: 5400, c2: 1600, q: 7, g: 0.32, sl: 220.00 },
-      { s: 12, f: [164.81, 329.63, 493.88],w: 'sawtooth', d: 0.38, c1: 7200, c2: 1200, q: 9, g: 0.38, sl: 196.00 }
+    // 1. Sub-Bass 808 Drop on Beat 1
+    var sub = audioCtx.createOscillator();
+    var subG = audioCtx.createGain();
+    sub.type = 'sine';
+    sub.frequency.setValueAtTime(110, baseT);
+    sub.frequency.exponentialRampToValueAtTime(38, baseT + stepSec * 6);
+    subG.gain.setValueAtTime(0.55, baseT);
+    subG.gain.exponentialRampToValueAtTime(0.001, baseT + stepSec * 7);
+    sub.connect(subG); subG.connect(synthBus);
+    sub.start(baseT); sub.stop(baseT + stepSec * 7.2);
+    activeSampleNodes.push(sub);
+
+    // 2. Classic 90s Prodigy Breakbeat Drum Chop (Kick + Pitched Amen Snare Ghost Hits)
+    playKick(true, true, baseT);
+    playHat(true, baseT + stepSec * 2);
+    playSnare(true, true, baseT + stepSec * 4, 1.15);
+    playSnare(false, true, baseT + stepSec * 7, 1.38); // Classic syncopated Amen ghost snare
+    playSnare(false, true, baseT + stepSec * 9, 1.25);
+    playKick(true, true, baseT + stepSec * 10);
+    playSnare(true, true, baseT + stepSec * 12, 1.12);
+    playSnare(true, true, baseT + stepSec * 15, 1.45);
+
+    // 3. Screaming 90s Hoover / Dominator Rave Lead Riff (Voodoo / No Good energy)
+    var riff = [
+      { s: 0,  f: [164.81, 329.63, 333.0, 493.88], w: 'sawtooth', d: 0.24, c1: 6400, c2: 1900, q: 7.5, g: 0.34, sl: 98.0 },
+      { s: 3,  f: [196.00, 392.00, 396.0],         w: 'sawtooth', d: 0.16, c1: 6800, c2: 2200, q: 8.0, g: 0.32, sl: 164.81 },
+      { s: 6,  f: [220.00, 440.00, 444.5],         w: 'sawtooth', d: 0.16, c1: 7200, c2: 2000, q: 8.5, g: 0.33, sl: 196.00 },
+      { s: 7,  f: [233.08, 466.16, 471.0],         w: 'square',   d: 0.22, c1: 7600, c2: 1600, q: 9.0, g: 0.32, sl: 220.00 },
+      { s: 9,  f: [220.00, 440.00, 444.0],         w: 'sawtooth', d: 0.15, c1: 6200, c2: 1800, q: 7.5, g: 0.30, sl: 233.08 },
+      { s: 10, f: [196.00, 392.00, 395.5],         w: 'sawtooth', d: 0.15, c1: 5800, c2: 1600, q: 7.5, g: 0.30, sl: 220.00 },
+      { s: 12, f: [164.81, 329.63, 493.88, 659.25],w: 'sawtooth', d: 0.42, c1: 7800, c2: 1100, q: 9.5, g: 0.36, sl: 196.00 }
     ];
 
-    for (var i = 0; i < events.length; i++) {
-      var ev = events[i];
+    for (var i = 0; i < riff.length; i++) {
+      var ev = riff[i];
       scheduleRaveSynth(baseT + ev.s * stepSec, ev.f, ev.w, ev.d, ev.c1, ev.c2, ev.q, ev.g, ev.sl);
       (function(delayMs) {
         activeSampleTimers.push(setTimeout(function() {
-          bounce = 0.85; headphonePulse = 0.9; synthVu = 0.95;
+          bounce = 0.9; headphonePulse = 0.95; synthVu = 0.98; drumVu = 0.85;
         }, delayMs));
       })(ev.s * stepSec * 1000);
     }
   }
 
-  // SAMPLE 2: EURO TECHNO [6] (Loud 90s Rave Brass Chord Stabs)
+  // Female Soprano Formant Vocal Synthesizer (Used by DIVA VOX Pad [6] AND Engine 7!)
+  function triggerFemaleVocalNote(startTime, freq, dur, vowelType, gainAmt, autoRegisterSample) {
+    if (!audioCtx || !synthBus) return null;
+
+    // Vowel Formant Frequencies for Female Soprano Voice (F1, F2, F3)
+    var formants = {
+      'AH': [860, 1360, 2880],
+      'OH': [520, 920,  2720],
+      'EE': [390, 2480, 3150]
+    }[vowelType || 'AH'];
+
+    var saw1 = audioCtx.createOscillator();
+    var saw2 = audioCtx.createOscillator();
+    saw1.type = 'sawtooth';
+    saw2.type = 'sawtooth';
+    saw1.frequency.setValueAtTime(freq, startTime);
+    saw2.frequency.setValueAtTime(freq * 1.004, startTime); // Natural choir shimmer
+
+    // Expressive Female Soprano Vibrato LFO
+    var vib = audioCtx.createOscillator();
+    var vibGain = audioCtx.createGain();
+    vib.type = 'sine';
+    vib.frequency.setValueAtTime(5.8, startTime);
+    vibGain.gain.setValueAtTime(0, startTime);
+    vibGain.gain.linearRampToValueAtTime(freq * 0.014, startTime + 0.09);
+    vib.connect(vibGain);
+    vibGain.connect(saw1.frequency);
+    vibGain.connect(saw2.frequency);
+
+    // Master Vocal Envelope
+    var env = audioCtx.createGain();
+    env.gain.setValueAtTime(0.001, startTime);
+    env.gain.linearRampToValueAtTime(gainAmt || 0.45, startTime + 0.045);
+    if (dur) {
+      env.gain.setValueAtTime(gainAmt || 0.45, startTime + Math.max(0.06, dur - 0.08));
+      env.gain.exponentialRampToValueAtTime(0.001, startTime + dur);
+    }
+
+    // 3 Parallel Bandpass Formant Resonators
+    var gains = [1.0, 0.72, 0.42];
+    var qs    = [7.5, 9.0, 11.0];
+    for (var f = 0; f < 3; f++) {
+      var bp = audioCtx.createBiquadFilter();
+      bp.type = 'bandpass';
+      bp.frequency.setValueAtTime(formants[f], startTime);
+      bp.Q.value = qs[f];
+
+      var fg = audioCtx.createGain();
+      fg.gain.value = gains[f];
+
+      saw1.connect(bp);
+      saw2.connect(bp);
+      bp.connect(fg);
+      fg.connect(env);
+    }
+
+    // Subtle Airy Breath Layer for Vocal Realism
+    if (noiseBuffer) {
+      var air = audioCtx.createBufferSource();
+      air.buffer = noiseBuffer;
+      air.loop = true;
+      var airBp = audioCtx.createBiquadFilter();
+      airBp.type = 'bandpass';
+      airBp.frequency.setValueAtTime(2600, startTime);
+      airBp.Q.value = 3.0;
+      var airG = audioCtx.createGain();
+      airG.gain.value = 0.06;
+      air.connect(airBp); airBp.connect(airG); airG.connect(env);
+      air.start(startTime);
+      if (dur) air.stop(startTime + dur + 0.03);
+      if (autoRegisterSample) activeSampleNodes.push(air);
+    }
+
+    env.connect(synthBus);
+    saw1.start(startTime);
+    saw2.start(startTime);
+    vib.start(startTime);
+
+    if (dur) {
+      saw1.stop(startTime + dur + 0.03);
+      saw2.stop(startTime + dur + 0.03);
+      vib.stop(startTime + dur + 0.03);
+    }
+    if (autoRegisterSample) {
+      activeSampleNodes.push(saw1, saw2, vib);
+    }
+
+    return function stopVox() {
+      if (!audioCtx) return;
+      var now = safeTime();
+      try {
+        env.gain.cancelScheduledValues(now);
+        env.gain.setValueAtTime(Math.max(0.002, env.gain.value), now);
+        env.gain.exponentialRampToValueAtTime(0.0005, now + 0.25);
+        saw1.stop(now + 0.27);
+        saw2.stop(now + 0.27);
+        vib.stop(now + 0.27);
+      } catch (e) {}
+    };
+  }
+
+  // SAMPLE 2: FEMALE DIVA VOCALS [6] ("Aaah - Ooooh - Eeeeh - Aaah!" Rave/Trance Anthem Hook)
+  function playSampleFemaleVox() {
+    initAudio();
+    stopPreviousSamples();
+    lastNoteLabel = 'VOCAL: FEMALE DIVA HOOK';
+    spawnSparks('#fb7185', 22);
+    if (!audioCtx) return;
+
+    var baseT = safeTime();
+    var stepSec = (60 / currentBpm) / 4;
+
+    // Soaring 90s Euro-Trance Female Diva Vocal Melody (E5 -> G5 -> F#5 -> D5 -> E5)
+    var phrase = [
+      { s: 0,  f: 659.25, dur: stepSec * 3.8, v: 'AH' }, // "Aaah" (E5)
+      { s: 4,  f: 783.99, dur: stepSec * 3.8, v: 'OH' }, // "Ooooh" (G5)
+      { s: 8,  f: 739.99, dur: stepSec * 1.9, v: 'EE' }, // "Eee" (F#5)
+      { s: 10, f: 587.33, dur: stepSec * 1.9, v: 'OH' }, // "Ooh" (D5)
+      { s: 12, f: 659.25, dur: stepSec * 5.5, v: 'AH' }  // "Aaah!" (E5)
+    ];
+
+    for (var i = 0; i < phrase.length; i++) {
+      var p = phrase[i];
+      triggerFemaleVocalNote(baseT + p.s * stepSec, p.f, p.dur, p.v, 0.56, true);
+      (function(delayMs) {
+        activeSampleTimers.push(setTimeout(function() {
+          bounce = 0.72; headphonePulse = 0.85; synthVu = 0.95;
+        }, delayMs));
+      })(p.s * stepSec * 1000);
+    }
+  }
+
+  // SAMPLE 3: EURO TECHNO [7]
   function playSampleEuroTechno() {
     initAudio();
     stopPreviousSamples();
@@ -927,7 +1268,7 @@
     }
   }
 
-  // SAMPLE 3: TECHNO 303 [7] (Loud Squelchy Warehouse Acid Sequence)
+  // SAMPLE 4: TECHNO 303 [8]
   function playSampleTechno() {
     initAudio();
     stopPreviousSamples();
@@ -963,7 +1304,7 @@
     }
   }
 
-  // SAMPLE 4: TRANCE [8] (Loud Euphoric Supersaw Anthem Riff)
+  // SAMPLE 5: TRANCE [9]
   function playSampleTrance() {
     initAudio();
     stopPreviousSamples();
@@ -1009,7 +1350,10 @@
     }
   }
 
-  // 6-Engine Synthesizer Voice
+  // 7-Engine Synthesizer Voice (Includes Playable DIVA VOX!)
+  var voxCycle = ['AH', 'OH', 'EE'];
+  var voxStepIdx = 0;
+
   function triggerSingleVoice(freq, label, autoDur) {
     initAudio();
     var fw = FIRMWARES[fwIdx];
@@ -1020,8 +1364,16 @@
 
     if (!audioCtx || !synthBus) return null;
     var t = safeTime();
-    var nodesToStop = [];
 
+    if (fw.id === 'DIVA VOX') {
+      var vType = voxCycle[voxStepIdx % voxCycle.length];
+      voxStepIdx++;
+      // Shift up an octave so female soprano sits in the sweet spot (440Hz - 1046Hz)
+      var voxFreq = freq < 330 ? freq * 2 : freq;
+      return triggerFemaleVocalNote(t, voxFreq, autoDur, vType, 0.48, false);
+    }
+
+    var nodesToStop = [];
     var env = audioCtx.createGain();
     var filter = audioCtx.createBiquadFilter();
     filter.type = 'lowpass';
@@ -1206,7 +1558,6 @@
     return releaseVoice;
   }
 
-  // Plays either a single note OR a full 3-note Rave Minor Chord if CHORD Mode is active
   function triggerKeyOrChord(semi, label, autoDur) {
     if (chordModeOn) {
       var s1 = triggerSingleVoice(noteFreq(semi), label + ' CHORD', autoDur);
@@ -1272,7 +1623,6 @@
     var hit = document.elementFromPoint(clientX, clientY);
     var keyEl = hit ? hit.closest('.w-key, .b-key') : null;
     if (keyEl) return keyEl;
-    // Fallback if finger lands on 1px divider inside keyboard
     var rect = keyboardEl.getBoundingClientRect();
     if (clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom) {
       var wKeys = keyboardEl.querySelectorAll('.w-key');
@@ -1323,13 +1673,19 @@
   window.addEventListener('pointerup', function(e) { endPointer(e.pointerId); });
   window.addEventListener('pointercancel', function(e) { endPointer(e.pointerId); });
 
+  function flashPad(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add('hit');
+    setTimeout(function() { el.classList.remove('hit'); }, 130);
+  }
+
   function bindPad(id, fn) {
     var el = document.getElementById(id);
     el.addEventListener('pointerdown', function(e) {
       e.preventDefault();
-      el.classList.add('hit');
+      flashPad(id);
       fn();
-      setTimeout(function() { el.classList.remove('hit'); }, 120);
     });
   }
 
@@ -1353,11 +1709,59 @@
   window.addEventListener('pointerup', stopSnareRoll);
   window.addEventListener('pointercancel', stopSnareRoll);
 
-  // Rave Sample Pads [5-8]
+  // 5 Rave & Female Vocal Sample Pads [5-9]
   bindPad('smp-prodigy', playSampleProdigy);
+  bindPad('smp-vox', playSampleFemaleVox);
   bindPad('smp-euro', playSampleEuroTechno);
   bindPad('smp-techno', playSampleTechno);
   bindPad('smp-trance', playSampleTrance);
+
+  // Unified BPM Setter (Syncs BPM - / BPM + buttons, HUD, Slider & Delay)
+  var bpmReadout = document.getElementById('bpm-readout');
+  var slBpm = document.getElementById('sl-bpm');
+  var valBpm = document.getElementById('val-bpm');
+
+  function setBpm(newVal) {
+    currentBpm = Math.min(185, Math.max(75, Math.round(newVal)));
+    bpmReadout.textContent = currentBpm;
+    slBpm.value = currentBpm;
+    valBpm.textContent = currentBpm;
+    if (delayNode && audioCtx) {
+      delayNode.delayTime.setTargetAtTime((60 / currentBpm) * 0.75, audioCtx.currentTime, 0.04);
+    }
+  }
+
+  // Side-by-Side BPM - and BPM + (Supports both tap and press-and-hold!)
+  var bpmHoldTimer = null;
+  var bpmHoldInterval = null;
+
+  function bindBpmStepButton(btnId, delta) {
+    var btn = document.getElementById(btnId);
+    function clearBpmHold() {
+      clearTimeout(bpmHoldTimer);
+      clearInterval(bpmHoldInterval);
+    }
+    btn.addEventListener('pointerdown', function(e) {
+      e.preventDefault();
+      initAudio();
+      setBpm(currentBpm + delta);
+      clearBpmHold();
+      bpmHoldTimer = setTimeout(function() {
+        bpmHoldInterval = setInterval(function() {
+          setBpm(currentBpm + delta * 2);
+        }, 75);
+      }, 320);
+    });
+    btn.addEventListener('pointerup', clearBpmHold);
+    btn.addEventListener('pointerleave', clearBpmHold);
+    btn.addEventListener('pointercancel', clearBpmHold);
+  }
+  bindBpmStepButton('btn-bpm-down', -1);
+  bindBpmStepButton('btn-bpm-up', 1);
+
+  slBpm.addEventListener('input', function(e) {
+    setBpm(parseInt(e.target.value, 10));
+  });
 
   // Top Bar Controls
   var btnFw = document.getElementById('btn-fw');
@@ -1450,14 +1854,17 @@
   });
 
   var btnDrop = document.getElementById('btn-drop');
-  btnDrop.addEventListener('pointerdown', function(e) {
-    e.preventDefault();
+  function toggleDrop() {
     drumMuted = !drumMuted;
     btnDrop.classList.toggle('drop-on', drumMuted);
     btnDrop.textContent = drumMuted ? 'DROP: MUTED' : 'DROP';
     if (drumBus && audioCtx) {
       drumBus.gain.setTargetAtTime(drumMuted ? 0 : drumVolume, audioCtx.currentTime, 0.015);
     }
+  }
+  btnDrop.addEventListener('pointerdown', function(e) {
+    e.preventDefault();
+    toggleDrop();
   });
 
   var guideModal = document.getElementById('guide-modal');
@@ -1470,14 +1877,7 @@
     guideModal.classList.remove('open');
   });
 
-  // 5 Sliders
-  document.getElementById('sl-bpm').addEventListener('input', function(e) {
-    currentBpm = parseInt(e.target.value, 10);
-    document.getElementById('val-bpm').textContent = currentBpm;
-    if (delayNode && audioCtx) {
-      delayNode.delayTime.setTargetAtTime((60 / currentBpm) * 0.75, audioCtx.currentTime, 0.04);
-    }
-  });
+  // Remaining Sliders
   document.getElementById('sl-dvol').addEventListener('input', function(e) {
     initAudio();
     var pct = parseInt(e.target.value, 10);
@@ -1508,7 +1908,7 @@
     }
   });
 
-  // PC Keyboard Shortcuts
+  // Full PC Keyboard Support + Visual Pad & Key Sync
   var qwertyMap = {
     'KeyZ': 0, 'KeyS': 1, 'KeyX': 2, 'KeyD': 3, 'KeyC': 4,
     'KeyV': 5, 'KeyG': 6, 'KeyB': 7, 'KeyH': 8, 'KeyN': 9,
@@ -1518,16 +1918,20 @@
 
   window.addEventListener('keydown', function(e) {
     if (e.repeat) return;
-    if (e.code === 'Digit1') { playKick(true, true); return; }
-    if (e.code === 'Digit2') { playSnare(false, true); return; }
-    if (e.code === 'Digit3') { snareRollActive = true; playSnare(true, true); return; }
-    if (e.code === 'Digit4') { playRaveSiren(); return; }
-    if (e.code === 'Digit5') { playSampleProdigy(); return; }
-    if (e.code === 'Digit6') { playSampleEuroTechno(); return; }
-    if (e.code === 'Digit7') { playSampleTechno(); return; }
-    if (e.code === 'Digit8') { playSampleTrance(); return; }
-    if (e.code === 'ArrowLeft') { octaveOffset = Math.max(-2, octaveOffset - 1); return; }
-    if (e.code === 'ArrowRight') { octaveOffset = Math.min(2, octaveOffset + 1); return; }
+    if (e.code === 'Space') { e.preventDefault(); toggleDrop(); return; }
+    if (e.code === 'Digit1') { flashPad('pad-kick'); playKick(true, true); return; }
+    if (e.code === 'Digit2') { flashPad('pad-snare'); playSnare(false, true); return; }
+    if (e.code === 'Digit3') { snareRollActive = true; padRoll.classList.add('hit'); playSnare(true, true); return; }
+    if (e.code === 'Digit4') { flashPad('pad-siren'); playRaveSiren(); return; }
+    if (e.code === 'Digit5') { flashPad('smp-prodigy'); playSampleProdigy(); return; }
+    if (e.code === 'Digit6') { flashPad('smp-vox'); playSampleFemaleVox(); return; }
+    if (e.code === 'Digit7') { flashPad('smp-euro'); playSampleEuroTechno(); return; }
+    if (e.code === 'Digit8') { flashPad('smp-techno'); playSampleTechno(); return; }
+    if (e.code === 'Digit9') { flashPad('smp-trance'); playSampleTrance(); return; }
+    if (e.code === 'ArrowUp') { e.preventDefault(); setBpm(currentBpm + 2); return; }
+    if (e.code === 'ArrowDown') { e.preventDefault(); setBpm(currentBpm - 2); return; }
+    if (e.code === 'ArrowLeft') { e.preventDefault(); octaveOffset = Math.max(-2, octaveOffset - 1); lastNoteLabel = 'OCTAVE ' + (4 + octaveOffset); return; }
+    if (e.code === 'ArrowRight') { e.preventDefault(); octaveOffset = Math.min(2, octaveOffset + 1); lastNoteLabel = 'OCTAVE ' + (4 + octaveOffset); return; }
     if (e.code === 'Escape') { guideModal.classList.remove('open'); return; }
 
     var kIdx = qwertyMap[e.code];
@@ -1537,12 +1941,34 @@
   });
 
   window.addEventListener('keyup', function(e) {
-    if (e.code === 'Digit3') { snareRollActive = false; }
+    if (e.code === 'Digit3') { snareRollActive = false; padRoll.classList.remove('hit'); }
     var item = keyStops[e.code];
     if (item) {
       removeHeldKey(item.kIdx, item.stop);
       delete keyStops[e.code];
     }
+  });
+
+  // Safety cleanup if tab loses focus so no notes ever stick
+  function panicReleaseAll() {
+    snareRollActive = false;
+    padRoll.classList.remove('hit');
+    for (var pid in pointerVoices) {
+      if (pointerVoices[pid] && pointerVoices[pid].stop) pointerVoices[pid].stop();
+    }
+    pointerVoices = {};
+    for (var code in keyStops) {
+      if (keyStops[code] && keyStops[code].stop) keyStops[code].stop();
+    }
+    keyStops = {};
+    if (!holdLatch) {
+      heldKeyIndices = [];
+      syncKeyboardHighlights();
+    }
+  }
+  window.addEventListener('blur', panicReleaseAll);
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) panicReleaseAll();
   });
 
   // 16-Step Sequencer + Live Loop Playback + Snare Roll
@@ -1565,7 +1991,7 @@
       if (s === 15) playHat(false);
     } else if (beat === 'PRODIGY') {
       if (s === 0 || s === 6 || s === 10) playKick(true, false);
-      if (s === 4 || s === 12 || s === 15) playSnare(true, false);
+      if (s === 4 || s === 12 || s === 15) playSnare(true, false, 0, 1.25);
       if (s % 2 === 0) playHat(s === 2 || s === 10);
     } else if (beat === 'HARDCORE') {
       if (s % 4 === 0) playKick(true, false);
@@ -1581,12 +2007,10 @@
       playSnare(true, true);
     }
 
-    // Play Recorded Loop Step
     if (loopPattern[s]) {
       triggerKeyOrChord(loopPattern[s].semi, 'LOOP', 0.16);
     }
 
-    // Arpeggiator
     var arp = ARP_MODES[arpIdx];
     if (arp !== 'OFF' && heldKeyIndices.length > 0) {
       var len = heldKeyIndices.length;
@@ -1788,7 +2212,6 @@
       ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
     }
 
-    // 16-Step Sequencer & Loop LEDs
     for (var s = 0; s < 16; s++) {
       var lx = 20 + s * 22;
       var active = audioReady && (s === (stepCounter % 16));
@@ -1798,20 +2221,16 @@
       ctx.fill();
     }
 
-    // Stereo VU-Meters (Left = Drums, Right = Synth/Pads)
     var vuSegments = 12;
     for (var v = 0; v < vuSegments; v++) {
       var vy = H - 34 - v * 14;
       var segCol = v > 9 ? '#ef4444' : (v > 6 ? '#facc15' : '#4ade80');
-      // Left VU (Drums)
       ctx.fillStyle = (drumVu * vuSegments > v) ? segCol : '#1e293b';
       rRect(ctx, 6, vy, 7, 10, 2); ctx.fill();
-      // Right VU (Synth/Samples)
       ctx.fillStyle = (synthVu * vuSegments > v) ? segCol : '#1e293b';
       rRect(ctx, W - 13, vy, 7, 10, 2); ctx.fill();
     }
 
-    // Frequency Spectrum
     if (freqData && audioReady) {
       var barCount = 32;
       var bw = (W - 44) / barCount;
@@ -1823,7 +2242,6 @@
       }
     }
 
-    // Live Oscilloscope
     ctx.strokeStyle = fw.color;
     ctx.lineWidth = 2.4;
     ctx.beginPath();
@@ -1837,10 +2255,8 @@
     }
     ctx.stroke();
 
-    // Modern DJ Doge with Headphones
     drawModernDogeDJ(340, H / 2 + 4, fw);
 
-    // Bottom HUD
     ctx.font = '900 11px monospace';
     ctx.fillStyle = fw.color;
     ctx.fillText(fw.desc, 20, H - 8);
