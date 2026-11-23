@@ -1,8 +1,8 @@
-
-{
+ {
   "asset": "SYNTHDOGE",
   "name": "SYNTHDOGE 【 ▼ CLICK WEBSITE TO PLAY ▼ 】",
   "description": "Playable Web Audio synth by papeto. Video: https://imgur.com/sRrnZGa",
   "website": "https://papetoart.github.io/papeto-cards/doge-fm1.html",
-  "image": "https://papetoart.github.io/papeto-cards/synthdoge.png"
+  "image": "https://papetoart.github.io/papeto-cards/synthdoge.png",
+  "image_large": "https://papetoart.github.io/papeto-cards/synthdoge.png"
 }
